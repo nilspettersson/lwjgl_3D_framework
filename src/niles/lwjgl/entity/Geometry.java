@@ -5,11 +5,13 @@ import static org.lwjgl.opengl.GL15.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.BufferUtils;
 
 import niles.lwjgl.util.Texture;
 import niles.lwjgl.util.Vao;
@@ -23,7 +25,7 @@ public class Geometry {
 	private Vao vao;
 	
 	private FloatBuffer vertices;
-	private FloatBuffer indices;
+	private IntBuffer indices;
 	private int indexSize;
 	
 	private int size;
@@ -32,6 +34,10 @@ public class Geometry {
 		ByteBuffer bb = ByteBuffer.allocateDirect(size * Vertex.size * 4);
 	    bb.order(ByteOrder.nativeOrder());
 	    vertices = bb.asFloatBuffer();
+	    
+	    ByteBuffer bb2 = ByteBuffer.allocateDirect(size * Vertex.size * 4);
+	    bb2.order(ByteOrder.nativeOrder());
+	    indices = bb2.asIntBuffer();
 		
 		
 		vao = new Vao(size);
@@ -39,7 +45,7 @@ public class Geometry {
 		
 		index = 0;
 		
-		size = 0;
+		this.size = 0;
 		indexSize = 0;
 	}
 	
@@ -53,7 +59,8 @@ public class Geometry {
 	}
 	
 	public void addIndex(int index) {
-		indices.put(index);
+		indices.put(indexSize, index);
+		indexSize++;
 	}
 	
 	
@@ -74,12 +81,17 @@ public class Geometry {
 
 	
 	public void updateVertices() {
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getV_id());
 		glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
 		
 	}
 	
 	public void updateIndices() {
+		/*for(int i = 0; i < indices.capacity(); i++) {
+			System.out.println(indices.get(i));
+		}*/
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao.getI_id());
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_DYNAMIC_DRAW);
 	}

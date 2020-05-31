@@ -27,10 +27,8 @@ public class Vao {
 				0,1
 		};
 		
-		int[] indices=new int[maxVertices];
 		
 		draw_count = maxVertices;
-		
 		
 		v_id=glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, v_id);
@@ -42,6 +40,20 @@ public class Vao {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 40 * maxVertices, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		
+		
+		/*int[] indicesTemp=new int[] {
+				0,1,2
+		};
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
+		IntBuffer buffer=BufferUtils.createIntBuffer(indicesTemp.length);
+		buffer.put(indicesTemp);
+		buffer.flip();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, buffer, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
+		
+		
 		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		

@@ -16,6 +16,6 @@ void main(){
 	tex_coords = textures;
 	textureId = a_textureId;
 	
-	gl_Position = /*projection */ vec4(vertices,1);
+	gl_Position = projection * vec4(vertices,1);
 
 }

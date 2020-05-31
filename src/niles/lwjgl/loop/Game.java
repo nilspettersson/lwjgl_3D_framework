@@ -1,5 +1,6 @@
 package niles.lwjgl.loop;
 
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import niles.lwjgl.world.Camera;
@@ -15,7 +16,7 @@ public abstract class Game {
 	
 	public Game(int width,int height,boolean fullsceen,Vector4f backgroundColor,int fpsCap) {
 		window=new Window(width, height, fullsceen);
-		camera=new Camera(width, height);
+		camera=new Camera();
 		
 		this.backgroundColor=backgroundColor;
 		this.fpsCap=fpsCap;
@@ -27,7 +28,9 @@ public abstract class Game {
 	
 	public Game() {
 		window=new Window(1920, 1080, true);
-		camera=new Camera(1920, 1080);
+		camera=new Camera();
+		camera.setPerspective((float) Math.toRadians(70), 1920 / 1080, 0.01f, 1000);
+		//camera.setPosition(new Vector3f(0,1,3));
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;

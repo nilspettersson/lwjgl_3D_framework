@@ -17,8 +17,8 @@ public class Mouse {
      static double prevY = 0;
 
      
-     static float myX=0;
-     static float myY=0;
+     public static float myX=0;
+     public static float myY=0;
      
      public Mouse() {
     	 
@@ -74,11 +74,32 @@ public class Mouse {
          prevX = newX;
          prevY = newY;
 
+         myX = (float) deltaX;
+         myY = (float) deltaY;
 
          
          return new Vector2f((float)deltaX*sensitivity,(float)deltaY*sensitivity);
      }
+     
+     
+     public static void moveMouse(Window win,float sensitivity) {
+    	 DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
+         DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
 
+         glfwGetCursorPos(win.getWindow(), x, y);
+         x.rewind();
+         y.rewind();
+
+
+         double deltaX = x.get() - win.getWidth()/2;
+         double deltaY = y.get() - win.getHeight()/2;
+
+
+         myX += (float) deltaX * sensitivity / 1920;
+         myY += (float) deltaY * sensitivity / 1080;
+         
+         setMouseLocation(win, win.getWidth()/2, win.getHeight()/2);
+     }
 
 
      

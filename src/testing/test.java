@@ -12,6 +12,9 @@ import niles.lwjgl.entity.Vertex;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
+import niles.lwjgl.world.Input;
+import niles.lwjgl.world.Mouse;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class test extends Game {
 
@@ -23,6 +26,9 @@ public class test extends Game {
 	Geometry g;
 	
 	Entity entity;
+	
+	
+	Input input;
 
 	@Override
 	public void setup() {
@@ -35,13 +41,24 @@ public class test extends Game {
 		g.addVertice(new Vertex(new Vector3f(1, -1, 0), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
 		g.addVertice(new Vertex(new Vector3f(-1, -1, 0), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
 		
+		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		
 		g.addIndex(0);
 		g.addIndex(1);
 		g.addIndex(2);
-		
 		g.addIndex(2);
 		g.addIndex(3);
 		g.addIndex(0);
+		
+		g.addIndex(0 + 4);
+		g.addIndex(1 + 4);
+		g.addIndex(2 + 4);
+		g.addIndex(2 + 4);
+		g.addIndex(3 + 4);
+		g.addIndex(0 + 4);
 		
 		g.updateVertices();
 		g.updateIndices();
@@ -50,7 +67,13 @@ public class test extends Game {
 		entity = new Entity(400);
 		entity.setGeometry(g);
 		
-		getCamera().setPosition(new Vector3f(0, 0, 30));
+		getCamera().setPosition(new Vector3f(0, 0, 10));
+		
+		
+		
+		input = new Input(getWindow());
+		
+		getWindow().setVSync(false);
 	}
 
 	@Override
@@ -58,8 +81,39 @@ public class test extends Game {
 		shader.bind();
 		
 		
-		//entity.getTransform().setScale(new Vector3f(0.4f));
-		//entity.getTransform().getPosition().z-=0.001f;
+		
+		Mouse.isVisible(getWindow(), false);
+		//Mouse.moveMouse(getWindow(), 0.4f);
+		
+		Vector2f m = Mouse.getMousePosition(getWindow(), 0.001f);
+		getCamera().getRotation().rotate(-m.y, -m.x, 0);
+		
+		
+		getCamera().getRotation().z = 0;
+		
+		Mouse.setMouseLocation(getWindow(), 1920/2, 1080/2);
+		
+		
+		if(input.isDown(GLFW_KEY_W)) {
+			getCamera().getPosition().z -=0.2f;
+		}
+		if(input.isDown(GLFW_KEY_S)) {
+			getCamera().getPosition().z +=0.2f;
+		}
+		if(input.isDown(GLFW_KEY_A)) {
+			getCamera().getPosition().x -=0.2f;
+		}
+		if(input.isDown(GLFW_KEY_D)) {
+			getCamera().getPosition().x +=0.2f;
+		}
+		if(input.isDown(GLFW_KEY_Q)) {
+			getCamera().getPosition().y -=0.2f;
+		}
+		if(input.isDown(GLFW_KEY_E)) {
+			getCamera().getPosition().y +=0.2f;
+		}
+		
+		
 		
 		
 		Matrix4f projection = getCamera().getProjection();

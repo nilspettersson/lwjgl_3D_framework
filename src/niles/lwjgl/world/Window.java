@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.*;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 public class Window {
 	
@@ -140,9 +141,11 @@ public class Window {
 		
 		glfwPollEvents();
 		glEnable(GL_BLEND);
+		
+		glEnable(GL11.GL_DEPTH_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		
 	}

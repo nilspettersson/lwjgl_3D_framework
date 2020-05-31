@@ -36,15 +36,35 @@ public class test extends Game {
 		g = new Geometry(400);
 		
 		
-		g.addVertice(new Vertex(new Vector3f(-1, 1, 0), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, 1, 0), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, 0), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, 0), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
 		
 		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
 		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
 		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
 		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		
+		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		
+		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		
+		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
+		
+		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(0, 0)));
+		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(0, 0, 1, 1), 0, new Vector2f(1, 0)));
+		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(1, 1)));
+		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1, 0, 0, 1), 0, new Vector2f(0, 1)));
 		
 		g.addIndex(0);
 		g.addIndex(1);
@@ -59,6 +79,34 @@ public class test extends Game {
 		g.addIndex(2 + 4);
 		g.addIndex(3 + 4);
 		g.addIndex(0 + 4);
+		
+		g.addIndex(0 + 4*2);
+		g.addIndex(1 + 4*2);
+		g.addIndex(2 + 4*2);
+		g.addIndex(2 + 4*2);
+		g.addIndex(3 + 4*2);
+		g.addIndex(0 + 4*2);
+		
+		g.addIndex(0 + 4*3);
+		g.addIndex(1 + 4*3);
+		g.addIndex(2 + 4*3);
+		g.addIndex(2 + 4*3);
+		g.addIndex(3 + 4*3);
+		g.addIndex(0 + 4*3);
+		
+		g.addIndex(0 + 4*4);
+		g.addIndex(1 + 4*4);
+		g.addIndex(2 + 4*4);
+		g.addIndex(2 + 4*4);
+		g.addIndex(3 + 4*4);
+		g.addIndex(0 + 4*4);
+		
+		g.addIndex(0 + 4*5);
+		g.addIndex(1 + 4*5);
+		g.addIndex(2 + 4*5);
+		g.addIndex(2 + 4*5);
+		g.addIndex(3 + 4*5);
+		g.addIndex(0 + 4*5);
 		
 		g.updateVertices();
 		g.updateIndices();
@@ -89,28 +137,41 @@ public class test extends Game {
 		getCamera().getRotation().rotate(-m.y, -m.x, 0);
 		
 		
-		getCamera().getRotation().z = 0;
+		//getCamera().getRotation().z = 0;
 		
 		Mouse.setMouseLocation(getWindow(), 1920/2, 1080/2);
 		
 		
 		if(input.isDown(GLFW_KEY_W)) {
-			getCamera().getPosition().z -=0.2f;
+			//getCamera().getPosition().z -=0.2f;
+			Vector3f move = new Vector3f(0, 0, -0.1f);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		if(input.isDown(GLFW_KEY_S)) {
-			getCamera().getPosition().z +=0.2f;
+			Vector3f move = new Vector3f(0, 0, 0.1f);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		if(input.isDown(GLFW_KEY_A)) {
-			getCamera().getPosition().x -=0.2f;
+			Vector3f move = new Vector3f(-0.1f, 0, 0);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		if(input.isDown(GLFW_KEY_D)) {
-			getCamera().getPosition().x +=0.2f;
+			Vector3f move = new Vector3f(0.1f, 0, 0);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		if(input.isDown(GLFW_KEY_Q)) {
-			getCamera().getPosition().y -=0.2f;
+			Vector3f move = new Vector3f(0, -0.1f, 0);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		if(input.isDown(GLFW_KEY_E)) {
-			getCamera().getPosition().y +=0.2f;
+			Vector3f move = new Vector3f(0, 0.1f, 0);
+			move.rotate(getCamera().getRotation());
+			getCamera().getPosition().add(move);
 		}
 		
 		

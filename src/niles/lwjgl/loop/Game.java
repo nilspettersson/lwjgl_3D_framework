@@ -2,6 +2,7 @@ package niles.lwjgl.loop;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 import niles.lwjgl.world.Camera;
 import niles.lwjgl.world.Window;
@@ -43,6 +44,8 @@ public abstract class Game {
 	public abstract void update();
 	
 	public void loop() {
+		
+		
 		
 		setup();
 		

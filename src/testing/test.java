@@ -44,7 +44,7 @@ public class test extends Game {
 
 	@Override
 	public void setup() {
-		g = new Geometry(400);
+		g = new Geometry(48);
 		
 		
 		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
@@ -124,16 +124,29 @@ public class test extends Game {
 		
 		
 		
-		/*entity.addTexture(new Texture("res/floor.png"));
-		entity.bindTextures();*/
+		
 		
 		
 		entites = new ArrayList<Entity>();
-		for(int i = 0; i < 1; i++) {
-			entites.add(new Entity(200));
-			entites.get(i).setGeometry(g);
-			entites.get(i).getTransform().getPosition().x += i;
+		int index = 0;
+		for(int x = 0; x < 1; x++) {
+			for(int y = 0; y < 1; y++) {
+				for(int z = 0; z < 1; z++) {
+					entites.add(new Entity(200));
+					entites.get(index).setGeometry(g);
+					
+					entites.get(index).getTransform().getPosition().x += x * 6;
+					entites.get(index).getTransform().getPosition().y += y * 6;
+					entites.get(index).getTransform().getPosition().z += z * 6;
+					
+					
+					index++;
+				}
+			}
 		}
+		
+		entites.get(0).addTexture(new Texture("res/floor.png"));
+		entites.get(0).bindTextures();
 		
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
@@ -171,14 +184,19 @@ public class test extends Game {
 			moveCameraDown(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_E)) {
-			moveCameraUp(0.1f);
+			moveCameraUp(0.3f);
 		}
 		
+		
+		
+		getRenderer().bindShader();
 		
 		for(int i = 0; i < entites.size(); i++) {
-		render(entites.get(i));
+			render(entites.get(i));
 		}
 		
+		
+		System.out.println(getFps());
 		setFpsCap(120);
 	}
 

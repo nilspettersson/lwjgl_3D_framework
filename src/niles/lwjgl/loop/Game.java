@@ -160,6 +160,14 @@ public abstract class Game {
 		return window.getFps();
 	}
 
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	public void setRenderer(Renderer renderer) {
+		this.renderer = renderer;
+	}
+
 	
 	
 	

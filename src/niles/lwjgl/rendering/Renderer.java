@@ -19,8 +19,12 @@ public class Renderer {
 	}
 	
 	
-	public void render(Camera camera, Entity entity) {
+	public void bindShader() {
 		shader.bind();
+	}
+	
+	public void render(Camera camera, Entity entity) {
+		
 		
 		glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 	

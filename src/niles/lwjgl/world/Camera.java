@@ -43,7 +43,6 @@ public class Camera {
 		return transform;
 	}
 
-
 	public Quaternionf getRotation() {
 		return rotation;
 	}

@@ -78,6 +78,8 @@ public class Mouse {
          myY = (float) deltaY;
 
          
+         Mouse.setMouseLocation(win, 1920/2, 1080/2);
+         
          return new Vector2f((float)deltaX*sensitivity,(float)deltaY*sensitivity);
      }
      

@@ -8,17 +8,15 @@ in float textureId;
 
 
 
-
 void main(){
-	vec2 l = gl_FragCoord.xy;
+	float depth = gl_FragCoord.w*4;
 	
-		
 		
 	int id = int(textureId);
 	vec4 texture=texture2D(sampler[id], tex_coords);
-	gl_FragColor=texture + color;
+	//gl_FragColor=texture + color;
 	
-	//gl_FragColor = vec4(1,1,1,1);
+	gl_FragColor = vec4(depth,depth,depth, 1);
 
 	
 }

@@ -1,10 +1,18 @@
 package niles.lwjgl.loop;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
 import niles.lwjgl.world.Camera;
+import niles.lwjgl.world.Mouse;
 import niles.lwjgl.world.Window;
 
 public abstract class Game {
@@ -30,8 +38,7 @@ public abstract class Game {
 	public Game() {
 		window=new Window(1920, 1080, true);
 		camera=new Camera();
-		camera.setPerspective((float) Math.toRadians(80), 1920f / 1080f, 0.01f, 1000);
-		//camera.setPosition(new Vector3f(0,1,3));
+		camera.setPerspective((float) Math.toRadians(80), 1920f / 1080f, 0.001f, 10000);
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;
@@ -60,6 +67,48 @@ public abstract class Game {
 		}
 		
 	}
+	
+	
+	public void rotateCamera(float xAxis, float yAxis) {
+		getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
+		getCamera().getRotation().rotate(xAxis, 0, 0);
+	}
+	
+	
+	
+	public void moveCameraForward(float amount) {
+		Vector3f move = new Vector3f(0, 0, -amount);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraBackward(float amount) {
+		Vector3f move = new Vector3f(0, 0, amount);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraLeft(float amount) {
+		Vector3f move = new Vector3f(-amount, 0, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraRight(float amount) {
+		Vector3f move = new Vector3f(amount, 0, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraUp(float amount) {
+		Vector3f move = new Vector3f(0, amount, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraDown(float amount) {
+		Vector3f move = new Vector3f(0, -amount, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	
+	
+
 	
 
 	public Window getWindow() {

@@ -11,6 +11,7 @@ out vec2 tex_coords;
 out vec4 color;
 out float textureId;
 
+
 void main(){
 	color = a_color;
 	tex_coords = textures;

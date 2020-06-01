@@ -17,6 +17,17 @@ import niles.lwjgl.world.Mouse;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class test extends Game {
+	
+	
+	//implement later.
+	/*float maxAngle = 0.4f;
+	
+	if(getCamera().getRotation().x > maxAngle && Mouse.myY < 0) {
+		Mouse.myY = 0;
+	}
+	else if(getCamera().getRotation().x < -maxAngle && Mouse.myY > 0) {
+		Mouse.myY = 0;
+	}*/
 
 	public static void main(String[] args) {
 		new test();
@@ -128,51 +139,34 @@ public class test extends Game {
 	public void update() {
 		shader.bind();
 		
-		
-		
 		Mouse.isVisible(getWindow(), false);
-		//Mouse.moveMouse(getWindow(), 0.4f);
-		
-		Vector2f m = Mouse.getMousePosition(getWindow(), 0.001f);
-		getCamera().getRotation().rotate(-m.y, -m.x, 0);
 		
 		
-		//getCamera().getRotation().z = 0;
 		
-		Mouse.setMouseLocation(getWindow(), 1920/2, 1080/2);
+		Mouse.moveMouse(getWindow(), 1f);
+		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
 		
 		if(input.isDown(GLFW_KEY_W)) {
-			//getCamera().getPosition().z -=0.2f;
-			Vector3f move = new Vector3f(0, 0, -0.1f);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraForward(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_S)) {
-			Vector3f move = new Vector3f(0, 0, 0.1f);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraBackward(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_A)) {
-			Vector3f move = new Vector3f(-0.1f, 0, 0);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraLeft(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_D)) {
-			Vector3f move = new Vector3f(0.1f, 0, 0);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraRight(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_Q)) {
-			Vector3f move = new Vector3f(0, -0.1f, 0);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraDown(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_E)) {
-			Vector3f move = new Vector3f(0, 0.1f, 0);
-			move.rotate(getCamera().getRotation());
-			getCamera().getPosition().add(move);
+			moveCameraUp(0.1f);
 		}
+		
+		
 		
 		
 		

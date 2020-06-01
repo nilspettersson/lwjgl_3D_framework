@@ -50,6 +50,83 @@ public class Geometry {
 	}
 	
 	
+	
+	public void createCube(float x, float y, float z) {
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		
+		int location = size - 24;
+		
+		addIndex(location + 0);
+		addIndex(location + 1);
+		addIndex(location + 2);
+		addIndex(location + 2);
+		addIndex(location + 3);
+		addIndex(location + 0);
+		
+		addIndex(location + 0 + 4);
+		addIndex(location + 1 + 4);
+		addIndex(location + 2 + 4);
+		addIndex(location + 2 + 4);
+		addIndex(location + 3 + 4);
+		addIndex(location + 0 + 4);
+		
+		addIndex(location + 0 + 4*2);
+		addIndex(location + 1 + 4*2);
+		addIndex(location + 2 + 4*2);
+		addIndex(location + 2 + 4*2);
+		addIndex(location + 3 + 4*2);
+		addIndex(location + 0 + 4*2);
+		
+		addIndex(location + 0 + 4*3);
+		addIndex(location + 1 + 4*3);
+		addIndex(location + 2 + 4*3);
+		addIndex(location + 2 + 4*3);
+		addIndex(location + 3 + 4*3);
+		addIndex(location + 0 + 4*3);
+		
+		addIndex(location + 0 + 4*4);
+		addIndex(location + 1 + 4*4);
+		addIndex(location + 2 + 4*4);
+		addIndex(location + 2 + 4*4);
+		addIndex(location + 3 + 4*4);
+		addIndex(location + 0 + 4*4);
+		
+		addIndex(location + 0 + 4*5);
+		addIndex(location + 1 + 4*5);
+		addIndex(location + 2 + 4*5);
+		addIndex(location + 2 + 4*5);
+		addIndex(location + 3 + 4*5);
+		addIndex(location + 0 + 4*5);
+	}
+	
 	public void createFace(float x, float y, float z) {
 		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
 		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
@@ -82,12 +159,6 @@ public class Geometry {
 		addIndex(location + 3 + 4);
 		addIndex(location + 0 + 4);
 		
-		addIndex(location + 0 + 0);
-		addIndex(location + 1 + 0);
-		addIndex(location + 1 + 4);
-		addIndex(location + 0 + 0);
-		addIndex(location + 0 + 4);
-		addIndex(location + 1 + 4);
 	}
 	
 	public float getX(int index) {

@@ -72,6 +72,8 @@ public class Vao {
 		
 		glVertexAttribPointer(3, 2, GL_FLOAT, false, Vertex.size * 4, 32);
 		
+		glVertexAttribPointer(4, 3, GL_FLOAT, false, Vertex.size * 4, 40);
+		
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
 		
@@ -85,6 +87,7 @@ public class Vao {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
+		glEnableVertexAttribArray(4);
 	}
 	
 	private FloatBuffer createBuffer(float[] data) {

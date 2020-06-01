@@ -44,10 +44,10 @@ public class test extends Game {
 
 	@Override
 	public void setup() {
-		g = new Geometry(48);
+		g = new Geometry(48*8);
 		
 		
-		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
+		/*g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
 		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(1), 0, new Vector2f(1, 0)));
 		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1), 0, new Vector2f(1, 1)));
 		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
@@ -117,10 +117,13 @@ public class test extends Game {
 		g.addIndex(2 + 4*5);
 		g.addIndex(2 + 4*5);
 		g.addIndex(3 + 4*5);
-		g.addIndex(0 + 4*5);
+		g.addIndex(0 + 4*5);*/
 		
-		//g.createFace(4, 0, 0);
-		//g.extrudeFace(-2f);
+		g.createCube(0,0,0);
+		
+		g.createCube(4,0,0);
+		
+		g.createCube(8,0,0);
 		
 		g.updateVertices();
 		g.updateIndices();

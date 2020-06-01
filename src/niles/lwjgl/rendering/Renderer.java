@@ -33,11 +33,14 @@ public class Renderer {
 		Matrix4f transform = camera.getTransformation();
 		Matrix4f object = entity.getTransform().getTransformation();
 		
-		Matrix4f send = new Matrix4f();
+		/*Matrix4f send = new Matrix4f();
 		projection.mul(transform, send);
-		send.mul(object, send);
+		send.mul(object, send);*/
 		
-		shader.setUniform("projection", send);		
+		shader.setUniform("projection", projection);
+		shader.setUniform("transform", transform);	
+		shader.setUniform("objectTransform", object);
+		shader.setUniform("cameraPosition", camera.getPosition());
 		entity.getGeometry().getVao().render();
 		
 	}

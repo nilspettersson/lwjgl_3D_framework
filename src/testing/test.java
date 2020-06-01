@@ -46,91 +46,10 @@ public class test extends Game {
 	public void setup() {
 		g = new Geometry(48*8);
 		
-		
-		/*g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addVertice(new Vertex(new Vector3f(1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, -1, 1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, 1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, -1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addVertice(new Vertex(new Vector3f(1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 0)));
-		g.addVertice(new Vertex(new Vector3f(1, 1, 1), new Vector4f(1), 0, new Vector2f(1, 0)));
-		g.addVertice(new Vertex(new Vector3f(-1, 1, 1), new Vector4f(1), 0, new Vector2f(1, 1)));
-		g.addVertice(new Vertex(new Vector3f(-1, 1, -1), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		g.addIndex(0);
-		g.addIndex(1);
-		g.addIndex(2);
-		g.addIndex(2);
-		g.addIndex(3);
-		g.addIndex(0);
-		
-		g.addIndex(0 + 4);
-		g.addIndex(1 + 4);
-		g.addIndex(2 + 4);
-		g.addIndex(2 + 4);
-		g.addIndex(3 + 4);
-		g.addIndex(0 + 4);
-		
-		g.addIndex(0 + 4*2);
-		g.addIndex(1 + 4*2);
-		g.addIndex(2 + 4*2);
-		g.addIndex(2 + 4*2);
-		g.addIndex(3 + 4*2);
-		g.addIndex(0 + 4*2);
-		
-		g.addIndex(0 + 4*3);
-		g.addIndex(1 + 4*3);
-		g.addIndex(2 + 4*3);
-		g.addIndex(2 + 4*3);
-		g.addIndex(3 + 4*3);
-		g.addIndex(0 + 4*3);
-		
-		g.addIndex(0 + 4*4);
-		g.addIndex(1 + 4*4);
-		g.addIndex(2 + 4*4);
-		g.addIndex(2 + 4*4);
-		g.addIndex(3 + 4*4);
-		g.addIndex(0 + 4*4);
-		
-		g.addIndex(0 + 4*5);
-		g.addIndex(1 + 4*5);
-		g.addIndex(2 + 4*5);
-		g.addIndex(2 + 4*5);
-		g.addIndex(3 + 4*5);
-		g.addIndex(0 + 4*5);*/
-		
 		g.createCube(0,0,0);
-		
-		g.createCube(4,0,0);
-		
-		g.createCube(8,0,0);
 		
 		g.updateVertices();
 		g.updateIndices();
-		
-		
-		
-		
 		
 		
 		entites = new ArrayList<Entity>();
@@ -198,6 +117,7 @@ public class test extends Game {
 		getRenderer().bindShader();
 		
 		for(int i = 0; i < entites.size(); i++) {
+			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);
 			render(entites.get(i));
 		}
 		

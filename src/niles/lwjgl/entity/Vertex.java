@@ -15,14 +15,14 @@ public class Vertex {
 	
 	private Vector3f normal;
 	
-	public Vertex(Vector3f position, Vector4f color, float textureId, Vector2f textureCords) {
+	public Vertex(Vector3f position, Vector4f color, float textureId, Vector2f textureCords, Vector3f normal) {
 		this.position = position;
 		this.color = color;
 		this.textureId = textureId;
 		
 		this.textureCords = textureCords; 
 		
-		normal = new Vector3f();
+		this.normal = normal;
 	}
 	
 	public float[] toArray() {

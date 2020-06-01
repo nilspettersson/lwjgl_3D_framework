@@ -52,35 +52,42 @@ public class Geometry {
 	
 	
 	public void createCube(float x, float y, float z) {
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
 		
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		Vector3f normal1 = new Vector3f(0, 0, -1);
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal1));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal1));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal1));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal1));
 		
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		Vector3f normal2 = new Vector3f(0, 0, 1);
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal2));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal2));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal2));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal2));
 		
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		Vector3f normal3 = new Vector3f(-1, 0, 0);
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal3));
 		
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		Vector3f normal4 = new Vector3f(1, 0, 0);
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal4));
 		
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+		Vector3f normal5 = new Vector3f(0, -1, 0);
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal5));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal5));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal5));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal5));
+		
+		Vector3f normal6 = new Vector3f(0, 1, 0);
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal6));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal6));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal6));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal6));
 		
 		int location = size - 24;
 		
@@ -127,7 +134,7 @@ public class Geometry {
 		addIndex(location + 0 + 4*5);
 	}
 	
-	public void createFace(float x, float y, float z) {
+	/*public void createFace(float x, float y, float z) {
 		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
 		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
 		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
@@ -140,26 +147,7 @@ public class Geometry {
 		addIndex(location + 2);
 		addIndex(location + 3);
 		addIndex(location + 0);
-	}
-	
-	public void extrudeFace(float length) {
-		
-		int index = size - 4;
-		
-		addVertice(new Vertex(new Vector3f(getX(index + 0), getY(index + 0), getZ(index + 0) + length), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(getX(index + 1), getY(index + 1), getZ(index + 1) + length), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(getX(index + 2), getY(index + 2), getZ(index + 2) + length), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(getX(index + 3), getY(index + 3), getZ(index + 3) + length), new Vector4f(1), 0, new Vector2f(0, 1)));
-		
-		int location = size - 8;
-		addIndex(location + 0 + 4);
-		addIndex(location + 1 + 4);
-		addIndex(location + 2 + 4);
-		addIndex(location + 2 + 4);
-		addIndex(location + 3 + 4);
-		addIndex(location + 0 + 4);
-		
-	}
+	}*/
 	
 	public float getX(int index) {
 		return vertices.get(index * Vertex.size);

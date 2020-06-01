@@ -119,6 +119,9 @@ public class test extends Game {
 		g.addIndex(3 + 4*5);
 		g.addIndex(0 + 4*5);
 		
+		//g.createFace(4, 0, 0);
+		//g.extrudeFace(-2f);
+		
 		g.updateVertices();
 		g.updateIndices();
 		
@@ -132,7 +135,7 @@ public class test extends Game {
 		for(int x = 0; x < 1; x++) {
 			for(int y = 0; y < 1; y++) {
 				for(int z = 0; z < 1; z++) {
-					entites.add(new Entity(200));
+					entites.add(new Entity(48));
 					entites.get(index).setGeometry(g);
 					
 					entites.get(index).getTransform().getPosition().x += x * 6;
@@ -184,7 +187,7 @@ public class test extends Game {
 			moveCameraDown(0.1f);
 		}
 		if(input.isDown(GLFW_KEY_E)) {
-			moveCameraUp(0.3f);
+			moveCameraUp(0.1f);
 		}
 		
 		

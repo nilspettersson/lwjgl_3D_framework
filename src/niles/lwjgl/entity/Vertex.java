@@ -6,12 +6,14 @@ import org.joml.Vector4f;
 
 public class Vertex {
 	
-	public static int  size = 10;
+	public static int  size = 13;
 	
 	private Vector3f position;
 	private Vector4f color;
 	private float textureId;
 	private Vector2f textureCords;
+	
+	private Vector3f normal;
 	
 	public Vertex(Vector3f position, Vector4f color, float textureId, Vector2f textureCords) {
 		this.position = position;
@@ -19,10 +21,12 @@ public class Vertex {
 		this.textureId = textureId;
 		
 		this.textureCords = textureCords; 
+		
+		normal = new Vector3f();
 	}
 	
 	public float[] toArray() {
-		return new float[] {position.x, position.y, position.z, color.x, color.y, color.z, color.w, textureId, textureCords.x, textureCords.y};
+		return new float[] {position.x, position.y, position.z, color.x, color.y, color.z, color.w, textureId, textureCords.x, textureCords.y, normal.x, normal.y, normal.z};
 	}
 
 	public Vector3f getPosition() {
@@ -47,6 +51,22 @@ public class Vertex {
 
 	public void setTextureId(float textureId) {
 		this.textureId = textureId;
+	}
+
+	public Vector2f getTextureCords() {
+		return textureCords;
+	}
+
+	public void setTextureCords(Vector2f textureCords) {
+		this.textureCords = textureCords;
+	}
+
+	public Vector3f getNormal() {
+		return normal;
+	}
+
+	public void setNormal(Vector3f normal) {
+		this.normal = normal;
 	}
 	
 	

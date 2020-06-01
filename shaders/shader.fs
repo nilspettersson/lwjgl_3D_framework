@@ -14,9 +14,10 @@ void main(){
 		
 	int id = int(textureId);
 	vec4 texture=texture2D(sampler[id], tex_coords);
-	//gl_FragColor=texture + color;
 	
-	gl_FragColor = vec4(depth,depth,depth, 1);
+	gl_FragColor=texture + color;
+	
+	//gl_FragColor = vec4(depth,depth,depth, 1);
 
 	
 }

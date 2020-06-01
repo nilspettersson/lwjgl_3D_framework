@@ -11,6 +11,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
+import niles.lwjgl.entity.Entity;
+import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
 import niles.lwjgl.world.Mouse;
 import niles.lwjgl.world.Window;
@@ -19,6 +21,7 @@ public abstract class Game {
 	
 	private Window window;
 	private Camera camera;
+	private Renderer renderer;
 	
 	private Vector4f backgroundColor;
 	private int fpsCap;
@@ -51,7 +54,7 @@ public abstract class Game {
 	public abstract void update();
 	
 	public void loop() {
-		
+		renderer = new Renderer();
 		
 		
 		setup();
@@ -66,6 +69,10 @@ public abstract class Game {
 			
 		}
 		
+	}
+	
+	public void render(Entity entity) {
+		renderer.render(getCamera(), entity);
 	}
 	
 	

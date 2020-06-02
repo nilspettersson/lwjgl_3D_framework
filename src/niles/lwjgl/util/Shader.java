@@ -163,6 +163,20 @@ public class Shader {
 		}
 	}
 	
+	public void setUniform(String name,Vector3f[] vec) {
+		int location=getLocation(name);
+		FloatBuffer buffer=BufferUtils.createFloatBuffer(vec.length*3);
+		for(int i=0;i<vec.length;i++) {
+			buffer.put(vec[i].x);
+			buffer.put(vec[i].y);
+			buffer.put(vec[i].z);
+		}
+		buffer.flip();
+		if(location!=-1) {
+			glUniform3fv(location, buffer);
+		}
+	}
+	
 	public void setUniform(String name,Vector2f[] vec) {
 		int location=getLocation(name);
 		FloatBuffer buffer=BufferUtils.createFloatBuffer(vec.length*2);

@@ -9,6 +9,7 @@ import org.joml.Vector4f;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.entity.Geometry;
 import niles.lwjgl.entity.Vertex;
+import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
@@ -42,12 +43,17 @@ public class test extends Game {
 	ArrayList<Entity> entites;
 	
 	Input input;
+	
+	Lights lights;
 
 	@Override
 	public void setup() {
+		lights = new Lights();
+		lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1));
 		
 		
 		g = new Geometry(48*8);
+		g.createCube(0, 0, 0, new Vector4f(0));
 		g.createCube(0, 0, 0, new Vector4f(0));
 		
 		g.updateVertices();
@@ -85,6 +91,8 @@ public class test extends Game {
 		
 		getWindow().setVSync(false);
 	}
+	
+	float value=0;
 
 	@Override
 	public void update() {
@@ -118,6 +126,10 @@ public class test extends Game {
 		
 		
 		getRenderer().bindShader();
+		
+		lights.getLights().get(0).getPosition().y=(float) Math.sin(value)*2+2.5f;
+		value+=0.02f;
+		getRenderer().useLights(lights);
 		
 		for(int i = 0; i < entites.size(); i++) {
 			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);

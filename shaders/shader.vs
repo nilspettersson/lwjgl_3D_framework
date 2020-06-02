@@ -17,7 +17,7 @@ out vec4 color;
 out float textureId;
 out vec3 normal;
 
-out vec3 lightDir;
+out vec3 toLight;
 
 void main(){
 	color = a_color;
@@ -28,8 +28,7 @@ void main(){
 	
 	normal = (objectTransform * vec4(a_normal, 0)).xyz;
 	
-	//vec4 cameraPosition = vec4(projection[1].xyz, 1);
-	lightDir = cameraPosition - worldPosition.xyz;
+	toLight = cameraPosition - worldPosition.xyz;
 	
 	
 	gl_Position = projection * transform * worldPosition;

@@ -11,6 +11,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -53,7 +54,7 @@ public class Geometry {
 	}
 	
 	public static Geometry loadModel(String fileName) {
-		Geometry geometry = new Geometry(400000);
+		Geometry geometry = new Geometry(3000000);
 		
 		
 		FileReader fr = null;
@@ -95,15 +96,10 @@ public class Geometry {
 						int textureIndex = Integer.parseInt(vert[1]);
 						int normalIndex = Integer.parseInt(vert[2]);
 						
-						
-						
 						geometry.addVertice(new Vertex(positions.get(positionIndex - 1), new Vector4f(1), 0, textures.get(textureIndex - 1), normals.get(normalIndex - 1)));
 						geometry.addIndex(geometry.getSize() - 1);
 						
-						
-						System.out.print(positionIndex + "  " + textureIndex + "  " + normalIndex+"    ");
 					}
-					System.out.println("");
 					
 				}
 			}
@@ -113,8 +109,6 @@ public class Geometry {
 			
 		}
 		
-		
-		
 		geometry.updateVertices();
 		geometry.updateIndices();
 		
@@ -123,43 +117,43 @@ public class Geometry {
 	
 	
 	
-	public void createCube(float x, float y, float z) {
+	public void createCube(float x, float y, float z, Vector4f color) {
 		
 		Vector3f normal1 = new Vector3f(0, 0, -1);
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal1));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal1));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal1));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal1));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), color, 0, new Vector2f(0, 0), normal1));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), color, 0, new Vector2f(1, 0), normal1));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), color, 0, new Vector2f(1, 1), normal1));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), color, 0, new Vector2f(0, 1), normal1));
 		
 		Vector3f normal2 = new Vector3f(0, 0, 1);
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal2));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal2));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal2));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal2));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), color, 0, new Vector2f(0, 0), normal2));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), color, 0, new Vector2f(1, 0), normal2));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), color, 0, new Vector2f(1, 1), normal2));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), color, 0, new Vector2f(0, 1), normal2));
 		
 		Vector3f normal3 = new Vector3f(-1, 0, 0);
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal3));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal3));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal3));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), color, 0, new Vector2f(0, 0), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), color, 0, new Vector2f(1, 0), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), color, 0, new Vector2f(1, 1), normal3));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), color, 0, new Vector2f(0, 1), normal3));
 		
 		Vector3f normal4 = new Vector3f(1, 0, 0);
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal4));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal4));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal4));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), color, 0, new Vector2f(0, 0), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), color, 0, new Vector2f(1, 0), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), color, 0, new Vector2f(1, 1), normal4));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), color, 0, new Vector2f(0, 1), normal4));
 		
 		Vector3f normal5 = new Vector3f(0, -1, 0);
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal5));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal5));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal5));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal5));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), color, 0, new Vector2f(0, 0), normal5));
+		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, 1 + z), color, 0, new Vector2f(1, 0), normal5));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, 1 + z), color, 0, new Vector2f(1, 1), normal5));
+		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), color, 0, new Vector2f(0, 1), normal5));
 		
 		Vector3f normal6 = new Vector3f(0, 1, 0);
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0), normal6));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 0), normal6));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), new Vector4f(1), 0, new Vector2f(1, 1), normal6));
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1), normal6));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), color, 0, new Vector2f(0, 0), normal6));
+		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, 1 + z), color, 0, new Vector2f(1, 0), normal6));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, 1 + z), color, 0, new Vector2f(1, 1), normal6));
+		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), color, 0, new Vector2f(0, 1), normal6));
 		
 		int location = size - 24;
 		
@@ -206,11 +200,18 @@ public class Geometry {
 		addIndex(location + 0 + 4*5);
 	}
 	
-	/*public void createFace(float x, float y, float z) {
-		addVertice(new Vertex(new Vector3f(-1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, 1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 0)));
-		addVertice(new Vertex(new Vector3f(1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(1, 1)));
-		addVertice(new Vertex(new Vector3f(-1 + x, -1 + y, -1 + z), new Vector4f(1), 0, new Vector2f(0, 1)));
+	public void createFace(float x, float y, float z ) {
+		Vector3f normal = new  Vector3f(0, 0, 1);
+		
+		Vector3f pos1 = new Vector3f(-1 + x, 1 + y, -1 + z);
+		Vector3f pos2 = new Vector3f(1 + x, 1 + y, -1 + z);
+		Vector3f pos3 = new Vector3f(1 + x, -1 + y, -1 + z);
+		Vector3f pos4 = new Vector3f(-1 + x, -1 + y, -1 + z);
+		
+		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(0, 0), normal));
+		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(1, 0), normal));
+		addVertice(new Vertex(pos3, new Vector4f(1), 0, new Vector2f(1, 1), normal));
+		addVertice(new Vertex(pos4, new Vector4f(1), 0, new Vector2f(0, 1), normal));
 		
 		int location = size - 4;
 		addIndex(location + 0);
@@ -219,7 +220,7 @@ public class Geometry {
 		addIndex(location + 2);
 		addIndex(location + 3);
 		addIndex(location + 0);
-	}*/
+	}
 	
 	public float getX(int index) {
 		return vertices.get(index * Vertex.size);

@@ -38,7 +38,6 @@ public class test extends Game {
 	
 	Geometry g;
 	
-	Geometry loaded;
 	
 	ArrayList<Entity> entites;
 	
@@ -46,12 +45,10 @@ public class test extends Game {
 
 	@Override
 	public void setup() {
-		loaded = Geometry.loadModel("res/cube_flat");
 		
 		
 		g = new Geometry(48*8);
-		
-		g.createCube(0,0,0);
+		g.createCube(0, 0, 0, new Vector4f(0));
 		
 		g.updateVertices();
 		g.updateIndices();
@@ -63,8 +60,9 @@ public class test extends Game {
 			for(int y = 0; y < 1; y++) {
 				for(int z = 0; z < 1; z++) {
 					entites.add(new Entity(48));
-					entites.get(index).setGeometry(loaded);
+					entites.get(index).setGeometry(g);
 					
+					entites.get(index).getTransform().setScale(new Vector3f(20, 0.2f, 20));
 					entites.get(index).getTransform().getPosition().x += x * 6;
 					entites.get(index).getTransform().getPosition().y += y * 6;
 					entites.get(index).getTransform().getPosition().z += z * 6;
@@ -75,8 +73,8 @@ public class test extends Game {
 			}
 		}
 		
-		//entites.get(0).addTexture(new Texture("res/bark.jpg"));
-		//entites.get(0).bindTextures();
+		entites.get(0).addTexture(new Texture("res/wood.jpg"));
+		entites.get(0).bindTextures();
 		
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));

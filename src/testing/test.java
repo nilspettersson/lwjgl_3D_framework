@@ -38,12 +38,17 @@ public class test extends Game {
 	
 	Geometry g;
 	
+	Geometry loaded;
+	
 	ArrayList<Entity> entites;
 	
 	Input input;
 
 	@Override
 	public void setup() {
+		loaded = Geometry.loadModel("res/cube_flat");
+		
+		
 		g = new Geometry(48*8);
 		
 		g.createCube(0,0,0);
@@ -58,7 +63,7 @@ public class test extends Game {
 			for(int y = 0; y < 1; y++) {
 				for(int z = 0; z < 1; z++) {
 					entites.add(new Entity(48));
-					entites.get(index).setGeometry(g);
+					entites.get(index).setGeometry(loaded);
 					
 					entites.get(index).getTransform().getPosition().x += x * 6;
 					entites.get(index).getTransform().getPosition().y += y * 6;
@@ -70,8 +75,8 @@ public class test extends Game {
 			}
 		}
 		
-		entites.get(0).addTexture(new Texture("res/floor.png"));
-		entites.get(0).bindTextures();
+		//entites.get(0).addTexture(new Texture("res/bark.jpg"));
+		//entites.get(0).bindTextures();
 		
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
@@ -122,7 +127,7 @@ public class test extends Game {
 		}
 		
 		
-		System.out.println(getFps());
+		//System.out.println(getFps());
 		setFpsCap(120);
 	}
 

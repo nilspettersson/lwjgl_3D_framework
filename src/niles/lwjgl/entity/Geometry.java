@@ -2,6 +2,9 @@ package niles.lwjgl.entity;
 
 import static org.lwjgl.opengl.GL15.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -47,6 +50,75 @@ public class Geometry {
 		
 		this.size = 0;
 		indexSize = 0;
+	}
+	
+	public static Geometry loadModel(String fileName) {
+		Geometry geometry = new Geometry(400000);
+		
+		
+		FileReader fr = null;
+		
+		try {
+			fr = new FileReader(fileName + ".obj");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+		BufferedReader reader = new BufferedReader(fr);
+		
+		ArrayList<Vector3f> positions = new ArrayList<Vector3f>();
+		ArrayList<Vector2f> textures = new ArrayList<Vector2f>();
+		ArrayList<Vector3f> normals = new ArrayList<Vector3f>();
+		
+		try {
+			
+			while(true) {
+				String line = reader.readLine();
+				String[] values = line.split(" ");
+				if(line.startsWith("v ")) {
+					System.out.println("v ");
+					positions.add(new Vector3f(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3])));
+				}
+				else if(line.startsWith("vt ")) {
+					System.out.println("vt ");
+					textures.add(new Vector2f(Float.parseFloat(values[1]), Float.parseFloat(values[2])));
+				}
+				else if(line.startsWith("vn ")) {
+					System.out.println("vn ");
+					normals.add(new Vector3f(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3])));
+				}
+				
+				else if(line.startsWith("f ")) {
+					for(int i = 1;i <= 3; i++) {
+						String[] vert = values[i].split("/");
+						int positionIndex = Integer.parseInt(vert[0]);
+						int textureIndex = Integer.parseInt(vert[1]);
+						int normalIndex = Integer.parseInt(vert[2]);
+						
+						
+						
+						geometry.addVertice(new Vertex(positions.get(positionIndex - 1), new Vector4f(1), 0, textures.get(textureIndex - 1), normals.get(normalIndex - 1)));
+						geometry.addIndex(geometry.getSize() - 1);
+						
+						
+						System.out.print(positionIndex + "  " + textureIndex + "  " + normalIndex+"    ");
+					}
+					System.out.println("");
+					
+				}
+			}
+			
+		}
+		catch (Exception e) {
+			
+		}
+		
+		
+		
+		geometry.updateVertices();
+		geometry.updateIndices();
+		
+		return geometry;
 	}
 	
 	
@@ -222,6 +294,14 @@ public class Geometry {
 
 	public void setVao(Vao vao) {
 		this.vao = vao;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 	
 	

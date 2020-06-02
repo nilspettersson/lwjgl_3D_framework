@@ -2,13 +2,23 @@
 
 uniform sampler2D sampler[20];
 
+uniform vec3 lightColors[128];
+uniform vec3 lightPositions[128];
+
 in vec2 tex_coords;
 in vec4 color;
 in float textureId;
 in vec3 normal;
 
-in vec3 toLight[1];
+
 in vec3 toCamera;
+in vec4 worldPosition;
+
+vec4 diffuse(vec4 color, vec3 light){
+	vec4 diffuse = color;
+	diffuse.xyz *= light;
+	return diffuse;
+}
 
 void main(){
 	float depth = gl_FragCoord.w*4;
@@ -22,15 +32,31 @@ void main(){
 	float SolidBrightness = dot(normalize(normal), normalize(toCamera));
 	SolidBrightness = max(SolidBrightness, 0.3);
 	
-	float disToLight = length(toLight[0])/10;
-	float brightness = dot(normalize(normal), normalize(toLight[0]));
-	brightness = max(brightness, 0.01);
-	brightness /= disToLight;
+	//array of all vectors pointing to lights.
+	vec3 allLight = vec3(0, 0, 0);
+	for(int i = 0; i < 2; i++){
+		vec3 toLight = lightPositions[i] - worldPosition.xyz;
+		float disToLight = length(toLight)/10;
+		
+		float brightness = dot(normalize(normal), normalize(toLight));
+		brightness = max(brightness, 0.01);
+		brightness /= disToLight;
+		
+		vec3 light = lightColors[i] * brightness;
+		allLight += light;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	//diffuse color
 	vec4 diffuseColor = (texture + color);
-	diffuseColor.xyz *= brightness;
 	
+	diffuseColor = diffuse(diffuseColor, allLight);
 	
 	
 	vec4 output = diffuseColor;

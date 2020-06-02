@@ -49,8 +49,8 @@ public class test extends Game {
 	@Override
 	public void setup() {
 		lights = new Lights();
-		lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1));
-		
+		lights.addLight(new Vector3f(-0, 10, 0), new Vector3f(0.2f, 0.2f, 1f));
+		lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1f, 0.2f, 0.2f));
 		
 		g = new Geometry(48*8);
 		g.createCube(0, 0, 0, new Vector4f(0));
@@ -127,7 +127,8 @@ public class test extends Game {
 		
 		getRenderer().bindShader();
 		
-		lights.getLights().get(0).getPosition().y=(float) Math.sin(value)*2+2.5f;
+		lights.getLights().get(0).getPosition().x=(float) Math.sin(value)*20;
+		lights.getLights().get(1).getPosition().x=(float) Math.sin(-value)*20;
 		value+=0.02f;
 		getRenderer().useLights(lights);
 		

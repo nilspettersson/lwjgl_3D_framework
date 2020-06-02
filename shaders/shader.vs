@@ -11,7 +11,8 @@ uniform mat4 transform;
 uniform mat4 objectTransform;
 
 uniform vec3 cameraPosition;
-uniform vec3 lightPositions[1];
+
+
 
 
 //object
@@ -19,10 +20,10 @@ out vec2 tex_coords;
 out vec4 color;
 out float textureId;
 out vec3 normal;
+out vec4 worldPosition;
 
 
-//lighting
-out vec3 toLight[1];
+
 out vec3 toCamera;
 
 void main(){
@@ -30,15 +31,12 @@ void main(){
 	tex_coords = textures;
 	textureId = a_textureId;
 	
-	vec4 worldPosition = objectTransform * vec4(vertices,1);
+	worldPosition = objectTransform * vec4(vertices,1);
 	
 	normal = (objectTransform * vec4(a_normal, 0)).xyz;
 	
 	//solidViewlight
 	toCamera = cameraPosition - worldPosition.xyz;
-	
-	//lights
-	toLight[0] = lightPositions[0] - worldPosition.xyz;
 	
 	
 	gl_Position = projection * transform * worldPosition;

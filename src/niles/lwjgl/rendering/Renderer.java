@@ -50,7 +50,6 @@ public class Renderer {
 		}
 		
 		shader.setUniform("lightPositions", positions);
-		//shader.setUniform("lightPositions", new Vector3f(0,20,0));
 		shader.setUniform("lightColors", colors);
 	}
 

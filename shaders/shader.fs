@@ -16,7 +16,7 @@ in vec4 worldPosition;
 
 vec4 diffuse(vec4 color){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 1; i++){
+	for(int i = 0; i < 2; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
 		float disToLight = length(toLight)/8;
 		
@@ -37,7 +37,7 @@ vec4 diffuse(vec4 color){
 
 vec4 glossy(vec4 color, float roughness){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 1; i++){
+	for(int i = 0; i < 2; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
 		float disToLight = length(toLight);
 		
@@ -46,17 +46,19 @@ vec4 glossy(vec4 color, float roughness){
 		vec3 lightDir = normalize(toLight);
 		vec3 viewDir = normalize(toCamera);
 		vec3 halfwayDir = normalize(lightDir - viewDir);
-		float brightness = pow(max(dot(normal, halfwayDir), 0), 1 + (1 / roughness));
-		float attenuation = ((5 * ( pow((1 / (roughness)), 8)  )    )) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
+		float brightness = pow(max(dot(normalize(normal), halfwayDir), 0), 1 + (1 / roughness));
+		float attenuation = ((0.000001 * ( pow((0.8 / (roughness)), 8)  )    )) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
 		brightness *= attenuation;
 		
 		//makes it less bright when right over object.
 		float cameraDot = dot(normalize(toCamera), normalize(normal));
 		brightness *= smoothstep(-1.4, 1,cameraDot);
 		
+		
 		if(dot(normalize(normal), normalize(toLight)) <= 0){
 			brightness = 0;
 		}
+		brightness = max(brightness, 0.01);
 		
 		vec3 light = lightColors[i] * brightness;
 		allLight += light;
@@ -78,7 +80,7 @@ void main(){
 	
 	
 	//solidView lighting
-	float SolidBrightness = dot(normalize(normal), normalize(toCamera));
+	float SolidBrightness = dot((-normal), normalize(toCamera));
 	SolidBrightness = max(SolidBrightness, 0.3);
 	
 	//array of all vectors pointing to lights.
@@ -91,15 +93,16 @@ void main(){
 	
 	
 	//diffuse color
-	vec4 color = (texture + color);
+	vec4 color = (texture);
+	//vec4 color = color;
 	vec4 diffuse = diffuse(color);
 	
 	//glossy
-	vec4 glossy = glossy(color, 0.4);
+	vec4 glossy = glossy(color, 0.08);
 	
 	
-	vec4 output = mix(diffuse, glossy, 0.6);
-	gl_FragColor=output;
+	vec4 output = mix(diffuse, glossy, 0.5);
+	gl_FragColor = output;
 	
 	
 	//gl_FragColor = vec4(brightness, brightness, brightness,1);

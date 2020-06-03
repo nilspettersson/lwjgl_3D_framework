@@ -39,6 +39,8 @@ public class test extends Game {
 	
 	Geometry g;
 	
+	Geometry loaded;
+	
 	
 	ArrayList<Entity> entites;
 	
@@ -49,11 +51,14 @@ public class test extends Game {
 	@Override
 	public void setup() {
 		lights = new Lights();
-		lights.addLight(new Vector3f(-0, 3f, 0), new Vector3f(0.9f, 0.9f, 1f));
+		lights.addLight(new Vector3f(0, 6, 0), new Vector3f(0.9f, 0.9f, 1f));
 		//lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1f, 0.2f, 0.2f));
 		
 		g = new Geometry(48*8);
-		g.createCube(0, 0, 0, new Vector4f(0));
+		g.createCube(0, 0, 0, new Vector4f(1));
+		
+		//loaded = Geometry.loadModel("res/terain");
+		
 		
 		g.updateVertices();
 		g.updateIndices();
@@ -67,7 +72,7 @@ public class test extends Game {
 					entites.add(new Entity(48));
 					entites.get(index).setGeometry(g);
 					
-					entites.get(index).getTransform().setScale(new Vector3f(20, 0.2f, 20));
+					entites.get(index).getTransform().setScale(new Vector3f(1, 1, 1));
 					entites.get(index).getTransform().getPosition().x += x * 6;
 					entites.get(index).getTransform().getPosition().y += y * 6;
 					entites.get(index).getTransform().getPosition().z += z * 6;
@@ -102,33 +107,33 @@ public class test extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		
+		float speed = 0.1f;
 		if(input.isDown(GLFW_KEY_W)) {
-			moveCameraForward(0.1f);
+			moveCameraForward(speed);
 		}
 		if(input.isDown(GLFW_KEY_S)) {
-			moveCameraBackward(0.1f);
+			moveCameraBackward(speed);
 		}
 		if(input.isDown(GLFW_KEY_A)) {
-			moveCameraLeft(0.1f);
+			moveCameraLeft(speed);
 		}
 		if(input.isDown(GLFW_KEY_D)) {
-			moveCameraRight(0.1f);
+			moveCameraRight(speed);
 		}
 		if(input.isDown(GLFW_KEY_Q)) {
-			moveCameraDown(0.1f);
+			moveCameraDown(speed);
 		}
 		if(input.isDown(GLFW_KEY_E)) {
-			moveCameraUp(0.1f);
+			moveCameraUp(speed);
 		}
 		
 		
 		
 		getRenderer().bindShader();
 		
-		//lights.getLights().get(0).getPosition().x=(float) Math.sin(value)*20;
-		//lights.getLights().get(1).getPosition().x=(float) Math.sin(-value)*20;
-		//value+=0.02f;
+		//lights.getLights().get(0).getPosition().x=(float) Math.sin(value)*70 + (7 * 10);
+		//lights.getLights().get(0).getPosition().y=(float) Math.cos(value)*70 + (7 * 10);
+		value+=0.02f;
 		getRenderer().useLights(lights);
 		
 		for(int i = 0; i < entites.size(); i++) {

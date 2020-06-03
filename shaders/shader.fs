@@ -16,7 +16,7 @@ in vec4 worldPosition;
 
 vec4 diffuse(vec4 color){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 128; i++){
+	for(int i = 0; i < 1; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
 		float disToLight = length(toLight)/10;
 		
@@ -33,21 +33,32 @@ vec4 diffuse(vec4 color){
 	return diffuse;
 }
 
-vec4 glossy(vec4 color){
+vec4 glossy(vec4 color, float roughness){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 128; i++){
+	for(int i = 0; i < 1; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
-		float disToLight = length(toLight)/10;
+		float disToLight = length(toLight)/8;
 		
 		vec3 reflectedLight = reflect(normalize(toLight), normalize(normal));
 		
 		float reflectedDot = dot(normalize(toCamera), reflectedLight);
-		reflectedDot = smoothstep(-2, 1, reflectedDot);
 		
-		float roughness = 0.001;
-		float brightness = pow(reflectedDot, 1 / roughness) / normalize(roughness);
-		//brightness = max(brightness, 0.05);
-		//brightness /= disToLight;
+		
+		float brightness = pow(reflectedDot, 1 / (roughness * roughness)) / (roughness);
+		//brightness = smoothstep(0, 1, brightness);
+		brightness /= disToLight;
+		
+		
+		
+		/*vec3 lightDir = normalize(toLight);
+		vec3 viewDir = normalize(toCamera);
+		vec3 halfwayDir = normalize(lightDir - viewDir);
+		float brightness = pow(max(dot(normal, halfwayDir), 0.0), 4);
+		*/
+		
+		float cameraDot = dot(normalize(toCamera), normalize(normal));
+		brightness = max(brightness, 0.01);
+		brightness *= smoothstep(-1.4, 1,cameraDot);
 		
 		vec3 light = lightColors[i] * brightness;
 		allLight += light;
@@ -82,13 +93,13 @@ void main(){
 	
 	//diffuse color
 	vec4 color = (texture + color);
-	vec4 diffuseColor = diffuse(color);
+	vec4 diffuse = diffuse(color);
 	
 	//glossy
-	vec4 glossy = glossy(color);
+	vec4 glossy = glossy(color, 0.3);
 	
 	
-	vec4 output = glossy;
+	vec4 output = mix(diffuse, glossy, 0);
 	gl_FragColor=output;
 	
 	

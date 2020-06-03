@@ -49,7 +49,7 @@ public class test extends Game {
 	@Override
 	public void setup() {
 		lights = new Lights();
-		lights.addLight(new Vector3f(-0, 10, 0), new Vector3f(0.9f, 0.9f, 1f));
+		lights.addLight(new Vector3f(-0, 2, 0), new Vector3f(0.9f, 0.9f, 1f));
 		//lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1f, 0.2f, 0.2f));
 		
 		g = new Geometry(48*8);

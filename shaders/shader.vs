@@ -36,7 +36,7 @@ void main(){
 	normal = (objectTransform * vec4(a_normal, 0)).xyz;
 	
 	//solidViewlight
-	toCamera = cameraPosition - worldPosition.xyz;
+	toCamera =worldPosition.xyz - cameraPosition;
 	
 	
 	gl_Position = projection * transform * worldPosition;

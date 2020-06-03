@@ -20,6 +20,12 @@ vec4 diffuse(vec4 color, vec3 light){
 	return diffuse;
 }
 
+vec4 glossy(vec4 color, vec3 light){
+	vec4 diffuse = color;
+	diffuse.xyz *= light;
+	return diffuse;
+}
+
 void main(){
 	float depth = gl_FragCoord.w*4;
 	
@@ -54,9 +60,11 @@ void main(){
 	
 	
 	//diffuse color
-	vec4 diffuseColor = (texture + color);
+	vec4 color = (texture + color);
+	vec4 diffuseColor = diffuse(color, allLight);
 	
-	diffuseColor = diffuse(diffuseColor, allLight);
+	//glossy
+	vec4 glossy = diffuse(color, allLight);
 	
 	
 	vec4 output = diffuseColor;

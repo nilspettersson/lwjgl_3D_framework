@@ -51,6 +51,7 @@ public class Renderer {
 		
 		shader.setUniform("lightPositions", positions);
 		shader.setUniform("lightColors", colors);
+		shader.setUniform("lightCount", colors.length);
 	}
 
 }

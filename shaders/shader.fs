@@ -4,6 +4,7 @@ uniform sampler2D sampler[20];
 
 uniform vec3 lightColors[128];
 uniform vec3 lightPositions[128];
+uniform int lightCount;
 
 in vec2 tex_coords;
 in vec4 color;
@@ -16,7 +17,7 @@ in vec4 worldPosition;
 
 vec4 diffuse(vec4 color){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 2; i++){
+	for(int i = 0; i < lightCount; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
 		float disToLight = length(toLight)/8;
 		
@@ -37,10 +38,9 @@ vec4 diffuse(vec4 color){
 
 vec4 glossy(vec4 color, float roughness){
 	vec3 allLight = vec3(0, 0, 0);
-	for(int i = 0; i < 2; i++){
+	for(int i = 0; i < lightCount; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
 		float disToLight = length(toLight);
-		
 		
 		
 		vec3 lightDir = normalize(toLight);
@@ -63,7 +63,7 @@ vec4 glossy(vec4 color, float roughness){
 		vec3 light = lightColors[i] * brightness;
 		allLight += light;
 		
-}
+	}
 	
 	
 	vec4 glossy = vec4(1);

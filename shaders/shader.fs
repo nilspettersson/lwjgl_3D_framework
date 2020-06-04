@@ -4,6 +4,7 @@ uniform sampler2D sampler[20];
 
 uniform vec3 lightColors[128];
 uniform vec3 lightPositions[128];
+uniform float lightIntensity[128];
 uniform int lightCount;
 
 in vec2 tex_coords;
@@ -23,7 +24,7 @@ vec4 diffuse(vec4 color){
 		
 		float brightness = dot(normalize(normal), normalize(toLight));
 		brightness = max(brightness, 0);
-		float attenuation = 10.0 / (4.0 + 1*disToLight + 1 * disToLight * disToLight);
+		float attenuation = lightIntensity[i] / (4.0 + 1*disToLight + 1 * disToLight * disToLight);
 		//brightness /= disToLight;
 		brightness *= attenuation;
 		
@@ -47,7 +48,7 @@ vec4 glossy(vec4 color, float roughness){
 		vec3 viewDir = normalize(toCamera);
 		vec3 halfwayDir = normalize(lightDir - viewDir);
 		float brightness = pow(max(dot(normalize(normal), halfwayDir), 0), 1 + (1 / roughness));
-		float attenuation = ((10.0 / roughness)) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
+		float attenuation = ((lightIntensity[i] / roughness)) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
 		brightness *= attenuation;
 		
 		//makes it less bright when right over object.

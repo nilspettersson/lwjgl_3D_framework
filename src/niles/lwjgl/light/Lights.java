@@ -12,8 +12,8 @@ public class Lights {
 		lights = new ArrayList<Light>();
 	}
 	
-	public void addLight(Vector3f position, Vector3f color) {
-		lights.add(new Light(position, color));
+	public void addLight(Vector3f position, Vector3f color, float intensity) {
+		lights.add(new Light(position, color, intensity));
 	}
 
 	public ArrayList<Light> getLights() {

@@ -190,6 +190,13 @@ public class Shader {
 		}
 	}
 	
+	public void setUniform(String name,float[] values) {
+		int location=getLocation(name);
+		if(location!=-1) {
+			glUniform1fv(location, values);
+		}
+	}
+	
 	public void setUniform(String name,Vector3f vec) {
 		int location=getLocation(name);
 		if(location!=-1) {

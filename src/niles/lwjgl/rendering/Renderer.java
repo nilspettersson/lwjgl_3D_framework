@@ -43,14 +43,17 @@ public class Renderer {
 		int size = lights.getLights().size();
 		Vector3f[] positions = new Vector3f[size];
 		Vector3f[] colors = new Vector3f[size];
+		float[] intensity = new float[size];
 		
 		for(int i = 0; i < size; i++) {
 			positions[i] = lights.getLights().get(i).getPosition();
 			colors[i] = lights.getLights().get(i).getColor();
+			intensity[i] = lights.getLights().get(i).getIntensity();
 		}
 		
 		shader.setUniform("lightPositions", positions);
 		shader.setUniform("lightColors", colors);
+		shader.setUniform("lightIntensity", intensity);
 		shader.setUniform("lightCount", colors.length);
 	}
 

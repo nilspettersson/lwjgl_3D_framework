@@ -47,7 +47,7 @@ vec4 glossy(vec4 color, float roughness){
 		vec3 viewDir = normalize(toCamera);
 		vec3 halfwayDir = normalize(lightDir - viewDir);
 		float brightness = pow(max(dot(normalize(normal), halfwayDir), 0), 1 + (1 / roughness));
-		float attenuation = ((0.000001 * ( pow((0.8 / (roughness)), 8)  )    )) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
+		float attenuation = ((10.0 / roughness)) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
 		brightness *= attenuation;
 		
 		//makes it less bright when right over object.
@@ -98,10 +98,10 @@ void main(){
 	vec4 diffuse = diffuse(color);
 	
 	//glossy
-	vec4 glossy = glossy(color, 0.08);
+	vec4 glossy = glossy(color, 0.1);
 	
 	
-	vec4 output = mix(diffuse, glossy, 0.5);
+	vec4 output = mix(diffuse, glossy, 1);
 	gl_FragColor = output;
 	
 	

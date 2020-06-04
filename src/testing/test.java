@@ -72,7 +72,7 @@ public class test extends Game {
 					entites.add(new Entity(48));
 					entites.get(index).setGeometry(g);
 					
-					entites.get(index).getTransform().setScale(new Vector3f(1, 1, 1));
+					entites.get(index).getTransform().setScale(new Vector3f(10, 1, 10));
 					entites.get(index).getTransform().getPosition().x += x * 6;
 					entites.get(index).getTransform().getPosition().y += y * 6;
 					entites.get(index).getTransform().getPosition().z += z * 6;

@@ -13,7 +13,7 @@ import niles.lwjgl.world.Camera;
 
 public class Renderer {
 	
-	Shader shader;
+	private Shader shader;
 	
 	
 	public Renderer() {
@@ -56,5 +56,17 @@ public class Renderer {
 		shader.setUniform("lightIntensity", intensity);
 		shader.setUniform("lightCount", colors.length);
 	}
+
+
+	public Shader getShader() {
+		return shader;
+	}
+
+
+	public void setShader(Shader shader) {
+		this.shader = shader;
+	}
+	
+	
 
 }

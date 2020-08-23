@@ -97,11 +97,11 @@ void main(){
 	
 	
 	vec4 output = mix(diffuse, glossy, 0.7);
-	gl_FragColor = output;
+	//gl_FragColor = output;
 	
 	
 	//gl_FragColor = vec4(brightness, brightness, brightness,1);
-	//gl_FragColor = vec4(depth,depth,depth, 1);
+	gl_FragColor = vec4(depth,depth,depth, 1);
 
 	
 }

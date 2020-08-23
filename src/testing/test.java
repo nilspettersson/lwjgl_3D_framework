@@ -1,14 +1,28 @@
 package testing;
 
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector2f;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL14.*;
+import static org.lwjgl.opengl.EXTFramebufferObject.*;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.opengl.EXTFramebufferObject;
+import org.lwjgl.opengl.GL11;
 
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.entity.Geometry;
-import niles.lwjgl.entity.Vertex;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.util.Model;
@@ -16,9 +30,6 @@ import niles.lwjgl.util.Shader;
 import niles.lwjgl.util.Texture;
 import niles.lwjgl.world.Input;
 import niles.lwjgl.world.Mouse;
-import static org.lwjgl.glfw.GLFW.*;
-
-import java.util.ArrayList;
 
 public class test extends Game {
 	
@@ -47,12 +58,20 @@ public class test extends Game {
 	Input input;
 	
 	Lights lights;
+	
+	
+	int colorTextureID;
+    int framebufferID;
+    int depthRenderBufferID;
 
 	@Override
 	public void setup() {
 		lights = new Lights();
-		lights.addLight(new Vector3f(0, 6, 0), new Vector3f(0.9f, 0.9f, 1f), 2);
-		//lights.addLight(new Vector3f(0, 10, 0), new Vector3f(1f, 0.2f, 0.2f));
+		lights.addLight(new Vector3f(8, 6, 4), new Vector3f(1f, 1f, 1f), 10);
+		for(int i = 0; i < 8; i++) {
+			lights.addLight(new Vector3f((float) (Math.random()*200)-100, 6, (float) (Math.random()*200)-100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 50);
+		}
+		
 		
 		g = new Geometry(48*8);
 		g.createCube(0, 0, 0, new Vector4f(1));
@@ -72,7 +91,7 @@ public class test extends Game {
 					entites.add(new Entity(48));
 					entites.get(index).setGeometry(g);
 					
-					entites.get(index).getTransform().setScale(new Vector3f(10, 1, 10));
+					entites.get(index).getTransform().setScale(new Vector3f(1, 1, 1));
 					entites.get(index).getTransform().getPosition().x += x * 6;
 					entites.get(index).getTransform().getPosition().y += y * 6;
 					entites.get(index).getTransform().getPosition().z += z * 6;
@@ -82,6 +101,16 @@ public class test extends Game {
 				}
 			}
 		}
+		entites.add(new Entity(480));
+		entites.get(1).getGeometry().createFace(0, 0, 1);
+		
+		entites.get(1).getTransform().setScale(new Vector3f(100, 100f, 1));
+		entites.get(1).getTransform().getRotation().rotateAxis((float) (-Math.PI/2), 1, 0, 0);
+		entites.get(1).getTransform().getPosition().x += 0 * 6;
+		entites.get(1).getTransform().getPosition().y += 0-1;
+		entites.get(1).getTransform().getPosition().z += 0 * 6;
+		entites.get(1).getGeometry().updateVertices();
+		entites.get(1).getGeometry().updateIndices();
 		
 		entites.get(0).addTexture(new Texture("res/wood.jpg"));
 		entites.get(0).bindTextures();
@@ -94,6 +123,35 @@ public class test extends Game {
 		input = new Input(getWindow());
 		
 		getWindow().setVSync(false);
+		
+		
+		
+		
+		
+		
+		
+		
+		framebufferID = glGenFramebuffersEXT();                                         // create a new framebuffer
+        colorTextureID = glGenTextures();                                               // and a new texture used as a color buffer
+        depthRenderBufferID = glGenRenderbuffersEXT();                                  // And finally a new depthbuffer
+ 
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);                        // switch to the new framebuffer
+ 
+        // initialize color texture
+        glBindTexture(GL_TEXTURE_2D, colorTextureID);                                   // Bind the colorbuffer texture
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);               // make it linear filterd
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1920, 1080, 0,GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D, colorTextureID, 0); // attach it to the framebuffer
+ 
+ 
+        // initialize depth renderbuffer
+        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID);                // bind the depth renderbuffer
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, 1920, 1080); // get the data space for it
+        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT, depthRenderBufferID); // bind it to the renderbuffer
+ 
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		
+		
 	}
 	
 	float value=0;
@@ -103,11 +161,11 @@ public class test extends Game {
 		Mouse.isVisible(getWindow(), false);
 		
 		
-		
+		//camera rotation
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.1f;
+		float speed = 0.4f;
 		if(input.isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
@@ -128,22 +186,45 @@ public class test extends Game {
 		}
 		
 		
-		
+		//getRenderer().setShader(new Shader("depth"));
 		getRenderer().bindShader();
 		
-		//lights.getLights().get(0).getPosition().x=(float) Math.sin(value)*70 + (7 * 10);
-		//lights.getLights().get(0).getPosition().y=(float) Math.cos(value)*70 + (7 * 10);
 		value+=0.02f;
 		getRenderer().useLights(lights);
 		
+		
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
+        glClearColor (0.0f, 0.0f, 0.0f, 0f);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		entites.get(0).bindTextures();
 		for(int i = 0; i < entites.size(); i++) {
 			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);
 			render(entites.get(i));
 		}
 		
+		glEnable(GL_TEXTURE_2D);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+        
+        Shader shader = new Shader("post");
+		shader.bind();
+        
+        glClearColor (0.0f, 0.0f, 0.0f, 1f);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        glBindTexture(GL_TEXTURE_2D, colorTextureID);
+		
+		Model m = Model.CreateModel(true);
+		m.render();
+		
+		
+
+		
+		
 		
 		//System.out.println(getFps());
-		setFpsCap(120);
+		setFpsCap(120*4);
 	}
 
 }

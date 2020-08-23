@@ -41,7 +41,7 @@ public abstract class Game {
 	public Game() {
 		window=new Window(1920, 1080, true);
 		camera=new Camera();
-		camera.setPerspective((float) Math.toRadians(80), 1920f / 1080f, 0.001f, 10000);
+		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.001f, 10000);
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;

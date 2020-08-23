@@ -23,6 +23,7 @@ import org.lwjgl.opengl.GL11;
 
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.entity.Geometry;
+import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.util.Model;
@@ -60,9 +61,9 @@ public class test extends Game {
 	Lights lights;
 	
 	
-	int colorTextureID;
-    int framebufferID;
-    int depthRenderBufferID;
+    Fbo depth = new Fbo();
+    
+    Fbo fbo = new Fbo();
 
 	@Override
 	public void setup() {
@@ -126,31 +127,8 @@ public class test extends Game {
 		
 		
 		
-		
-		
-		
-		
-		
-		framebufferID = glGenFramebuffersEXT();                                         // create a new framebuffer
-        colorTextureID = glGenTextures();                                               // and a new texture used as a color buffer
-        depthRenderBufferID = glGenRenderbuffersEXT();                                  // And finally a new depthbuffer
- 
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);                        // switch to the new framebuffer
- 
-        // initialize color texture
-        glBindTexture(GL_TEXTURE_2D, colorTextureID);                                   // Bind the colorbuffer texture
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);               // make it linear filterd
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1920, 1080, 0,GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);  // Create the texture data
-        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D, colorTextureID, 0); // attach it to the framebuffer
- 
- 
-        // initialize depth renderbuffer
-        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID);                // bind the depth renderbuffer
-        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, 1920, 1080); // get the data space for it
-        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT, depthRenderBufferID); // bind it to the renderbuffer
- 
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-		
+		depth = new Fbo();
+		fbo = new Fbo();
 		
 	}
 	
@@ -186,40 +164,26 @@ public class test extends Game {
 		}
 		
 		
-		//getRenderer().setShader(new Shader("depth"));
 		getRenderer().bindShader();
 		
 		value+=0.02f;
 		getRenderer().useLights(lights);
 		
 		
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
-        glClearColor (0.0f, 0.0f, 0.0f, 0f);
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		depth.bind();
+		getRenderer().setShader(new Shader("depth"));
 		entites.get(0).bindTextures();
 		for(int i = 0; i < entites.size(); i++) {
 			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);
 			render(entites.get(i));
 		}
+		depth.unBind();
 		
-		glEnable(GL_TEXTURE_2D);
-        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		
         
-        Shader shader = new Shader("post");
-		shader.bind();
-        
-        glClearColor (0.0f, 0.0f, 0.0f, 1f);
-        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        glBindTexture(GL_TEXTURE_2D, colorTextureID);
+		depth.render(new Shader("post"));
 		
-		Model m = Model.CreateModel(true);
-		m.render();
-		
-		
-
 		
 		
 		

@@ -26,7 +26,11 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glGenTextures;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameterf;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glUniform1iv;
 
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
@@ -84,12 +88,17 @@ public class Fbo {
 	
 	public void render(Shader shader) {
         shader.bind();
-        
-        
-        glBindTexture(GL_TEXTURE_2D, getColorTextureID());
-		
+        glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		Model m = Model.CreateModel(true);
 		m.render();
+	}
+	
+	public void bindTexture(int sampler) {
+		if(sampler>=0 && sampler<=31) {
+			glActiveTexture(GL_TEXTURE0 + sampler);
+			glBindTexture(GL_TEXTURE_2D, getColorTextureID());
+			
+		}
 	}
 	
 	

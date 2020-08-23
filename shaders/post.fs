@@ -1,6 +1,6 @@
 #version 120
 
-uniform sampler2D sampler;
+uniform sampler2D sampler[20];
 
 uniform vec3 lightColors[128];
 uniform vec3 lightPositions[128];
@@ -24,7 +24,7 @@ void main(){
 	tex_coords.y = tex_coords.y * -1;
 		
 	int id = int(textureId);
-	vec4 texture=texture2D(sampler, tex_coords);
+	vec4 texture=texture2D(sampler[0], tex_coords);
 	
 	gl_FragColor = texture;
 	//gl_FragColor = vec4(depth,depth,depth, 1);

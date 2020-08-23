@@ -169,7 +169,13 @@ public class test extends Game {
 		value+=0.02f;
 		getRenderer().useLights(lights);
 		
-		
+		fbo.bind();
+		getRenderer().setShader(new Shader("shader"));
+		entites.get(0).bindTextures();
+		for(int i = 0; i < entites.size(); i++) {
+			render(entites.get(i));
+		}
+		fbo.unBind();
 		
 		depth.bind();
 		getRenderer().setShader(new Shader("depth"));
@@ -181,7 +187,7 @@ public class test extends Game {
 		depth.unBind();
 		
 		
-        
+		depth.bindTexture(0);
 		depth.render(new Shader("post"));
 		
 		

@@ -179,18 +179,9 @@ public class test extends Game {
 		
 		
 		
-		/*depth.bind();
-		getRenderer().setShader(new Shader("depth"));
-		entites.get(0).bindTextures();
-		for(int i = 0; i < entites.size(); i++) {
-			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);
-			render(entites.get(i));
-		}
-		depth.unBind();*/
 		
-		
-		fbo.bindTexture(10);
-		fbo.bindDepthTexture(9);
+		fbo.bindTexture(9);
+		fbo.bindDepthTexture(10);
 		fbo.render(new Shader("post"));
 		
 		

@@ -22,13 +22,22 @@ void main(){
 	
 	tex_coords.y = 1.0 - tex_coords.y;
 	
-	
+	//gets the color texture.
 	vec4 texture=texture2D(sampler[9], tex_coords);
 	
-	float z = (0.01 * 10000) / (10000 - texture.x * (10000 - 0.01));
-	z *= 0.03;
+	//gets the depth texture
+	vec4 depth=texture2D(sampler[10], tex_coords);
+	float z = (0.01 * 10000) / (10000 - depth.x * (10000 - 0.01));
+	z *= 0.01;
 	
-	gl_FragColor = vec4(z, z, z, 1);
-	//gl_FragColor = texture;
+	
 
+	
+	//texture.xyz += z;
+	
+	
+	gl_FragColor = texture;
+	
+	
+	
 }

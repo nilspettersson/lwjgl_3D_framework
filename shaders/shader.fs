@@ -97,6 +97,7 @@ void main(){
 	vec4 glossy = glossy(color, 0.1);
 	
 	
+	
 	vec4 output = mix(diffuse, glossy, 0.7);
 	gl_FragColor = output;
 	

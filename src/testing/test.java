@@ -127,7 +127,7 @@ public class test extends Game {
 		
 		
 		
-		depth = new Fbo();
+		//depth = new Fbo();
 		fbo = new Fbo();
 		
 	}
@@ -143,7 +143,7 @@ public class test extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.4f;
+		float speed = 0.05f;
 		if(input.isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
@@ -177,18 +177,21 @@ public class test extends Game {
 		}
 		fbo.unBind();
 		
-		depth.bind();
+		
+		
+		/*depth.bind();
 		getRenderer().setShader(new Shader("depth"));
 		entites.get(0).bindTextures();
 		for(int i = 0; i < entites.size(); i++) {
 			//entites.get(i).getTransform().getRotation().rotateAxis(0.01f, 0, 1, 0);
 			render(entites.get(i));
 		}
-		depth.unBind();
+		depth.unBind();*/
 		
 		
-		depth.bindTexture(0);
-		depth.render(new Shader("post"));
+		fbo.bindTexture(10);
+		fbo.bindDepthTexture(9);
+		fbo.render(new Shader("post"));
 		
 		
 		

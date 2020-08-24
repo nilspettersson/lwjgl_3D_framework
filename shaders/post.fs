@@ -19,14 +19,16 @@ in vec4 worldPosition;
 
 
 void main(){
-	float depth = gl_FragCoord.w;
 	
-	tex_coords.y = tex_coords.y * -1;
-		
-	int id = int(textureId);
-	vec4 texture=texture2D(sampler[0], tex_coords);
+	tex_coords.y = 1.0 - tex_coords.y;
 	
-	gl_FragColor = texture;
-	//gl_FragColor = vec4(depth,depth,depth, 1);
+	
+	vec4 texture=texture2D(sampler[9], tex_coords);
+	
+	float z = (0.01 * 10000) / (10000 - texture.x * (10000 - 0.01));
+	z *= 0.03;
+	
+	gl_FragColor = vec4(z, z, z, 1);
+	//gl_FragColor = texture;
 
 }

@@ -30,7 +30,7 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glUniform1iv;
+import static org.lwjgl.opengl.GL20.*;
 
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
@@ -38,12 +38,14 @@ import niles.lwjgl.util.Shader;
 public class Fbo {
 	
 	private int colorTextureID;
+	private int depthTextureID;
 	private int framebufferID;
 	private int depthRenderBufferID;
 	
 	public Fbo() {
 		framebufferID = glGenFramebuffersEXT();
         colorTextureID = glGenTextures();
+        depthTextureID = glGenTextures();
         depthRenderBufferID = glGenRenderbuffersEXT();
  
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
@@ -53,38 +55,43 @@ public class Fbo {
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1920, 1080, 0,GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D, colorTextureID, 0);
- 
- 
+        
+        
+        
+        
         // initialize depth renderbuffer
         glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID);
         glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, 1920, 1080);
         glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT, depthRenderBufferID);
+        
+        glBindTexture(GL_TEXTURE_2D, depthTextureID);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1920, 1080, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D, depthTextureID, 0);
+        
  
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
 	}
 	
 	public void bind() {
-		glBindTexture(GL_TEXTURE_2D, 0);
+		
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
-        glClearColor (0.0f, 0.0f, 0.0f, 0f);
+        glClearColor (0.0f, 0.0f, 0.0f, 1f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
 	public void unBind() {
-		glEnable(GL_TEXTURE_2D);
+		//glEnable(GL_TEXTURE_2D);
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
         
         glClearColor (0.0f, 0.0f, 0.0f, 1f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	public int getColorTextureID() {
-		return colorTextureID;
-	}
-
-	public void setColorTextureID(int colorTextureID) {
-		this.colorTextureID = colorTextureID;
-	}
 	
 	public void render(Shader shader) {
         shader.bind();
@@ -99,6 +106,22 @@ public class Fbo {
 			glBindTexture(GL_TEXTURE_2D, getColorTextureID());
 			
 		}
+	}
+	
+	public void bindDepthTexture(int sampler) {
+		if(sampler>=0 && sampler<=31) {
+			glActiveTexture(GL_TEXTURE0 + sampler);
+			glBindTexture(GL_TEXTURE_2D, depthTextureID);
+			
+		}
+	}
+	
+	public int getColorTextureID() {
+		return colorTextureID;
+	}
+
+	public void setColorTextureID(int colorTextureID) {
+		this.colorTextureID = colorTextureID;
 	}
 	
 	

@@ -73,6 +73,7 @@ vec4 glossy(vec4 color, float roughness){
 }
 
 void main(){
+
 	float depth = gl_FragCoord.w*4;
 	
 		

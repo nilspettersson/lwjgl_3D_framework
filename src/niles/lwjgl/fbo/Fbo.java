@@ -85,14 +85,12 @@ public class Fbo {
 	}
 	
 	public void bind() {
-		
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, framebufferID);
         glClearColor (0.0f, 0.0f, 0.0f, 1f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
 	public void unBind() {
-		//glEnable(GL_TEXTURE_2D);
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
         
         glClearColor (0.0f, 0.0f, 0.0f, 1f);
@@ -103,15 +101,11 @@ public class Fbo {
 	public void render(Shader shader, Camera camera) {
         shader.bind();
         shader.setUniform("cameraPosition", camera.getPosition());
-        shader.setUniform("cameraTransform", camera.getTransformation());
-        shader.setUniform("cameraProjection", camera.getProjection());
-        //shader.setUniform("cameraRotation", new Vector3f(camera.getRotation().x, camera.getRotation().y, camera.getRotation().z));
+        
         Quaternionf rotation = new Quaternionf(0, 0, 0);
         camera.getTransformation().getNormalizedRotation(rotation);
-        
-        
         shader.setUniform("cameraRotation", new Vector4f(-rotation.x, -rotation.y, rotation.z, rotation.w));
-        System.out.println(rotation.y);
+        
         glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		Model m = Model.CreateModel(true);
 		m.render();

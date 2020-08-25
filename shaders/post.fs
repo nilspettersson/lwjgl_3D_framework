@@ -74,7 +74,6 @@ void main(){
 	
 	vec2 res = vec2(1, 1);
 	vec2 uv = (tex_coords - 0.5 * res.xy) / res.y;
-	combined[3].z *= -1;
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	vec3 rayDir = (vec3(uv.x * 1.77, uv.y, 0.7));

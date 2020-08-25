@@ -41,7 +41,7 @@ vec3 rotate_vector( vec4 quat, vec3 vec )
 
 
 float getDist(vec3 point){
-	vec4 ball = vec4(0, 1, 6, 1);
+	vec4 ball = vec4(0, 1, 1, 1);
 	float ballDist = length(point - ball.xyz) - ball.w;
 	return ballDist;
 }
@@ -80,7 +80,7 @@ void main(){
 	vec2 uv = (tex_coords - 0.5 * res.xy) / res.y;
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
-	vec3 rayDir = (vec3(uv.x * 1.77, uv.y, 0.7));
+	vec3 rayDir = (vec3(uv.x * 1.77, uv.y, 0.72));
 	
 	
 	rayDir = rotate_vector(cameraRotation, rayDir);
@@ -90,12 +90,20 @@ void main(){
 	
 	float dis = rayMarch(rayOrigin, rayDir, z);
 	
-	dis /= 120;
+	dis *= 0.01;
 	if(dis >= 1){
+		z *= 0.01;
 		gl_FragColor = texture;
+		//gl_FragColor = vec4(z, z, z,1);
 	}
 	else{
-		gl_FragColor = vec4(dis, dis, dis,1);
+		z *= 0.01;
+		dis = z - dis;
+		
+		dis = min(dis, 1);
+		vec3 output = texture.xyz * (1 - dis) + vec3(1, 1, 1) * dis;
+		gl_FragColor = vec4(output, 1);
+		//gl_FragColor = vec4(dis, dis, dis,1);
 	}
 	
 	

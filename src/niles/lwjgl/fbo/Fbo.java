@@ -68,7 +68,7 @@ public class Fbo {
         
         // initialize depth renderbuffer
         glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID);
-        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT24, 1920, 1080);
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, 1920, 1080);
         glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT, depthRenderBufferID);
         
         glBindTexture(GL_TEXTURE_2D, depthTextureID);

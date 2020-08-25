@@ -46,7 +46,7 @@ float getDist(vec3 point){
 	return ballDist;
 }
 
-float rayMarch(vec3 rayOrigin, vec3 rayDir){
+float rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
 	float DistOrigin = 0;
 	
 	for(int i = 0; i < 100; i++){
@@ -54,6 +54,10 @@ float rayMarch(vec3 rayOrigin, vec3 rayDir){
 		float dist = getDist(point);
 		DistOrigin += dist;
 		if(DistOrigin > 1000 || dist < 0.01 ){
+			break;
+		}
+		if(DistOrigin > maxDepth){
+			DistOrigin = 1000;
 			break;
 		}
 	}
@@ -69,7 +73,7 @@ void main(){
 	//gets the depth texture
 	vec4 depth=texture2D(sampler[10], tex_coords);
 	float z = (0.01 * 10000) / (10000 - depth.x * (10000 - 0.01));
-	z *= 0.01;
+	//z *= 0.01;
 	
 	
 	vec2 res = vec2(1, 1);
@@ -84,7 +88,7 @@ void main(){
 	
 	
 	
-	float dis = rayMarch(rayOrigin, rayDir);
+	float dis = rayMarch(rayOrigin, rayDir, z);
 	
 	dis /= 120;
 	if(dis >= 1){

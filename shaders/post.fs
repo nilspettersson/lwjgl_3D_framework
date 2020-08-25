@@ -1,20 +1,43 @@
 #version 120
 
 uniform sampler2D sampler[20];
+uniform vec3 cameraPosition;
+uniform vec4 cameraRotation;
 
-uniform vec3 lightColors[128];
+
+/*uniform vec3 lightColors[128];
 uniform vec3 lightPositions[128];
 uniform float lightIntensity[128];
-uniform int lightCount;
+uniform int lightCount;*/
+
+
 
 in vec2 tex_coords;
-in vec4 color;
+
+/*in vec4 color;
 in float textureId;
 in vec3 normal;
 
 
 in vec3 toCamera;
-in vec4 worldPosition;
+in vec4 worldPosition;*/
+
+
+vec4 multQuat(vec4 q1, vec4 q2){
+	return vec4(
+	q1.w * q2.x + q1.x * q2.w + q1.z * q2.y - q1.y * q2.z,
+	q1.w * q2.y + q1.y * q2.w + q1.x * q2.z - q1.z * q2.x,
+	q1.w * q2.z + q1.z * q2.w + q1.y * q2.x - q1.x * q2.y,
+	q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z
+	);
+}
+
+vec3 rotate_vector( vec4 quat, vec3 vec )
+{
+	vec4 qv = multQuat( quat, vec4(vec, 0.0) );
+	return multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz;
+}
+
 
 
 float getDist(vec3 point){
@@ -37,11 +60,8 @@ float rayMarch(vec3 rayOrigin, vec3 rayDir){
 	return DistOrigin;
 }
 
-
 void main(){
-	
 	tex_coords.y = 1.0 - tex_coords.y;
-	
 	
 	//gets the color texture.
 	vec4 texture=texture2D(sampler[9], tex_coords);
@@ -54,19 +74,27 @@ void main(){
 	
 	vec2 res = vec2(1, 1);
 	vec2 uv = (tex_coords - 0.5 * res.xy) / res.y;
+	combined[3].z *= -1;
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *=-1;
+	vec3 rayDir = (vec3(uv.x * 1.77, uv.y, 0.7));
 	
-	vec3 rayOrigin = vec3(0, 1, 0);
-	vec3 rayDir = normalize(vec3(uv.x * 1.77, uv.y, 1));
+	
+	rayDir = rotate_vector(cameraRotation, rayDir);
+	rayDir = normalize(rayDir);
+	
+	
 	
 	float dis = rayMarch(rayOrigin, rayDir);
 	
-	dis /= 22;
+	dis /= 120;
 	if(dis >= 1){
 		gl_FragColor = texture;
 	}
 	else{
 		gl_FragColor = vec4(dis, dis, dis,1);
 	}
+	
 	
 	
 	

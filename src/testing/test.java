@@ -65,8 +65,12 @@ public class test extends Game {
     
     Fbo fbo = new Fbo();
 
+    Shader shader;
+    
 	@Override
 	public void setup() {
+		shader = new Shader("post");
+		
 		lights = new Lights();
 		lights.addLight(new Vector3f(8, 6, 4), new Vector3f(1f, 1f, 1f), 10);
 		for(int i = 0; i < 8; i++) {
@@ -182,7 +186,8 @@ public class test extends Game {
 		
 		fbo.bindTexture(9);
 		fbo.bindDepthTexture(10);
-		fbo.render(new Shader("post"));
+		
+		fbo.render(shader, getCamera());
 		
 		
 		

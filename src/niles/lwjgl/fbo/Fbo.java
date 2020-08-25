@@ -30,10 +30,17 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import static org.lwjgl.opengl.GL20.*;
 
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
+import niles.lwjgl.world.Camera;
 
 public class Fbo {
 	
@@ -93,8 +100,18 @@ public class Fbo {
 	}
 
 	
-	public void render(Shader shader) {
+	public void render(Shader shader, Camera camera) {
         shader.bind();
+        shader.setUniform("cameraPosition", camera.getPosition());
+        shader.setUniform("cameraTransform", camera.getTransformation());
+        shader.setUniform("cameraProjection", camera.getProjection());
+        //shader.setUniform("cameraRotation", new Vector3f(camera.getRotation().x, camera.getRotation().y, camera.getRotation().z));
+        Quaternionf rotation = new Quaternionf(0, 0, 0);
+        camera.getTransformation().getNormalizedRotation(rotation);
+        
+        
+        shader.setUniform("cameraRotation", new Vector4f(-rotation.x, -rotation.y, rotation.z, rotation.w));
+        System.out.println(rotation.y);
         glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		Model m = Model.CreateModel(true);
 		m.render();

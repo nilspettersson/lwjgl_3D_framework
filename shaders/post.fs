@@ -42,6 +42,7 @@ void main(){
 	
 	tex_coords.y = 1.0 - tex_coords.y;
 	
+	
 	//gets the color texture.
 	vec4 texture=texture2D(sampler[9], tex_coords);
 	
@@ -55,7 +56,7 @@ void main(){
 	vec2 uv = (tex_coords - 0.5 * res.xy) / res.y;
 	
 	vec3 rayOrigin = vec3(0, 1, 0);
-	vec3 rayDir = normalize(vec3(uv.x, uv.y, 1));
+	vec3 rayDir = normalize(vec3(uv.x * 1.77, uv.y, 1));
 	
 	float dis = rayMarch(rayOrigin, rayDir);
 	

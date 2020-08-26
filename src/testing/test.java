@@ -147,7 +147,7 @@ public class test extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.05f;
+		float speed = 0.01f;
 		if(input.isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}

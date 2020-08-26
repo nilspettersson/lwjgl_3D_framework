@@ -41,12 +41,18 @@ vec3 rotate_vector( vec4 quat, vec3 vec )
 
 
 float getDist(vec3 point){
-	vec4 ball = vec4(0, 1, 1, 1);
+	vec4 ball = vec4(0, 1, 0, 6);
 	float ballDist = length(point - ball.xyz) - ball.w;
 	return ballDist;
 }
 
-float rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
+float getDepth(vec3 point){
+	vec4 ball = vec4(0, 1, 0, 6);
+	float ballDist = ball.w - length(point - ball.xyz);
+	return ballDist;
+}
+
+vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
 	float DistOrigin = 0;
 	
 	for(int i = 0; i < 100; i++){
@@ -61,8 +67,21 @@ float rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
 			break;
 		}
 	}
-	return DistOrigin;
+	
+	float depth = DistOrigin + 0.1;
+	
+	for(int i = 0; i < 100; i++){
+		vec3 point = rayOrigin + rayDir * depth;
+		float dist = getDepth(point);
+		depth += dist;
+		if(depth > 1000 || dist < 0.01 ){
+			break;
+		}
+	}
+	
+	return vec2(DistOrigin, max((depth - DistOrigin), 0));
 }
+
 
 void main(){
 	tex_coords.y = 1.0 - tex_coords.y;
@@ -87,21 +106,18 @@ void main(){
 	rayDir = normalize(rayDir);
 	
 	
+	vec2 rayDis = rayMarch(rayOrigin, rayDir, z);
+	float dis = rayDis.x;
+	float rayDepth = rayDis.y;
 	
-	float dis = rayMarch(rayOrigin, rayDir, z);
-	
-	dis *= 0.01;
-	if(dis >= 1){
-		z *= 0.01;
+	if(dis * 0.01 >= 1){
 		gl_FragColor = texture;
-		//gl_FragColor = vec4(z, z, z,1);
 	}
 	else{
-		z *= 0.01;
-		dis = z - dis;
-		
-		dis = min(dis, 1);
-		vec3 output = texture.xyz * (1 - dis) + vec3(1, 1, 1) * dis;
+		float disToObject = z - dis;
+		float minDis = min(disToObject, rayDepth);
+		minDis *= 0.1;
+		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
 		gl_FragColor = vec4(output, 1);
 		//gl_FragColor = vec4(dis, dis, dis,1);
 	}

@@ -111,20 +111,14 @@ public class Fbo {
 		m.render();
 	}
 	
-	public void bindTexture(int sampler) {
-		if(sampler>=0 && sampler<=31) {
-			glActiveTexture(GL_TEXTURE0 + sampler);
-			glBindTexture(GL_TEXTURE_2D, getColorTextureID());
-			
-		}
+	public void bindTexture() {
+			glActiveTexture(GL_TEXTURE0 + 9);
+			glBindTexture(GL_TEXTURE_2D, colorTextureID);
 	}
 	
-	public void bindDepthTexture(int sampler) {
-		if(sampler>=0 && sampler<=31) {
-			glActiveTexture(GL_TEXTURE0 + sampler);
+	public void bindDepthTexture() {
+			glActiveTexture(GL_TEXTURE0 + 10);
 			glBindTexture(GL_TEXTURE_2D, depthTextureID);
-			
-		}
 	}
 	
 	public int getColorTextureID() {

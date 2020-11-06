@@ -25,7 +25,6 @@ vec4 diffuse(vec4 color){
 		float brightness = dot(normalize(normal), normalize(toLight));
 		brightness = max(brightness, 0);
 		float attenuation = lightIntensity[i] / (4.0 + 1*disToLight + 1 * disToLight * disToLight);
-		//brightness /= disToLight;
 		brightness *= attenuation;
 		
 		vec3 light = lightColors[i] * brightness;

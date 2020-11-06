@@ -4,23 +4,7 @@ uniform sampler2D sampler[20];
 uniform vec3 cameraPosition;
 uniform vec4 cameraRotation;
 
-
-/*uniform vec3 lightColors[128];
-uniform vec3 lightPositions[128];
-uniform float lightIntensity[128];
-uniform int lightCount;*/
-
-
-
 in vec2 tex_coords;
-
-/*in vec4 color;
-in float textureId;
-in vec3 normal;
-
-
-in vec3 toCamera;
-in vec4 worldPosition;*/
 
 
 vec4 multQuat(vec4 q1, vec4 q2){
@@ -119,7 +103,6 @@ void main(){
 		minDis *= 0.1;
 		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
 		gl_FragColor = vec4(output, 1);
-		//gl_FragColor = vec4(dis, dis, dis,1);
 	}
 	
 	

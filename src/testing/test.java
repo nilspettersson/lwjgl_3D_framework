@@ -136,7 +136,6 @@ public class test extends Game {
 		
 	}
 	
-	float value=0;
 
 	@Override
 	public void update() {
@@ -167,10 +166,7 @@ public class test extends Game {
 			moveCameraUp(speed);
 		}
 		
-		
 		getRenderer().bindShader();
-		
-		value+=0.02f;
 		getRenderer().useLights(lights);
 		
 		fbo.bind();
@@ -184,8 +180,8 @@ public class test extends Game {
 		
 		
 		
-		fbo.bindTexture(9);
-		fbo.bindDepthTexture(10);
+		fbo.bindTexture();
+		fbo.bindDepthTexture();
 		
 		fbo.render(shader, getCamera());
 		

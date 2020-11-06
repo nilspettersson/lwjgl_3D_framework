@@ -257,7 +257,6 @@ public class Geometry {
 	}
 	
 	
-	
 	public int size() {
 		return size;
 	}
@@ -271,23 +270,10 @@ public class Geometry {
 	}
 	
 	public void updateIndices() {
-		/*for(int i = 0; i < indices.capacity(); i++) {
-			System.out.println(indices.get(i));
-		}*/
-		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao.getI_id());
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_DYNAMIC_DRAW);
 	}
 	
-	
-	/*public void updateAllValues() {
-		glBindBuffer(GL_ARRAY_BUFFER, vao.getV_id());
-		float[] subArray = new float[index];
-		System.arraycopy(vertices, 0, subArray, 0, subArray.length);
-		
-		glBufferSubData(GL_ARRAY_BUFFER, 0, subArray);
-		
-	}*/
 
 	public Vao getVao() {
 		return vao;

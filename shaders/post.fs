@@ -25,13 +25,13 @@ vec3 rotate_vector( vec4 quat, vec3 vec )
 
 
 float getDist(vec3 point){
-	vec4 ball = vec4(0, 1, 0, 6);
+	vec4 ball = vec4(-30, 30, 0, 50);
 	float ballDist = length(point - ball.xyz) - ball.w;
 	return ballDist;
 }
 
 float getDepth(vec3 point){
-	vec4 ball = vec4(0, 1, 0, 6);
+	vec4 ball = vec4(-30, 30, 0, 50);
 	float ballDist = ball.w - length(point - ball.xyz);
 	return ballDist;
 }
@@ -94,13 +94,13 @@ void main(){
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
 	
-	if(dis * 0.01 >= 1){
+	if(dis * 0.001 >= 1){
 		gl_FragColor = texture;
 	}
 	else{
 		float disToObject = z - dis;
 		float minDis = min(disToObject, rayDepth);
-		minDis *= 0.1;
+		minDis *= 0.008;
 		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
 		gl_FragColor = vec4(output, 1);
 	}

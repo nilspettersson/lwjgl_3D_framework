@@ -84,24 +84,17 @@ void main(){
 	float SolidBrightness = dot((-normal), normalize(toCamera));
 	SolidBrightness = max(SolidBrightness, 0.3);
 	
-
-	
 	
 	//diffuse color
 	vec4 color = vec4(texture + color);
 	vec4 diffuse = diffuse(color);
 	
 	//glossy
-	vec4 glossy = glossy(color, 0.1);
-	
+	vec4 glossy = glossy(color, 0.01);
 	
 	
 	vec4 output = mix(diffuse, glossy, 0.7);
 	gl_FragColor = output;
 	
-	
-	//gl_FragColor = vec4(brightness, brightness, brightness,1);
-	//gl_FragColor = vec4(depth,depth,depth, 1);
-
 	
 }

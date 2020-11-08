@@ -25,7 +25,7 @@ public class Entity {
 		}
 	}
 	
-	public void updateGeometry() {
+	public void bindGeometry() {
 		geometry.updateVertices();
 		geometry.updateIndices();
 	}

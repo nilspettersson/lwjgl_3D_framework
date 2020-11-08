@@ -88,8 +88,7 @@ void main(){
 	
 	
 	//diffuse color
-	vec4 color = vec4(texture);
-	//vec4 color = color;
+	vec4 color = vec4(texture + color);
 	vec4 diffuse = diffuse(color);
 	
 	//glossy

@@ -50,8 +50,7 @@ public class test2 extends Game {
 		
 		e = new Entity(36);
 		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
-		e.updateGeometry();
-		e.addTexture(new Texture("res/wood.jpg"));
+		e.bindGeometry();
 		
 		System.out.println(gg);
 		System.out.println(e.getGeometry());

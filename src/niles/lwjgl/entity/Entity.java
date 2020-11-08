@@ -24,6 +24,11 @@ public class Entity {
 			textures.get(i).bind(i);
 		}
 	}
+	
+	public void updateGeometry() {
+		geometry.updateVertices();
+		geometry.updateIndices();
+	}
 
 	public Geometry getGeometry() {
 		return geometry;

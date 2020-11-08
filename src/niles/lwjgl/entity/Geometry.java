@@ -260,10 +260,8 @@ public class Geometry {
 	public int size() {
 		return size;
 	}
-
 	
 	public void updateVertices() {
-		
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getV_id());
 		glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
 		

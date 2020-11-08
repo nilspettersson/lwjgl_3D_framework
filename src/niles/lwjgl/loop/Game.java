@@ -76,8 +76,6 @@ public abstract class Game {
 		getCamera().getRotation().rotate(xAxis, 0, 0);
 	}
 	
-	
-	
 	public void moveCameraForward(float amount) {
 		Vector3f move = new Vector3f(0, 0, -amount);
 		move.rotate(getCamera().getRotation());
@@ -117,30 +115,18 @@ public abstract class Game {
 		return window;
 	}
 
-	public void setWindow(Window window) {
-		this.window = window;
-	}
 
 	public Camera getCamera() {
 		return camera;
 	}
 
-	public void setCamera(Camera camera) {
-		this.camera = camera;
-	}
-
-
-
 	public Vector4f getBackgroundColor() {
 		return backgroundColor;
 	}
 
-
-
 	public void setBackgroundColor(Vector4f backgroundColor) {
 		this.backgroundColor = backgroundColor;
 	}
-
 
 
 	public int getFpsCap() {
@@ -159,13 +145,7 @@ public abstract class Game {
 		return renderer;
 	}
 
-	public void setRenderer(Renderer renderer) {
-		this.renderer = renderer;
-	}
 
-	
-	
-	
 	
 	
 

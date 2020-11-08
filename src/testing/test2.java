@@ -46,17 +46,18 @@ public class test2 extends Game {
 		gg.createCube(0, 0, 0, new Vector4f(1));
 
 		
-		gg.updateVertices();
-		gg.updateIndices();
 		
-		e = new Entity(48);
-		e.setGeometry(gg);
+		
+		e = new Entity(36);
+		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
+		e.updateGeometry();
 		e.addTexture(new Texture("res/wood.jpg"));
 		
+		System.out.println(gg);
+		System.out.println(e.getGeometry());
 		
 		input = new Input(getWindow());
 		
-		getWindow().setVSync(false);
 	}
 	
 
@@ -92,15 +93,11 @@ public class test2 extends Game {
 		getRenderer().bindShader();
 		getRenderer().useLights(lights);
 		
-		//entites.get(0).bindTextures();
-		/*for(int i = 0; i < entites.size(); i++) {
-			render(entites.get(i));
-		}*/
 		e.bindTextures();
 		render(e);
 		
 		
-		System.out.println(getFps());
+		//System.out.println(getFps());
 		setFpsCap(120);
 	}
 

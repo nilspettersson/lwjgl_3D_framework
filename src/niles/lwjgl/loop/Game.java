@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
+import niles.lwjgl.world.Input;
 import niles.lwjgl.world.Mouse;
 import niles.lwjgl.world.Window;
 
@@ -17,6 +18,7 @@ public abstract class Game {
 	private Window window;
 	private Camera camera;
 	private Renderer renderer;
+	private Input input;
 	
 	private Vector4f backgroundColor;
 	private int fpsCap;
@@ -24,6 +26,7 @@ public abstract class Game {
 	public Game(int width,int height,boolean fullsceen,Vector4f backgroundColor,int fpsCap) {
 		window=new Window(width, height, fullsceen);
 		camera=new Camera();
+		input = new Input(getWindow());
 		
 		this.backgroundColor=backgroundColor;
 		this.fpsCap=fpsCap;
@@ -37,6 +40,7 @@ public abstract class Game {
 		window=new Window(1920, 1080, true);
 		camera=new Camera();
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.01f, 10000);
+		input = new Input(getWindow());
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;
@@ -143,6 +147,10 @@ public abstract class Game {
 
 	public Renderer getRenderer() {
 		return renderer;
+	}
+
+	public Input getInput() {
+		return input;
 	}
 
 

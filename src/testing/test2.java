@@ -22,44 +22,22 @@ public class test2 extends Game {
 	}
 	
 	Geometry loaded;
-	
 	Entity e;
-	
-	Input input;
-	
 	Lights lights;
 	
-
-    
 	@Override
 	public void setup() {
-		
 		lights = new Lights();
 		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 10);
 		
-		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
-		
-		
-		
-		Geometry gg = new Geometry(36 * 20 * 20 * 20);
-		gg.createCube(0, 0, 0, new Vector4f(1));
-
-		
-		
 		
 		e = new Entity(36);
 		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
 		e.bindGeometry();
 		
-		System.out.println(gg);
-		System.out.println(e.getGeometry());
-		
-		input = new Input(getWindow());
-		
 	}
 	
-
 	@Override
 	public void update() {
 		Mouse.isVisible(getWindow(), false);
@@ -70,22 +48,22 @@ public class test2 extends Game {
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
 		float speed = 0.2f;
-		if(input.isDown(GLFW_KEY_W)) {
+		if(getInput().isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
-		if(input.isDown(GLFW_KEY_S)) {
+		if(getInput().isDown(GLFW_KEY_S)) {
 			moveCameraBackward(speed);
 		}
-		if(input.isDown(GLFW_KEY_A)) {
+		if(getInput().isDown(GLFW_KEY_A)) {
 			moveCameraLeft(speed);
 		}
-		if(input.isDown(GLFW_KEY_D)) {
+		if(getInput().isDown(GLFW_KEY_D)) {
 			moveCameraRight(speed);
 		}
-		if(input.isDown(GLFW_KEY_Q)) {
+		if(getInput().isDown(GLFW_KEY_Q)) {
 			moveCameraDown(speed);
 		}
-		if(input.isDown(GLFW_KEY_E)) {
+		if(getInput().isDown(GLFW_KEY_E)) {
 			moveCameraUp(speed);
 		}
 		

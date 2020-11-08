@@ -98,7 +98,16 @@ void main(){
 		gl_FragColor = texture;
 	}
 	else{
-		float disToObject = z - dis;
+		//z: distance to object.
+		//dis: dis is the distance to ray hit.
+		float disToObject;
+		if(dis > 0){
+			disToObject = z - dis;
+		}
+		else{
+			disToObject = z;
+		}
+		
 		
 		float minDis = min(disToObject, rayDepth);
 		minDis *= 0.02;

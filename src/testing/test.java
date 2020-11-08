@@ -53,7 +53,7 @@ public class test extends Game {
 		lights = new Lights();
 		lights.addLight(new Vector3f(8, 6, 4), new Vector3f(1f, 1f, 1f), 10);
 		for(int i = 0; i < 20; i++) {
-			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 50);
+			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
 		}
 		
 		
@@ -64,7 +64,7 @@ public class test extends Game {
 		for(int x = 0; x < 20; x++) {
 			for(int y = 0; y < 20; y++) {
 				for(int z = 0; z < 20; z++) {
-					g.createCube(x * 6 - 100, y * 6, z * 6 - 100, new Vector4f(1));
+					g.createCube(x * 6 - 100, y * 6, z * 6 - 100, new Vector4f(0));
 				}
 			}
 		}

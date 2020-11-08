@@ -99,8 +99,9 @@ void main(){
 	}
 	else{
 		float disToObject = z - dis;
+		
 		float minDis = min(disToObject, rayDepth);
-		minDis *= 0.008;
+		minDis *= 0.02;
 		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
 		gl_FragColor = vec4(output, 1);
 	}

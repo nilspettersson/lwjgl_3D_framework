@@ -52,7 +52,7 @@ public class test extends Game {
 		
 		lights = new Lights();
 		lights.addLight(new Vector3f(8, 6, 4), new Vector3f(1f, 1f, 1f), 10);
-		for(int i = 0; i < 24; i++) {
+		for(int i = 0; i < 20; i++) {
 			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 50);
 		}
 		
@@ -137,7 +137,7 @@ public class test extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.6f;
+		float speed = 0.2f;
 		if(input.isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}

@@ -24,6 +24,7 @@ vec3 rotate_vector( vec4 quat, vec3 vec )
 
 
 
+
 float getDist(vec3 point){
 	vec4 ball = vec4(-30, 30, 0, 50);
 	float ballDist = length(point - ball.xyz) - ball.w;
@@ -36,23 +37,23 @@ float getDepth(vec3 point){
 	return ballDist;
 }
 
-vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
+vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth, float cosA){
 	float DistOrigin = 0;
 	
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir * DistOrigin;
 		float dist = getDist(point);
 		DistOrigin += dist;
-		if(DistOrigin > 1000 || dist < 0.01 ){
+		if(DistOrigin  > 1000 || dist < 0.01 ){
 			break;
 		}
-		if(DistOrigin > maxDepth){
+		if(DistOrigin * cosA > maxDepth){
 			DistOrigin = 1000;
 			break;
 		}
 	}
 	
-	float depth = DistOrigin + 0.1;
+	float depth = DistOrigin  + 0.1;
 	
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir * depth;
@@ -66,6 +67,21 @@ vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth){
 	return vec2(DistOrigin, max((depth - DistOrigin), 0));
 }
 
+vec3 calculateFragementRay(in vec2 fragCoord, in vec3 resolution){
+    vec2 uv = fragCoord;
+    uv.x = (uv.x * 2.0) - 1.0;
+    uv.y = (2.0 * uv.y) - 1.0;
+    if(resolution.x >= resolution.y){
+        uv.x *= resolution.x/resolution.y;
+    }else{
+        uv.y *= resolution.y/resolution.x;
+    }
+    float tan_fov = tan(1.2217/2.0);
+    vec2 pxy = uv * tan_fov;
+    vec3 ray_dir = normalize(vec3(pxy, 1));
+    return ray_dir;
+}
+
 
 void main(){
 	tex_coords.y = 1.0 - tex_coords.y;
@@ -75,26 +91,29 @@ void main(){
 	
 	//gets the depth texture
 	vec4 depth=texture2D(sampler[10], tex_coords);
-	float z = (0.01 * 10000) / (10000 - depth.x * (10000 - 0.01));
-	//z *= 0.01;
+	float z = (0.1 * 1000.0) / (1000 - depth.z * (1000 - 0.1));
 	
 	
-	vec2 res = vec2(1, 1);
-	vec2 uv = (tex_coords - 0.5 * res.xy) / res.y;
+
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
-	vec3 rayDir = (vec3(uv.x * 1.77, uv.y, 0.72));
+	
+	
+	vec3 rayDir = calculateFragementRay(tex_coords, vec3(1.77, 1, 0.72));
+	
+	float cosA = rayDir.z;
 	
 	
 	rayDir = rotate_vector(cameraRotation, rayDir);
-	rayDir = normalize(rayDir);
 	
 	
-	vec2 rayDis = rayMarch(rayOrigin, rayDir, z);
+	vec2 rayDis = rayMarch(rayOrigin, rayDir, z, cosA);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
 	
-	if(dis * 0.001 >= 1){
+	
+	
+	if(dis >= 1000){
 		gl_FragColor = texture;
 	}
 	else{
@@ -102,7 +121,7 @@ void main(){
 		//dis: dis is the distance to ray hit.
 		float disToObject;
 		if(dis > 0){
-			disToObject = z - dis;
+			disToObject = z - dis * cosA;
 		}
 		else{
 			disToObject = z;
@@ -111,12 +130,10 @@ void main(){
 		
 		float minDis = min(disToObject, rayDepth);
 
-		minDis *= 0.01;
+		minDis = pow(minDis,2);
+		minDis *= 0.0004;
 		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
 		gl_FragColor = vec4(output, 1);
 	}
-	
-	
-	
 	
 }

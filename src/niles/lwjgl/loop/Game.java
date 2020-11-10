@@ -39,7 +39,7 @@ public abstract class Game {
 	public Game() {
 		window=new Window(1920, 1080, true);
 		camera=new Camera();
-		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.01f, 10000);
+		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		input = new Input(getWindow());
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);

@@ -51,10 +51,10 @@ public class test extends Game {
 		shader = new Shader("post");
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(8, 6, 4), new Vector3f(1f, 1f, 1f), 10);
-		for(int i = 0; i < 20; i++) {
+		lights.addLight(new Vector3f(24, 12, 12), new Vector3f(1f, 1f, 1f), 40);
+		/*for(int i = 0; i < 20; i++) {
 			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
-		}
+		}*/
 		
 		
 		//testing many cubes in one buffer. one cube has 36 vertices.
@@ -64,7 +64,7 @@ public class test extends Game {
 		for(int x = 0; x < 20; x++) {
 			for(int y = 0; y < 20; y++) {
 				for(int z = 0; z < 20; z++) {
-					g.createCube(x * 6 - 100, y * 6, z * 6 - 100, new Vector4f(0));
+					//g.createCube(x * 6 - 100, y * 6, z * 6 - 100, new Vector4f(0));
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public class test extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.2f;
+		float speed = 0.4f;
 		if(input.isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
@@ -173,6 +173,7 @@ public class test extends Game {
 		
 		fbo.bindTexture();
 		fbo.bindDepthTexture();
+		fbo.useLights(shader, lights);
 		
 		fbo.render(shader, getCamera());
 		

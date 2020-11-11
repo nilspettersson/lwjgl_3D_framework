@@ -1,5 +1,11 @@
 #version 120
 
+uniform vec3 lightColors[128];
+uniform vec3 lightPositions[128];
+uniform float lightIntensity[128];
+uniform int lightCount;
+
+
 uniform sampler2D sampler[20];
 uniform vec3 cameraPosition;
 uniform vec4 cameraRotation;
@@ -116,6 +122,13 @@ void main(){
 	
 	
 	if(dis >= 1000){
+		vec3 toLight = lightPositions[0] - cameraPosition;
+		toLight = normalize(toLight);
+		toLight.z *= -1;
+		
+		float lightDot = dot(rayDir, toLight);
+		
+		vec3 output = vec3(texture.xyz + max(lightDot, 0));
 		gl_FragColor = texture;
 	}
 	else{
@@ -132,8 +145,18 @@ void main(){
 		float minDis = min(disToObject, rayDepth);
 
 		minDis = pow(minDis,2);
-		minDis *= 0.0004;
-		vec3 output = mix(vec3(0, 0, 0), texture.xyz, minDis);
+		minDis *= 0.00005;
+		
+		
+		vec3 toLight = lightPositions[0] - cameraPosition;
+		toLight = normalize(toLight);
+		toLight.z *= -1;
+		float lightDot = dot(rayDir, toLight);
+		
+		float light = pow(max(lightDot, 0), 10);
+		
+		
+		vec3 output = mix(vec3(light), texture.xyz, minDis);
 		gl_FragColor = vec4(output, 1);
 	}
 	

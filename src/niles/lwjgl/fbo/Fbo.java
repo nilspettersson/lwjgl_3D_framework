@@ -38,6 +38,7 @@ import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL20.*;
 
+import niles.lwjgl.light.Lights;
 import niles.lwjgl.util.Model;
 import niles.lwjgl.util.Shader;
 import niles.lwjgl.world.Camera;
@@ -95,6 +96,25 @@ public class Fbo {
         
         glClearColor (0.0f, 0.0f, 0.0f, 1f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+	
+	
+	public void useLights(Shader shader, Lights lights) {
+		int size = lights.getLights().size();
+		Vector3f[] positions = new Vector3f[size];
+		Vector3f[] colors = new Vector3f[size];
+		float[] intensity = new float[size];
+		
+		for(int i = 0; i < size; i++) {
+			positions[i] = lights.getLights().get(i).getPosition();
+			colors[i] = lights.getLights().get(i).getColor();
+			intensity[i] = lights.getLights().get(i).getIntensity();
+		}
+		
+		shader.setUniform("lightPositions", positions);
+		shader.setUniform("lightColors", colors);
+		shader.setUniform("lightIntensity", intensity);
+		shader.setUniform("lightCount", colors.length);
 	}
 
 	

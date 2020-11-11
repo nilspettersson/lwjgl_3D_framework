@@ -119,7 +119,6 @@ public class Fbo {
 
 	
 	public void render(Shader shader, Camera camera) {
-        shader.bind();
         shader.setUniform("cameraPosition", camera.getPosition());
         
         Quaternionf rotation = new Quaternionf(0, 0, 0);

@@ -51,7 +51,7 @@ public class test extends Game {
 		shader = new Shader("post");
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(24, 12, 12), new Vector3f(1f, 1f, 1f), 40);
+		lights.addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 40);
 		/*for(int i = 0; i < 20; i++) {
 			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
 		}*/
@@ -127,6 +127,7 @@ public class test extends Game {
 		
 	}
 	
+	float value = -9;
 
 	@Override
 	public void update() {
@@ -173,12 +174,12 @@ public class test extends Game {
 		
 		fbo.bindTexture();
 		fbo.bindDepthTexture();
+		shader.bind();
 		fbo.useLights(shader, lights);
 		
 		fbo.render(shader, getCamera());
-		
-		
-		
+		value+=0.003f;
+		lights.getLights().get(0).setPosition(lights.getLights().get(0).getPosition().add((float) Math.sin(value * 9),0,0));		
 		
 		System.out.println(getFps());
 		setFpsCap(120);

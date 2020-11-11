@@ -148,15 +148,17 @@ void main(){
 		minDis *= 0.00005;
 		
 		
+		
 		vec3 toLight = lightPositions[0] - cameraPosition;
 		toLight = normalize(toLight);
 		toLight.z *= -1;
 		float lightDot = dot(rayDir, toLight);
 		
-		float light = pow(max(lightDot, 0), 10);
+		float light = pow(max(lightDot, 0), 8);
 		
+		vec3 lightColor = vec3(lightColors[0] * light);
 		
-		vec3 output = mix(vec3(light), texture.xyz, minDis);
+		vec3 output = mix(lightColor, texture.xyz, minDis);
 		gl_FragColor = vec4(output, 1);
 	}
 	

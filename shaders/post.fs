@@ -82,6 +82,10 @@ vec3 calculateFragementRay(in vec2 fragCoord, in vec3 resolution){
     return ray_dir;
 }
 
+vec3 mix(vec3 color1, vec3 color2, float mixValue){
+	return color1 * mixValue + color2 * (1 - mixValue);
+}
+
 
 void main(){
 	tex_coords.y = 1.0 - tex_coords.y;
@@ -100,9 +104,7 @@ void main(){
 	
 	
 	vec3 rayDir = calculateFragementRay(tex_coords, vec3(1.77, 1, 0.72));
-	
 	float cosA = rayDir.z;
-	
 	
 	rayDir = rotate_vector(cameraRotation, rayDir);
 	
@@ -127,12 +129,11 @@ void main(){
 			disToObject = z;
 		}
 		
-		
 		float minDis = min(disToObject, rayDepth);
 
 		minDis = pow(minDis,2);
 		minDis *= 0.0004;
-		vec3 output = texture.xyz * (1 - minDis) + vec3(1, 1, 1) * minDis;
+		vec3 output = mix(vec3(0, 0, 0), texture.xyz, minDis);
 		gl_FragColor = vec4(output, 1);
 	}
 	

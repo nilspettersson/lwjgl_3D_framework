@@ -32,13 +32,13 @@ vec3 rotate_vector( vec4 quat, vec3 vec )
 
 
 float getDist(vec3 point){
-	vec4 ball = vec4(-30, 30, 0, 50);
+	vec4 ball = vec4(-30, 30, 0, 70);
 	float ballDist = length(point - ball.xyz) - ball.w;
 	return ballDist;
 }
 
 float getDepth(vec3 point){
-	vec4 ball = vec4(-30, 30, 0, 50);
+	vec4 ball = vec4(-30, 30, 0, 70);
 	float ballDist = ball.w - length(point - ball.xyz);
 	return ballDist;
 }
@@ -144,21 +144,26 @@ void main(){
 		
 		float minDis = min(disToObject, rayDepth);
 
-		minDis = pow(minDis,2);
-		minDis *= 0.00005;
+		minDis = sqrt(minDis);
+		minDis *= 0.2;
 		
+		vec3 lightColor = vec3(0, 0, 0);
+		for(int i = 0; i < lightCount; i++){
+			vec3 toLight = lightPositions[i] - cameraPosition;
+			toLight = normalize(toLight);
+			toLight.z *= -1;
+			float lightDot = dot(rayDir, toLight);
+			
+			float light = pow(max(lightDot, 0), 8);
+			
+			lightColor += vec3(lightColors[i] * light);
+		}
+		lightColor /= lightCount;
+		lightColor *= 2;
+		lightColor = vec3(min(lightColor.x, 1), min(lightColor.y, 1), min(lightColor.z, 1));
+		lightColor = max(lightColor, 0.05);
 		
-		
-		vec3 toLight = lightPositions[0] - cameraPosition;
-		toLight = normalize(toLight);
-		toLight.z *= -1;
-		float lightDot = dot(rayDir, toLight);
-		
-		float light = pow(max(lightDot, 0), 8);
-		
-		vec3 lightColor = vec3(lightColors[0] * light);
-		
-		vec3 output = mix(lightColor, texture.xyz, minDis);
+		vec3 output = mix(lightColor, texture.xyz, min(minDis, 0.9));
 		gl_FragColor = vec4(output, 1);
 	}
 	

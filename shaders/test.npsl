@@ -1,4 +1,3 @@
 uniforms{
-	int x,
-	vec3 y
+	vec3 c
 }

@@ -83,7 +83,7 @@ public class ShaderNp {
 		}
 		
 		
-		String text = readNpsl(filename); 
+		String[] npsl = readNpsl(filename); 
 		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fs,"#version 120\r\n" + 
@@ -94,6 +94,7 @@ public class ShaderNp {
 				"uniform vec3 lightPositions[128];\r\n" + 
 				"uniform float lightIntensity[128];\r\n" + 
 				"uniform int lightCount;\r\n" + 
+				npsl[0],
 				"\r\n" + 
 				"in vec2 tex_coords;\r\n" + 
 				"in vec4 color;\r\n" + 
@@ -132,6 +133,7 @@ public class ShaderNp {
 				"	\r\n" + 
 				"	\r\n" + 
 				"	vec4 output = mix(diffuse, glossy, 0.7);\r\n" + 
+				"	output.xyz = c;",
 				"	gl_FragColor = output;\r\n" + 
 				"	\r\n" + 
 				"	\r\n" + 
@@ -166,7 +168,7 @@ public class ShaderNp {
 		
 	}
 	
-	public String readNpsl(String filename) {
+	public String[] readNpsl(String filename) {
 		String text = readFile(filename);
 		int start = text.indexOf("uniforms{") + 10;
 		
@@ -179,7 +181,6 @@ public class ShaderNp {
 				end = text.indexOf("}", start) - 1;
 				done = true;
 			}
-			
 			String uniform = "uniform " + text.substring(start, end) + ";";
 			uniforms += uniform.trim() + "\r\n";
 			
@@ -188,7 +189,7 @@ public class ShaderNp {
 		
 		System.out.println(uniforms);
 		
-		return "";
+		return new String[]{uniforms};
 	}
 	
 	

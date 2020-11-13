@@ -26,20 +26,24 @@ public class Renderer {
 	}
 	
 	public void render(Camera camera, Entity entity) {
+		entity.getMaterial().useShader();
+		
 		glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
 		
 		Matrix4f projection = camera.getProjection();
 		Matrix4f transform = camera.getTransformation();
 		Matrix4f object = entity.getTransform().getTransformation();
 		
-		shader.setUniform("projection", projection);
-		shader.setUniform("transform", transform);	
-		shader.setUniform("objectTransform", object);
-		shader.setUniform("cameraPosition", camera.getPosition());
+		entity.getMaterial().getShader().setUniform("projection", projection);
+		entity.getMaterial().getShader().setUniform("transform", transform);	
+		entity.getMaterial().getShader().setUniform("objectTransform", object);
+		entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
+		
+		
 		entity.getGeometry().getVao().render();
 	}
 	
-	public void useLights(Lights lights) {
+	public void useLights(Lights lights, Entity entity) {
 		int size = lights.getLights().size();
 		Vector3f[] positions = new Vector3f[size];
 		Vector3f[] colors = new Vector3f[size];

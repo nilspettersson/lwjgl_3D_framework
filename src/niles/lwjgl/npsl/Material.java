@@ -43,4 +43,14 @@ public class Material {
 		}
 	}
 
+	public ShaderNp getShader() {
+		return shader;
+	}
+
+	public void setShader(ShaderNp shader) {
+		this.shader = shader;
+	}
+	
+	
+
 }

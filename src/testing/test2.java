@@ -71,8 +71,8 @@ public class test2 extends Game {
 			moveCameraUp(speed);
 		}
 		
-		getRenderer().bindShader();
-		getRenderer().useLights(lights);
+		//getRenderer().bindShader();
+		getRenderer().useLights(lights, e);
 		
 		e.bindTextures();
 		render(e);

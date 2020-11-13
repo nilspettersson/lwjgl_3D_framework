@@ -9,6 +9,8 @@ import niles.lwjgl.entity.Entity;
 import niles.lwjgl.entity.Geometry;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
+import niles.lwjgl.npsl.Material;
+import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.world.Mouse;
 
 public class test2 extends Game {
@@ -19,8 +21,18 @@ public class test2 extends Game {
 	Entity e;
 	Lights lights;
 	
+	ShaderNp shader;
+	
 	@Override
 	public void setup() {
+		shader = new ShaderNp("asd");
+		Material m = new Material(shader);
+		
+		m.setProperty("x", 2);
+		m.setProperty("position", new Vector3f(1));
+		
+		m.useShader();
+		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
 		e = new Entity(36);

@@ -85,6 +85,7 @@ void main(){
 	SolidBrightness = max(SolidBrightness, 0.3);
 	
 	
+	
 	//diffuse color
 	vec4 color = vec4(texture + color);
 	vec4 diffuse = diffuse(color);

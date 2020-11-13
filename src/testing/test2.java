@@ -11,6 +11,7 @@ import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.npsl.Material;
 import niles.lwjgl.npsl.ShaderNp;
+import niles.lwjgl.util.Texture;
 import niles.lwjgl.world.Mouse;
 
 public class test2 extends Game {
@@ -25,18 +26,17 @@ public class test2 extends Game {
 	
 	@Override
 	public void setup() {
-		shader = new ShaderNp("asd");
-		/*Material m = new Material(shader);
+		shader = new ShaderNp("test.npsl");
 		
-		m.setProperty("x", 2);
-		m.setProperty("position", new Vector3f(1));
-		m.useShader();*/
+		
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
 		e = new Entity(36, shader);
 		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
 		e.bindGeometry();
+		e.addTexture(new Texture("res/wood.jpg"));
+		e.getMaterial().setProperty("c", new Vector3f(1, 0, 1));
 		
 		lights = new Lights();
 		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 10);

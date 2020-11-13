@@ -27,7 +27,6 @@ public class Material {
 		shader.bind();
 		
 		for (Entry<String, Object> property : properties.entrySet()) {
-		    System.out.println("Key = " + property.getKey() + ", Value = " + property.getValue());
 		    if(property.getValue().getClass() == Integer.class){
 		    	shader.setUniform(property.getKey(), (int) property.getValue());
 		    }

@@ -1,0 +1,4 @@
+uniforms{
+	int x,
+	vec3 y
+}

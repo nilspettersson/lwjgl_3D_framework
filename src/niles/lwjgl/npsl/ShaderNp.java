@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -23,7 +24,11 @@ public class ShaderNp {
 	
 	private static FloatBuffer matrix=BufferUtils.createFloatBuffer(16);  //this is used to store the matrix.
 	
+	private HashMap<String, Object> properties;
+	
 	public ShaderNp(String filename) {
+		properties = new HashMap<String, Object>();
+		
 		program=glCreateProgram();
 		vs=glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vs, "#version 330\r\n" + 
@@ -78,6 +83,8 @@ public class ShaderNp {
 		}
 		
 		
+		String text = readNpsl(filename); 
+		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fs,"#version 120\r\n" + 
 				"\r\n" + 
@@ -97,60 +104,9 @@ public class ShaderNp {
 				"in vec3 toCamera;\r\n" + 
 				"in vec4 worldPosition;\r\n" + 
 				"\r\n" + 
-				"vec4 diffuse(vec4 color){\r\n" + 
-				"	vec3 allLight = vec3(0, 0, 0);\r\n" + 
-				"	for(int i = 0; i < lightCount; i++){\r\n" + 
-				"		vec3 toLight = lightPositions[i] - worldPosition.xyz;\r\n" + 
-				"		float disToLight = length(toLight)/8;\r\n" + 
-				"		\r\n" + 
-				"		float brightness = dot(normalize(normal), normalize(toLight));\r\n" + 
-				"		brightness = max(brightness, 0);\r\n" + 
-				"		float attenuation = lightIntensity[i] / (4.0 + 1*disToLight + 1 * disToLight * disToLight);\r\n" + 
-				"		brightness *= attenuation;\r\n" + 
-				"		\r\n" + 
-				"		vec3 light = lightColors[i] * brightness;\r\n" + 
-				"		allLight += light;\r\n" + 
-				"	}\r\n" + 
-				"	\r\n" + 
-				"	vec4 diffuse = color;\r\n" + 
-				"	diffuse.xyz *= allLight;\r\n" + 
-				"	return diffuse;\r\n" + 
-				"}\r\n" + 
-				"\r\n" + 
-				"vec4 glossy(vec4 color, float roughness){\r\n" + 
-				"	vec3 allLight = vec3(0, 0, 0);\r\n" + 
-				"	for(int i = 0; i < lightCount; i++){\r\n" + 
-				"		vec3 toLight = lightPositions[i] - worldPosition.xyz;\r\n" + 
-				"		float disToLight = length(toLight);\r\n" + 
-				"		\r\n" + 
-				"		\r\n" + 
-				"		vec3 lightDir = normalize(toLight);\r\n" + 
-				"		vec3 viewDir = normalize(toCamera);\r\n" + 
-				"		vec3 halfwayDir = normalize(lightDir - viewDir);\r\n" + 
-				"		float brightness = pow(max(dot(normalize(normal), halfwayDir), 0), 1 + (1 / roughness));\r\n" + 
-				"		float attenuation = ((lightIntensity[i] / roughness)) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);\r\n" + 
-				"		brightness *= attenuation;\r\n" + 
-				"		\r\n" + 
-				"		//makes it less bright when right over object.\r\n" + 
-				"		float cameraDot = dot(normalize(toCamera), normalize(normal));\r\n" + 
-				"		brightness *= smoothstep(-1.4, 1,cameraDot);\r\n" + 
-				"		\r\n" + 
-				"		\r\n" + 
-				"		if(dot(normalize(normal), normalize(toLight)) <= 0){\r\n" + 
-				"			brightness = 0;\r\n" + 
-				"		}\r\n" + 
-				"		brightness = max(brightness, 0.01);\r\n" + 
-				"		\r\n" + 
-				"		vec3 light = lightColors[i] * brightness;\r\n" + 
-				"		allLight += light;\r\n" + 
-				"		\r\n" + 
-				"	}\r\n" + 
-				"	\r\n" + 
-				"	float col = (color.x + color.y + color.z) / 3;\r\n" + 
-				"	vec4 glossy = vec4(col, col, col, 1);\r\n" + 
-				"	glossy.xyz *= allLight;\r\n" + 
-				"	return glossy;\r\n" + 
-				"}\r\n" + 
+				
+				readFile("/lib/shaderLib")+
+				
 				"\r\n" + 
 				"void main(){\r\n" + 
 				"\r\n" + 
@@ -187,6 +143,7 @@ public class ShaderNp {
 		}
 		
 		
+		
 		glAttachShader(program, vs);
 		glAttachShader(program, fs);
 		
@@ -207,7 +164,31 @@ public class ShaderNp {
 		}
 		
 		
+	}
+	
+	public String readNpsl(String filename) {
+		String text = readFile(filename);
+		int start = text.indexOf("uniforms{") + 10;
 		
+		String uniforms = "";
+		
+		boolean done = false;
+		while(!done) {
+			int end = text.indexOf(",", start);
+			if(end == -1 || text.indexOf("}", start) < end) {
+				end = text.indexOf("}", start) - 1;
+				done = true;
+			}
+			
+			String uniform = "uniform " + text.substring(start, end) + ";";
+			uniforms += uniform.trim() + "\r\n";
+			
+			start = end + 2;
+		}
+		
+		System.out.println(uniforms);
+		
+		return "";
 	}
 	
 	

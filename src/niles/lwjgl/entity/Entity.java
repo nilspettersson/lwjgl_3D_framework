@@ -2,6 +2,8 @@ package niles.lwjgl.entity;
 
 import java.util.ArrayList;
 
+import niles.lwjgl.npsl.Material;
+import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.util.Texture;
 
 public class Entity {
@@ -9,11 +11,14 @@ public class Entity {
 	private Geometry geometry;
 	private Transform transform;
 	private ArrayList<Texture> textures;
+	private Material material;
 	
-	public Entity(int geometrySize) {
+	public Entity(int geometrySize, ShaderNp shader) {
 		geometry = new Geometry(geometrySize);
 		transform = new Transform();
 		textures = new ArrayList<Texture>();
+		
+		material = new Material(shader);
 	}
 	
 	public void addTexture(Texture texture) {
@@ -44,6 +49,22 @@ public class Entity {
 
 	public void setTransform(Transform transform) {
 		this.transform = transform;
+	}
+
+	public ArrayList<Texture> getTextures() {
+		return textures;
+	}
+
+	public void setTextures(ArrayList<Texture> textures) {
+		this.textures = textures;
+	}
+
+	public Material getMaterial() {
+		return material;
+	}
+
+	public void setMaterial(Material material) {
+		this.material = material;
 	}
 	
 	

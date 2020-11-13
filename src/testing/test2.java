@@ -26,16 +26,15 @@ public class test2 extends Game {
 	@Override
 	public void setup() {
 		shader = new ShaderNp("asd");
-		Material m = new Material(shader);
+		/*Material m = new Material(shader);
 		
 		m.setProperty("x", 2);
 		m.setProperty("position", new Vector3f(1));
-		
-		m.useShader();
+		m.useShader();*/
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
-		e = new Entity(36);
+		e = new Entity(36, shader);
 		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
 		e.bindGeometry();
 		

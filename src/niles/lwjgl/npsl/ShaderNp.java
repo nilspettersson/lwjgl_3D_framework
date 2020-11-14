@@ -106,14 +106,13 @@ public class ShaderNp {
 				"in vec4 worldPosition;\r\n" + 
 				"\r\n" + 
 				
-				readFile("/lib/shaderLib")+
+				readFile("/lib/shaderLib.glsl")+
 				
 				"\r\n" + 
 				"void main(){\r\n" + 
 				"\r\n" + 
-				"	float depth = gl_FragCoord.w*4;\r\n" + 
+				"	float depth = gl_FragCoord.w;\r\n" + 
 				"	\r\n" + 
-				"		\r\n" + 
 				"	int id = int(textureId);\r\n" + 
 				"	vec4 texture=texture2D(sampler[id], tex_coords);\r\n" + 
 				"	\r\n" + 
@@ -133,7 +132,6 @@ public class ShaderNp {
 				"	\r\n" + 
 				"	\r\n" + 
 				"	vec4 output = mix(diffuse, glossy, 0.7);\r\n" + 
-				"	output.xyz = c;",
 				"	gl_FragColor = output;\r\n" + 
 				"	\r\n" + 
 				"	\r\n" + 
@@ -175,6 +173,7 @@ public class ShaderNp {
 		String uniforms = "";
 		
 		boolean done = false;
+		int loopCount = 0;
 		while(!done) {
 			int end = text.indexOf(",", start);
 			if(end == -1 || text.indexOf("}", start) < end) {
@@ -185,9 +184,31 @@ public class ShaderNp {
 			uniforms += uniform.trim() + "\r\n";
 			
 			start = end + 2;
+			if(loopCount == 0 && done == true) {
+				uniforms = "";
+			}
 		}
-		
-		System.out.println(uniforms);
+		start = text.indexOf("fragment{") + 9;
+		int openIndex = text.indexOf("{", start);
+		int closeIndex = text.indexOf("}", start);
+		done = false;
+		while(true) {
+			if(closeIndex < openIndex || openIndex == -1) {
+				break;
+			}
+			openIndex = text.indexOf("{", closeIndex + 1);
+			if(openIndex == -1) {
+				closeIndex = text.indexOf("}", closeIndex + 1);
+			}
+			else {
+				closeIndex = text.indexOf("}", openIndex + 1);
+			}
+			
+		}
+			
+		int end = closeIndex;
+		System.out.println(start +"  "+end);
+		System.out.println(text.substring(start, end));
 		
 		return new String[]{uniforms};
 	}

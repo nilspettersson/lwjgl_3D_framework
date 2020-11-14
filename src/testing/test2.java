@@ -26,7 +26,7 @@ public class test2 extends Game {
 	
 	@Override
 	public void setup() {
-		shader = new ShaderNp("test.npsl");
+		shader = new ShaderNp("test.glsl");
 		
 		
 		

@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class Material {
 	
@@ -38,6 +39,13 @@ public class Material {
 		    }
 		    else if(property.getValue().getClass() == Vector3f.class){
 		    	shader.setUniform(property.getKey(), (Vector3f) property.getValue());
+		    }
+		    else if(property.getValue().getClass() == Vector4f.class){
+		    	shader.setUniform(property.getKey(), (Vector4f) property.getValue());
+		    }
+		    else {
+		    	System.err.print("uniform type is not a valid property: " + property.getValue().getClass());
+		    	System.exit(0);
 		    }
 		}
 	}

@@ -36,7 +36,7 @@ public class test2 extends Game {
 		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
 		e.bindGeometry();
 		e.addTexture(new Texture("res/wood.jpg"));
-		e.getMaterial().setProperty("c", new Vector3f(1, 0, 1));
+		e.getMaterial().setProperty("c", 3);
 		
 		lights = new Lights();
 		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 4);

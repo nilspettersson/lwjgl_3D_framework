@@ -90,7 +90,6 @@ public class ShaderNp {
 		for(int i = 0; i < includes.length; i++) {
 			libText += readFile("/" + includes[i]);
 		}
-		System.out.println(libText);
 		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fs,"#version 120\r\n" + 
@@ -178,7 +177,7 @@ public class ShaderNp {
 			}
 			start += 9;
 		}
-		System.out.println(includes);
+		
 		
 		//get the uniforms from file.
 		start = text.indexOf("uniforms{") + 10;
@@ -221,7 +220,6 @@ public class ShaderNp {
 		String fragment = text.substring(start, end);
 		fragment = fragment.replace("return ", "gl_FragColor = ");
 		
-		System.out.println(fragment);
 		
 		return new String[]{includes, uniforms, fragment};
 	}

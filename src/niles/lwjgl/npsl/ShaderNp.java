@@ -85,6 +85,12 @@ public class ShaderNp {
 		
 		String[] npsl = readNpsl(filename); 
 		
+		String[] includes = npsl[0].split(",");
+		String libText = "";
+		for(int i = 0; i < includes.length; i++) {
+			libText += readFile("/" + includes[i]);
+		}
+		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fs,"#version 120\r\n" + 
 				"\r\n" + 
@@ -94,7 +100,7 @@ public class ShaderNp {
 				"uniform vec3 lightPositions[128];\r\n" + 
 				"uniform float lightIntensity[128];\r\n" + 
 				"uniform int lightCount;\r\n" + 
-				npsl[0],
+				npsl[1],
 				"\r\n" + 
 				"in vec2 tex_coords;\r\n" + 
 				"in vec4 color;\r\n" + 
@@ -105,9 +111,7 @@ public class ShaderNp {
 				"in vec3 toCamera;\r\n" + 
 				"in vec4 worldPosition;\r\n" + 
 				"\r\n" + 
-				
-				readFile("/lib/shaderLib.glsl")+
-				
+				libText+
 				"\r\n" + 
 				"void main(){\r\n" + 
 				"\r\n" + 
@@ -122,17 +126,7 @@ public class ShaderNp {
 				"	SolidBrightness = max(SolidBrightness, 0.3);\r\n" + 
 				"	\r\n" + 
 				"	\r\n" + 
-				"	\r\n" + 
-				"	//diffuse color\r\n" + 
-				"	vec4 color = vec4(texture + color);\r\n" + 
-				"	vec4 diffuse = diffuse(color);\r\n" + 
-				"	\r\n" + 
-				"	//glossy\r\n" + 
-				"	vec4 glossy = glossy(color, 0.01);\r\n" + 
-				"	\r\n" + 
-				"	\r\n" + 
-				"	vec4 output = mix(diffuse, glossy, 0.7);\r\n" + 
-				"	gl_FragColor = output;\r\n" + 
+				npsl[2],
 				"	\r\n" + 
 				"	\r\n" + 
 				"}");
@@ -168,10 +162,26 @@ public class ShaderNp {
 	
 	public String[] readNpsl(String filename) {
 		String text = readFile(filename);
-		int start = text.indexOf("uniforms{") + 10;
 		
+		String includes = "";
+		int start = text.indexOf("#include ") + 9;
+		while(true) {
+			int end = text.indexOf(";", start);
+			String include = text.substring(start, end);
+			includes += include + ",";
+			
+			start = text.indexOf("#include ", end);
+			
+			if(start == -1) {
+				break;
+			}
+			start += 9;
+		}
+		System.out.println(includes);
+		
+		//get the uniforms from file.
+		start = text.indexOf("uniforms{") + 10;
 		String uniforms = "";
-		
 		boolean done = false;
 		int loopCount = 0;
 		while(!done) {
@@ -182,12 +192,13 @@ public class ShaderNp {
 			}
 			String uniform = "uniform " + text.substring(start, end) + ";";
 			uniforms += uniform.trim() + "\r\n";
-			
 			start = end + 2;
 			if(loopCount == 0 && done == true) {
 				uniforms = "";
 			}
 		}
+		
+		//get the fragment code from file.
 		start = text.indexOf("fragment{") + 9;
 		int openIndex = text.indexOf("{", start);
 		int closeIndex = text.indexOf("}", start);
@@ -205,12 +216,13 @@ public class ShaderNp {
 			}
 			
 		}
-			
 		int end = closeIndex;
-		System.out.println(start +"  "+end);
-		System.out.println(text.substring(start, end));
+		String fragment = text.substring(start, end);
+		fragment = fragment.replace("return ", "gl_FragColor = ");
 		
-		return new String[]{uniforms};
+		System.out.println(fragment);
+		
+		return new String[]{includes, uniforms, fragment};
 	}
 	
 	
@@ -382,7 +394,7 @@ public class ShaderNp {
 		BufferedReader br;
 		
 		try {
-			br=new BufferedReader(new FileReader(new File("./shaders/"+filename)));
+			br=new BufferedReader(new FileReader(new File("./shaders/" + filename)));
 			String line;
 			while((line=br.readLine())!=null) {
 				string.append(line);

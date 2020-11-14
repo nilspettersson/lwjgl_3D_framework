@@ -1,14 +1,15 @@
+#include lib/shaderNp.glsl;
+
 uniforms{
 
 }
 
 
 fragment{
-	//diffuse color
 	vec4 color = vec4(texture + color);
+	
 	vec4 diffuse = diffuse(color);
 	
-	//glossy
 	vec4 glossy = glossy(color, 0.01);
 	
 	

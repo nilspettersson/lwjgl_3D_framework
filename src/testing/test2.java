@@ -39,7 +39,7 @@ public class test2 extends Game {
 		e.getMaterial().setProperty("c", new Vector3f(1, 0, 1));
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 10);
+		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 4);
 	}
 	
 	@Override
@@ -51,7 +51,7 @@ public class test2 extends Game {
 		Mouse.moveMouse(getWindow(), 1f);
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
-		float speed = 0.2f;
+		float speed = 0.02f;
 		if(getInput().isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
@@ -71,11 +71,8 @@ public class test2 extends Game {
 			moveCameraUp(speed);
 		}
 		
-		//getRenderer().bindShader();
-		getRenderer().useLights(lights, e);
 		
-		e.bindTextures();
-		render(e);
+		render(e, lights);
 		
 		//System.out.println(getFps());
 		setFpsCap(120);

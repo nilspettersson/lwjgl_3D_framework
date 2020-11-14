@@ -90,6 +90,7 @@ public class ShaderNp {
 		for(int i = 0; i < includes.length; i++) {
 			libText += readFile("/" + includes[i]);
 		}
+		System.out.println(libText);
 		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
 		glShaderSource(fs,"#version 120\r\n" + 

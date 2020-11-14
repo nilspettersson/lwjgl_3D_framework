@@ -11,6 +11,7 @@ import niles.lwjgl.entity.Geometry;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
+import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.util.Shader;
 import niles.lwjgl.util.Texture;
 import niles.lwjgl.world.Input;
@@ -37,7 +38,6 @@ public class test extends Game {
 	
 	ArrayList<Entity> entites;
 	
-	Input input;
 	
 	Lights lights;
 	
@@ -46,9 +46,12 @@ public class test extends Game {
 
     Shader shader;
     
+    ShaderNp shaderNp;
+    
 	@Override
 	public void setup() {
 		shader = new Shader("post");
+		shaderNp = new ShaderNp("test.glsl");
 		
 		lights = new Lights();
 		lights.addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
@@ -84,7 +87,7 @@ public class test extends Game {
 		for(int x = 0; x < 1; x++) {
 			for(int y = 0; y < 1; y++) {
 				for(int z = 0; z < 1; z++) {
-					entites.add(new Entity(48));
+					entites.add(new Entity(48, shaderNp));
 					entites.get(index).setGeometry(g);
 					
 					entites.get(index).getTransform().setScale(new Vector3f(1, 1, 1));
@@ -97,7 +100,7 @@ public class test extends Game {
 				}
 			}
 		}
-		entites.add(new Entity(480));
+		entites.add(new Entity(480, shaderNp));
 		entites.get(entites.size()-1).getGeometry().createFace(0, 0, 1);
 		
 		entites.get(entites.size()-1).getTransform().setScale(new Vector3f(100, 100f, 1));
@@ -114,9 +117,6 @@ public class test extends Game {
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
-		
-		
-		input = new Input(getWindow());
 		
 		getWindow().setVSync(false);
 		
@@ -139,33 +139,30 @@ public class test extends Game {
 		rotateCamera(-Mouse.myY, -Mouse.myX);
 		
 		float speed = 0.4f;
-		if(input.isDown(GLFW_KEY_W)) {
+		if(getInput().isDown(GLFW_KEY_W)) {
 			moveCameraForward(speed);
 		}
-		if(input.isDown(GLFW_KEY_S)) {
+		if(getInput().isDown(GLFW_KEY_S)) {
 			moveCameraBackward(speed);
 		}
-		if(input.isDown(GLFW_KEY_A)) {
+		if(getInput().isDown(GLFW_KEY_A)) {
 			moveCameraLeft(speed);
 		}
-		if(input.isDown(GLFW_KEY_D)) {
+		if(getInput().isDown(GLFW_KEY_D)) {
 			moveCameraRight(speed);
 		}
-		if(input.isDown(GLFW_KEY_Q)) {
+		if(getInput().isDown(GLFW_KEY_Q)) {
 			moveCameraDown(speed);
 		}
-		if(input.isDown(GLFW_KEY_E)) {
+		if(getInput().isDown(GLFW_KEY_E)) {
 			moveCameraUp(speed);
 		}
 		
-		getRenderer().bindShader();
-		getRenderer().useLights(lights);
+		
 		
 		fbo.bind();
-		getRenderer().setShader(new Shader("shader"));
-		entites.get(0).bindTextures();
 		for(int i = 0; i < entites.size(); i++) {
-			render(entites.get(i));
+			render(entites.get(i), lights);
 		}
 		fbo.unBind();
 		

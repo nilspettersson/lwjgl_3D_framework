@@ -27,17 +27,19 @@ public class Renderer {
 		entity.getMaterial().useShader();
 		entity.bindTextures();
 		
-		glUniform1iv(glGetUniformLocation(entity.getMaterial().getShader().getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-		
-		Matrix4f projection = camera.getProjection();
-		Matrix4f transform = camera.getTransformation();
-		Matrix4f object = entity.getTransform().getTransformation();
-		
-		entity.getMaterial().getShader().setUniform("projection", projection);
-		entity.getMaterial().getShader().setUniform("transform", transform);	
-		entity.getMaterial().getShader().setUniform("objectTransform", object);
-		entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
-		
+		//if shader is used man times per game step the only add camera data once.
+		if(!usedShaders.contains(entity.getMaterial().getShader())) {
+			glUniform1iv(glGetUniformLocation(entity.getMaterial().getShader().getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+			
+			Matrix4f projection = camera.getProjection();
+			Matrix4f transform = camera.getTransformation();
+			Matrix4f object = entity.getTransform().getTransformation();
+			
+			entity.getMaterial().getShader().setUniform("projection", projection);
+			entity.getMaterial().getShader().setUniform("transform", transform);	
+			entity.getMaterial().getShader().setUniform("objectTransform", object);
+			entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
+		}
 		
 		entity.getGeometry().getVao().render();
 	}
@@ -45,17 +47,16 @@ public class Renderer {
 	//renders object wit lighting information
 	public void render(Camera camera, Entity entity, Lights lights) {
 		entity.getMaterial().useShader();
-		useLights(lights, entity.getMaterial().getShader());
 		entity.bindTextures();
 		
-		glUniform1iv(glGetUniformLocation(entity.getMaterial().getShader().getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-		
-		Matrix4f projection = camera.getProjection();
-		Matrix4f transform = camera.getTransformation();
-		Matrix4f object = entity.getTransform().getTransformation();
-		
+		//if shader is used man times per game step the only add lighting and camera data once.
 		if(!usedShaders.contains(entity.getMaterial().getShader())) {
-			System.out.println("adding camera info");
+			useLights(lights, entity.getMaterial().getShader());
+			glUniform1iv(glGetUniformLocation(entity.getMaterial().getShader().getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+		
+			Matrix4f projection = camera.getProjection();
+			Matrix4f transform = camera.getTransformation();
+			Matrix4f object = entity.getTransform().getTransformation();
 			entity.getMaterial().getShader().setUniform("projection", projection);
 			entity.getMaterial().getShader().setUniform("transform", transform);	
 			entity.getMaterial().getShader().setUniform("objectTransform", object);

@@ -74,10 +74,7 @@ public class test2 extends Game {
 		}
 		
 		
-		for(int i = 0; i < 1000; i++) {
-			render(e, lights);
-		}
-		System.out.println("clean");
+		render(e, lights);
 		
 		//System.out.println(getFps());
 		setFpsCap(120);

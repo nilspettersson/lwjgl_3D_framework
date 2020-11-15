@@ -33,18 +33,20 @@ public class test2 extends Game {
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
 		e = new Entity(36, shader);
-		e.getGeometry().createCube(0, 0, 0, new Vector4f(1));
+		e.getGeometry().createCube(0, -2, 0, new Vector4f(1));
+		e.getTransform().setScale(new Vector3f(8));
 		e.bindGeometry();
-		e.addTexture(new Texture("res/wood.jpg"));
+		e.addTexture(new Texture("res/bark.jpg"));
 		e.getMaterial().setProperty("c", 3);
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(4,4,4), new Vector3f(1), 4);
+		lights.addLight(new Vector3f(4,-6,4), new Vector3f(1), 9);
 	}
 	
 	@Override
 	public void update() {
 		Mouse.isVisible(getWindow(), false);
+		
 		
 		
 		//camera rotation
@@ -72,7 +74,10 @@ public class test2 extends Game {
 		}
 		
 		
-		render(e, lights);
+		for(int i = 0; i < 1000; i++) {
+			render(e, lights);
+		}
+		System.out.println("clean");
 		
 		//System.out.println(getFps());
 		setFpsCap(120);

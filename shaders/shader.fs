@@ -20,11 +20,11 @@ vec4 diffuse(vec4 color){
 	vec3 allLight = vec3(0, 0, 0);
 	for(int i = 0; i < lightCount; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;
-		float disToLight = length(toLight)/8;
+		float disToLight = length(toLight) / 8;
 		
 		float brightness = dot(normalize(normal), normalize(toLight));
 		brightness = max(brightness, 0);
-		float attenuation = lightIntensity[i] / (4.0 + 1*disToLight + 1 * disToLight * disToLight);
+		float attenuation = lightIntensity[i] / (4.0 + 1 * disToLight + 1 * disToLight * disToLight);
 		brightness *= attenuation;
 		
 		vec3 light = lightColors[i] * brightness;

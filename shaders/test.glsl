@@ -4,16 +4,9 @@ uniforms{
 
 }
 
-
 fragment{
-	vec4 color = vec4(texture + color);
-	
-	vec4 diffuse = diffuse(texture);
-	
-	vec4 glossy = glossy(color, 0.2);
-	
-	
-	vec4 output = mix(diffuse, glossy, 0.7);
+	vec4 diffuse = diffuse(mix(texture, color, 0), texture.xyz * 4);
+	vec4 glossy = glossy(vec4(1), 0.08, texture.xyz * 4);
+	vec4 output = mix(diffuse, glossy, 0);
 	return output;
-	
 }

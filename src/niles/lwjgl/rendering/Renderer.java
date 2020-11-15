@@ -3,6 +3,8 @@ package niles.lwjgl.rendering;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glUniform1iv;
 
+import java.util.ArrayList;
+
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -14,8 +16,10 @@ import niles.lwjgl.world.Camera;
 
 public class Renderer {
 	
+	private ArrayList<Object> usedShaders;
+	
 	public Renderer() {
-		
+		usedShaders = new ArrayList<Object>();
 	}
 	
 	//renders object with out any lighting information
@@ -50,10 +54,15 @@ public class Renderer {
 		Matrix4f transform = camera.getTransformation();
 		Matrix4f object = entity.getTransform().getTransformation();
 		
-		entity.getMaterial().getShader().setUniform("projection", projection);
-		entity.getMaterial().getShader().setUniform("transform", transform);	
-		entity.getMaterial().getShader().setUniform("objectTransform", object);
-		entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
+		if(!usedShaders.contains(entity.getMaterial().getShader())) {
+			System.out.println("adding camera info");
+			entity.getMaterial().getShader().setUniform("projection", projection);
+			entity.getMaterial().getShader().setUniform("transform", transform);	
+			entity.getMaterial().getShader().setUniform("objectTransform", object);
+			entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
+		}
+		
+		usedShaders.add(entity.getMaterial().getShader());
 		
 		entity.getGeometry().getVao().render();
 	}
@@ -93,6 +102,11 @@ public class Renderer {
 		shader.setUniform("lightColors", colors);
 		shader.setUniform("lightIntensity", intensity);
 		shader.setUniform("lightCount", colors.length);
+	}
+	
+	
+	public void clean() {
+		usedShaders = new ArrayList<Object>();
 	}
 
 

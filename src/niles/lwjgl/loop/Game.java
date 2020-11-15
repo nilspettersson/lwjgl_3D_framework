@@ -60,6 +60,7 @@ public abstract class Game {
 			
 			update();
 			
+			renderer.clean();
 			window.clean();
 			window.update(fpsCap);
 			

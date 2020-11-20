@@ -18,9 +18,10 @@ vec4 diffuse(vec4 color){
 	return diffuse;
 }
 
-vec3 bump(float textureId){
+//creates a normal map from the height of a texture.
+vec4 bump(float textureId, float strength){
 	const vec2 size = vec2(2.0,0.0);
-	const ivec3 off = ivec3(-10,0,10);
+	const ivec3 off = ivec3(-1,0,1);
 
     vec4 texture = texture2D(sampler[int(textureId)], tex_coords);
     vec3 s11 = texture.xyz;
@@ -38,14 +39,14 @@ vec3 bump(float textureId){
 	vec3 va = normalize(vec3(size.xy,s21f - s01f));
     vec3 vb = normalize(vec3(size.yx,s12f - s10f));
 
-	vec3 bump = vec3( cross(va,vb));
+	vec4 bump = vec4( cross(va,vb), strength);
 	bump.x *= -1;
 
 	return bump;
 }
 
-vec4 diffuse(vec4 color, vec3 normalMap){
-	vec3 bumpDif = normalMap - vec3(0, 0, 1);
+vec4 diffuse(vec4 color, vec4 normalMap){
+	vec3 bumpDif = normalMap.xyz - vec3(0, 0, 1);
 	if(normal.x < 0){
 		bumpDif.x *= -1;
 		//return vec4(1, 0, 0, 1);
@@ -59,7 +60,7 @@ vec4 diffuse(vec4 color, vec3 normalMap){
 		//return vec4(1, 0, 0, 1);
 	}
 
-	vec3 newNormal = normalize(normalize(normal) + bumpDif * 8);
+	vec3 newNormal = normalize(normalize(normal) + bumpDif  * normalMap.w);
 
 	vec3 allLight = vec3(0, 0, 0);
 	for(int i = 0; i < lightCount; i++){
@@ -114,8 +115,23 @@ vec4 glossy(vec4 color, float roughness){
 	return glossy;
 }
 
-vec4 glossy(vec4 color, float roughness, vec3 normalColor){
-	vec3 newNormal = normal + normalColor;
+vec4 glossy(vec4 color, float roughness, vec4 normalMap){
+	vec3 bumpDif = normalMap.xyz - vec3(0, 0, 1);
+	if(normal.x < 0){
+		bumpDif.x *= -1;
+		//return vec4(1, 0, 0, 1);
+	}
+	if(normal.y < 0){
+		bumpDif.x *= -1;
+		//return vec4(1, 0, 0, 1);
+	}
+	if(abs(normal.y) > abs(normal.x)){
+		bumpDif.xy = bumpDif.yx;
+		//return vec4(1, 0, 0, 1);
+	}
+
+	vec3 newNormal = normalize(normalize(normal) + bumpDif * normalMap.w);
+
 	vec3 allLight = vec3(0, 0, 0);
 	for(int i = 0; i < lightCount; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;

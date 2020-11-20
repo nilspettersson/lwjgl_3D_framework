@@ -1,5 +1,12 @@
 package niles.lwjgl.loop;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -8,6 +15,7 @@ import niles.lwjgl.light.Lights;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
 import niles.lwjgl.world.Input;
+import niles.lwjgl.world.Mouse;
 import niles.lwjgl.world.Window;
 
 public abstract class Game {
@@ -114,6 +122,32 @@ public abstract class Game {
 	}
 	
 	
+	public void simpleCameraRotation(float sensitivity) {
+		Mouse.isVisible(getWindow(), false);
+		Mouse.moveMouse(getWindow(), 1f);
+		rotateCamera(-Mouse.myY, -Mouse.myX);
+	}
+	
+	public void simpleCameraMovement(float speed) {
+		if(getInput().isDown(GLFW_KEY_W)) {
+			moveCameraForward(speed);
+		}
+		if(getInput().isDown(GLFW_KEY_S)) {
+			moveCameraBackward(speed);
+		}
+		if(getInput().isDown(GLFW_KEY_A)) {
+			moveCameraLeft(speed);
+		}
+		if(getInput().isDown(GLFW_KEY_D)) {
+			moveCameraRight(speed);
+		}
+		if(getInput().isDown(GLFW_KEY_Q)) {
+			moveCameraDown(speed);
+		}
+		if(getInput().isDown(GLFW_KEY_E)) {
+			moveCameraUp(speed);
+		}
+	}
 
 	
 

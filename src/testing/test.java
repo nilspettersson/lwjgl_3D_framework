@@ -162,7 +162,7 @@ public class test extends Game {
 		
 		fbo.bind();
 		for(int i = 0; i < entites.size(); i++) {
-			render(entites.get(i), lights);
+			render(entites.get(i));
 		}
 		fbo.unBind();
 		

@@ -25,6 +25,8 @@ public abstract class Game {
 	private Renderer renderer;
 	private Input input;
 	
+	Lights lights;
+	
 	private Vector4f backgroundColor;
 	private int fpsCap;
 	
@@ -32,11 +34,10 @@ public abstract class Game {
 		window=new Window(width, height, fullsceen);
 		camera=new Camera();
 		input = new Input(getWindow());
+		lights = new Lights();
 		
 		this.backgroundColor=backgroundColor;
 		this.fpsCap=fpsCap;
-		
-		
 		
 		loop();
 	}
@@ -46,6 +47,7 @@ public abstract class Game {
 		camera=new Camera();
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		input = new Input(getWindow());
+		lights = new Lights();
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;
@@ -60,7 +62,6 @@ public abstract class Game {
 	public void loop() {
 		renderer = new Renderer();
 		
-		
 		setup();
 		
 		while(window.shouldUpdate()) {
@@ -71,19 +72,12 @@ public abstract class Game {
 			renderer.clean();
 			window.clean();
 			window.update(fpsCap);
-			
 		}
-		
 	}
 	
 	public void render(Entity entity) {
-		renderer.render(getCamera(), entity);
-	}
-	
-	public void render(Entity entity, Lights lights) {
 		renderer.render(getCamera(), entity, lights);
 	}
-	
 	
 	public void rotateCamera(float xAxis, float yAxis) {
 		getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
@@ -187,6 +181,14 @@ public abstract class Game {
 
 	public Input getInput() {
 		return input;
+	}
+
+	public Lights getLights() {
+		return lights;
+	}
+
+	public void setLights(Lights lights) {
+		this.lights = lights;
 	}
 
 

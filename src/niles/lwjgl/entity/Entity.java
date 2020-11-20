@@ -2,6 +2,9 @@ package niles.lwjgl.entity;
 
 import java.util.ArrayList;
 
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import niles.lwjgl.npsl.Material;
 import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.util.Texture;
@@ -19,6 +22,15 @@ public class Entity {
 		textures = new ArrayList<Texture>();
 		
 		material = new Material(shader);
+	}
+	
+	public static Entity cube(float x, float y, float z, float scale, Vector3f color, ShaderNp shader) {
+		Entity e = new Entity(36, shader);
+		e = new Entity(36, shader);
+		e.getGeometry().createCube(x, y, z, new Vector4f(color, 1));
+		e.getTransform().setScale(new Vector3f(scale));
+		e.bindGeometry();
+		return e;
 	}
 	
 	public void addTexture(Texture texture) {

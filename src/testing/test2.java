@@ -36,12 +36,15 @@ public class test2 extends Game {
 		e.getGeometry().createCube(0, -2, 0, new Vector4f(1));
 		e.getTransform().setScale(new Vector3f(8));
 		e.bindGeometry();
-		e.addTexture(new Texture("res/bark.jpg"));
+		e.addTexture(new Texture("res/bump.png"));
 		e.getMaterial().setProperty("c", 3);
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(4,-6,4), new Vector3f(1), 9);
+		lights.addLight(new Vector3f(4,-6,4), new Vector3f(1), 8);
+		
+		
 	}
+	float value = 0;
 	
 	@Override
 	public void update() {
@@ -72,6 +75,14 @@ public class test2 extends Game {
 		if(getInput().isDown(GLFW_KEY_E)) {
 			moveCameraUp(speed);
 		}
+		
+		value+=0.03f;
+		//lights.getLights().get(0).setPosition(new Vector3f( 3,  (float)Math.sin(value * 1) * 6 - 16, 10));
+		//lights.getLights().get(0).setPosition(new Vector3f( (float)Math.sin(value * 1) * 6,  -4, 3));
+		//lights.getLights().get(0).setPosition(new Vector3f( 14,  (float)Math.sin(value * 1) * 6 - 16, 6));
+		//lights.getLights().get(0).setPosition(new Vector3f( -14,  (float)Math.sin(value * 1) * 6 - 16, 6));
+		//lights.getLights().get(0).setPosition(new Vector3f( 3,  (float)Math.sin(value * 1) * 6 - 16, -12));
+		lights.getLights().get(0).setPosition(new Vector3f( (float)Math.sin(value * 1) * 6,  -30, 3));
 		
 		
 		render(e, lights);

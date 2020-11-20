@@ -92,7 +92,7 @@ public class ShaderNp {
 		}
 		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fs,"#version 120\r\n" + 
+		glShaderSource(fs,"#version 130\r\n" + 
 				"\r\n" + 
 				"uniform sampler2D sampler[20];\r\n" + 
 				"\r\n" + 

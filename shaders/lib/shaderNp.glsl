@@ -18,7 +18,7 @@ vec4 diffuse(vec4 color){
 	return diffuse;
 }
 
-vec4 diffuse(vec4 color, vec3 normalColor){
+vec3 bump(float textureId){
 	const vec2 size = vec2(2.0,0.0);
 	const ivec3 off = ivec3(-10,0,10);
 
@@ -35,19 +35,17 @@ vec4 diffuse(vec4 color, vec3 normalColor){
     float s10f = (s10.x + s10.y + s10.z) / 3;
     float s12f = (s12.x + s12.y + s12.z) / 3;
 
-    /*vec3 va = normalize(vec3(size.x, s21f-s01f, size.y));
-    vec3 vb = normalize(vec3(size.y, s12f-s10f, -size.x));*/
-
 	vec3 va = normalize(vec3(size.xy,s21f - s01f));
     vec3 vb = normalize(vec3(size.yx,s12f - s10f));
 
-
-    vec4 bump = vec4( cross(va,vb), s11f );
+	vec3 bump = vec3( cross(va,vb));
 	bump.x *= -1;
-	//bump.xyz = bump.yxz;
-	//bump = bump * 2 - 1;
 
-	vec3 bumpDif = bump.xyz - vec3(0, 0, 1);
+	return bump;
+}
+
+vec4 diffuse(vec4 color, vec3 normalMap){
+	vec3 bumpDif = normalMap - vec3(0, 0, 1);
 	if(normal.x < 0){
 		bumpDif.x *= -1;
 		//return vec4(1, 0, 0, 1);
@@ -61,10 +59,8 @@ vec4 diffuse(vec4 color, vec3 normalColor){
 		//return vec4(1, 0, 0, 1);
 	}
 
+	vec3 newNormal = normalize(normalize(normal) + bumpDif * 8);
 
-	vec3 newNormal = normalize(normal + bumpDif * 60);
-	//newNormal = normalize(bump.xyz);
-	//newNormal = normalize(normal);
 	vec3 allLight = vec3(0, 0, 0);
 	for(int i = 0; i < lightCount; i++){
 		vec3 toLight = lightPositions[i] - worldPosition.xyz;

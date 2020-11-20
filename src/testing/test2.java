@@ -40,7 +40,7 @@ public class test2 extends Game {
 		e.getMaterial().setProperty("c", 3);
 		
 		lights = new Lights();
-		lights.addLight(new Vector3f(4,-3,4), new Vector3f(1), 8);
+		lights.addLight(new Vector3f(4,0,4), new Vector3f(1), 8);
 		
 		
 	}

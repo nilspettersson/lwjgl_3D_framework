@@ -39,8 +39,8 @@ import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL20.*;
 
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Model;
-import niles.lwjgl.util.Shader;
 import niles.lwjgl.world.Camera;
 
 public class Fbo {
@@ -91,15 +91,32 @@ public class Fbo {
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
-	public void unBind() {
+	public void unbind() {
         glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
         
         glClearColor (0.0f, 0.0f, 0.0f, 1f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 	
+	public void render(Shader shader, Camera camera, Lights lights) {
+		shader.bind();
+		
+		bindTexture();
+		bindDepthTexture();
+		useLights(shader, lights);
+		
+        shader.setUniform("cameraPosition", camera.getPosition());
+        
+        Quaternionf rotation = new Quaternionf(0, 0, 0);
+        camera.getTransformation().getNormalizedRotation(rotation);
+        shader.setUniform("cameraRotation", new Vector4f(-rotation.x, -rotation.y, rotation.z, rotation.w));
+        
+        glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+		Model m = Model.CreateModel(true);
+		m.render();
+	}
 	
-	public void useLights(Shader shader, Lights lights) {
+	private void useLights(Shader shader, Lights lights) {
 		int size = lights.getLights().size();
 		Vector3f[] positions = new Vector3f[size];
 		Vector3f[] colors = new Vector3f[size];
@@ -117,19 +134,6 @@ public class Fbo {
 		shader.setUniform("lightCount", colors.length);
 	}
 
-	
-	public void render(Shader shader, Camera camera) {
-        shader.setUniform("cameraPosition", camera.getPosition());
-        
-        Quaternionf rotation = new Quaternionf(0, 0, 0);
-        camera.getTransformation().getNormalizedRotation(rotation);
-        shader.setUniform("cameraRotation", new Vector4f(-rotation.x, -rotation.y, rotation.z, rotation.w));
-        
-        glUniform1iv(glGetUniformLocation(shader.getProgram(), "sampler"), new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-		Model m = Model.CreateModel(true);
-		m.render();
-	}
-	
 	public void bindTexture() {
 			glActiveTexture(GL_TEXTURE0 + 9);
 			glBindTexture(GL_TEXTURE_2D, colorTextureID);
@@ -139,15 +143,5 @@ public class Fbo {
 			glActiveTexture(GL_TEXTURE0 + 10);
 			glBindTexture(GL_TEXTURE_2D, depthTextureID);
 	}
-	
-	public int getColorTextureID() {
-		return colorTextureID;
-	}
-
-	public void setColorTextureID(int colorTextureID) {
-		this.colorTextureID = colorTextureID;
-	}
-	
-	
 
 }

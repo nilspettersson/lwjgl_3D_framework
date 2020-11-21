@@ -3,7 +3,8 @@ package testing;
 import org.joml.Vector3f;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.loop.Game;
-import niles.lwjgl.npsl.ShaderNp;
+import niles.lwjgl.npsl.MeshShader;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
 public class test2 extends Game {
@@ -13,11 +14,14 @@ public class test2 extends Game {
 	
 	Entity e;
 	Entity e2;
-	ShaderNp shader;
+	
+	Shader shader;
 	
 	@Override
 	public void setup() {
-		shader = new ShaderNp("test.glsl");
+		
+		shader = new MeshShader("test.glsl");
+		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
 		
 		e = Entity.cube(0, -2, 0, 8, new Vector3f(1), shader);

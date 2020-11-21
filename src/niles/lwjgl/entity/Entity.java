@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import niles.lwjgl.npsl.Material;
-import niles.lwjgl.npsl.ShaderNp;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
 public class Entity {
@@ -16,7 +15,7 @@ public class Entity {
 	private ArrayList<Texture> textures;
 	private Material material;
 	
-	public Entity(int geometrySize, ShaderNp shader) {
+	public Entity(int geometrySize, Shader shader) {
 		geometry = new Geometry(geometrySize);
 		transform = new Transform();
 		textures = new ArrayList<Texture>();
@@ -24,7 +23,7 @@ public class Entity {
 		material = new Material(shader);
 	}
 	
-	public static Entity cube(float x, float y, float z, float scale, Vector3f color, ShaderNp shader) {
+	public static Entity cube(float x, float y, float z, float scale, Vector3f color, Shader shader) {
 		Entity e = new Entity(36, shader);
 		e = new Entity(36, shader);
 		e.getGeometry().createCube(x, y, z, new Vector4f(color, 1));

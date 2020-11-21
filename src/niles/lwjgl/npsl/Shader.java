@@ -157,7 +157,6 @@ public abstract class Shader {
 		}
 		
 		//get the fragment code from file.
-		
 		start = text.indexOf("fragment{") + 9;
 		int openIndex = text.indexOf("{", start);
 		int closeIndex = text.indexOf("}", start);
@@ -169,7 +168,6 @@ public abstract class Shader {
 				if(openCount - closeCount == 0) {
 					break;
 				}
-				
 				int newStart = closeIndex;
 				openIndex = text.indexOf("{", newStart + 1);
 				closeIndex = text.indexOf("}", newStart + 1);
@@ -179,7 +177,6 @@ public abstract class Shader {
 				if(openCount - closeCount == 0) {
 					break;
 				}
-				
 				int newStart = openIndex;
 				openIndex = text.indexOf("{", newStart + 1);
 				closeIndex = text.indexOf("}", newStart + 1);

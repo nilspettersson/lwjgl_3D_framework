@@ -12,6 +12,7 @@ public class test2 extends Game {
 	}
 	
 	Entity e;
+	Entity e2;
 	ShaderNp shader;
 	
 	@Override
@@ -22,6 +23,10 @@ public class test2 extends Game {
 		e = Entity.cube(0, -2, 0, 8, new Vector3f(1), shader);
 		e.addTexture(new Texture("res/rock.jpg"));
 		
+		e2 = Entity.cube(0, -15, 0, 8, new Vector3f(1), shader);
+		e2.addTexture(new Texture("res/rock.jpg"));
+		e2.getTransform().setScale(new Vector3f(0.5f));
+		
 		getLights().addLight(new Vector3f(4,0,4), new Vector3f(1), 8);
 	}
 	
@@ -31,6 +36,7 @@ public class test2 extends Game {
 		simpleCameraMovement(0.03f);
 		
 		render(e);
+		render(e2);
 		
 		setFpsCap(120);
 	}

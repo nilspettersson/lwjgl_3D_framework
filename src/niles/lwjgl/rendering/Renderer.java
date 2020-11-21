@@ -56,12 +56,14 @@ public class Renderer {
 		
 			Matrix4f projection = camera.getProjection();
 			Matrix4f transform = camera.getTransformation();
-			Matrix4f object = entity.getTransform().getTransformation();
+			
 			entity.getMaterial().getShader().setUniform("projection", projection);
 			entity.getMaterial().getShader().setUniform("transform", transform);	
-			entity.getMaterial().getShader().setUniform("objectTransform", object);
+			
 			entity.getMaterial().getShader().setUniform("cameraPosition", camera.getPosition());
 		}
+		Matrix4f object = entity.getTransform().getTransformation();
+		entity.getMaterial().getShader().setUniform("objectTransform", object);
 		
 		usedShaders.add(entity.getMaterial().getShader());
 		

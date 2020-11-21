@@ -37,10 +37,6 @@ public class test extends Game {
 	
 	
 	ArrayList<Entity> entites;
-	
-	
-	Lights lights;
-	
     
     Fbo fbo = new Fbo();
 
@@ -53,10 +49,9 @@ public class test extends Game {
 		shader = new Shader("post");
 		shaderNp = new ShaderNp("test.glsl");
 		
-		lights = new Lights();
-		lights.addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
+		getLights().addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
 		for(int i = 0; i < 20; i++) {
-			lights.addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
+			getLights().addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
 		}
 		
 		
@@ -100,7 +95,7 @@ public class test extends Game {
 				}
 			}
 		}
-		entites.add(new Entity(480, shaderNp));
+		entites.add(new Entity(48, shaderNp));
 		entites.get(entites.size()-1).getGeometry().createFace(0, 0, 1);
 		
 		entites.get(entites.size()-1).getTransform().setScale(new Vector3f(100, 100f, 1));
@@ -160,25 +155,25 @@ public class test extends Game {
 		
 		
 		
-		fbo.bind();
+		//fbo.bind();
 		for(int i = 0; i < entites.size(); i++) {
 			render(entites.get(i));
 		}
-		fbo.unBind();
+		//fbo.unBind();
 		
 		
 		
 		
-		fbo.bindTexture();
+		/*fbo.bindTexture();
 		fbo.bindDepthTexture();
 		shader.bind();
 		fbo.useLights(shader, lights);
 		
-		fbo.render(shader, getCamera());
+		fbo.render(shader, getCamera());*/
 		value+=0.003f;
 		//lights.getLights().get(0).setPosition(lights.getLights().get(0).getPosition().add((float) Math.sin(value * 9),0,0));		
 		
-		System.out.println(getFps());
+		//System.out.println(getFps());
 		setFpsCap(120);
 	}
 

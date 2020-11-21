@@ -1,5 +1,5 @@
 # lwjgl_3D_library
-Current version: **1.0.0-alpha**
+Current version: **1.0.0**
 
 ## Core functionality
 #### Game loop handling
@@ -21,6 +21,9 @@ Current version: **1.0.0-alpha**
 #### Material and shader
 * A material has properties that will be sent to the shader as uniforms. The uniforms will be sent once per Entity so materials should not have properties related to the world. **World uniforms will soon be added**.
 ShaderNp is a new Shader class that is easier to use. When creating glsl code you can use pre made functions that can create different lighting efects. Glsl version 330 is used.
+#### Post Processing
+* You can create a post processing shader using pre made functions.
+
 
 
 ## Setup for eclipse

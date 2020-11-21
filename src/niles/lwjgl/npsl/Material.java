@@ -9,11 +9,11 @@ import org.joml.Vector4f;
 
 public class Material {
 	
-	private ShaderNp shader;
+	private Shader shader;
 	
 	private HashMap<String, Object> properties;
 	
-	public Material(ShaderNp shader) {
+	public Material(Shader shader) {
 		this.shader = shader;
 		
 		properties = new HashMap<String, Object>();
@@ -50,11 +50,11 @@ public class Material {
 		}
 	}
 
-	public ShaderNp getShader() {
+	public Shader getShader() {
 		return shader;
 	}
 
-	public void setShader(ShaderNp shader) {
+	public void setShader(Shader shader) {
 		this.shader = shader;
 	}
 	

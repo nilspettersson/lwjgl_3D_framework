@@ -11,7 +11,9 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import niles.lwjgl.entity.Entity;
+import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
 import niles.lwjgl.world.Input;
@@ -25,7 +27,8 @@ public abstract class Game {
 	private Renderer renderer;
 	private Input input;
 	
-	Lights lights;
+	private Lights lights;
+	private Fbo fbo;
 	
 	private Vector4f backgroundColor;
 	private int fpsCap;
@@ -35,6 +38,7 @@ public abstract class Game {
 		camera=new Camera();
 		input = new Input(getWindow());
 		lights = new Lights();
+		fbo = new Fbo();
 		
 		this.backgroundColor=backgroundColor;
 		this.fpsCap=fpsCap;
@@ -48,6 +52,7 @@ public abstract class Game {
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		input = new Input(getWindow());
 		lights = new Lights();
+		fbo = new Fbo();
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;
@@ -144,11 +149,23 @@ public abstract class Game {
 	}
 
 	
-
+	//fbo is used for post processing
+	public void renderFbo(Shader shader) {
+		fbo.render(shader, getCamera(), getLights());
+	}
+	
+	public void bindFbo() {
+		fbo.bind();
+	}
+	
+	public void unbindFbo() {
+		fbo.unbind();
+	}
+	
+	
 	public Window getWindow() {
 		return window;
 	}
-
 
 	public Camera getCamera() {
 		return camera;

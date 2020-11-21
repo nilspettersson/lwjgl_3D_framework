@@ -1,4 +1,4 @@
-#include lib/shaderNp.glsl;
+#include lib/mesh.glsl;
 
 uniforms{
 

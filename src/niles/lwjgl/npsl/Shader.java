@@ -176,6 +176,9 @@ public abstract class Shader {
 		}
 		int end = closeIndex;
 		String fragment = text.substring(start, end);
+		System.out.println("**********");
+		System.out.println(fragment);
+		System.out.println("**********");
 		fragment = fragment.replace("return ", "gl_FragColor = ");
 		
 		

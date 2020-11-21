@@ -7,7 +7,6 @@ import org.joml.Vector4f;
 
 import niles.lwjgl.npsl.Material;
 import niles.lwjgl.npsl.Shader;
-import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.util.Texture;
 
 public class Entity {

@@ -11,8 +11,9 @@ import niles.lwjgl.entity.Geometry;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.loop.Game;
-import niles.lwjgl.npsl.ShaderNp;
-import niles.lwjgl.util.Shader;
+import niles.lwjgl.npsl.MeshShader;
+import niles.lwjgl.npsl.PostProcessingShader;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 import niles.lwjgl.world.Input;
 import niles.lwjgl.world.Mouse;
@@ -42,12 +43,12 @@ public class test extends Game {
 
     Shader shader;
     
-    ShaderNp shaderNp;
+    Shader shaderNp;
     
 	@Override
 	public void setup() {
-		shader = new Shader("post");
-		shaderNp = new ShaderNp("test.glsl");
+		shader = new PostProcessingShader("postShader.glsl");
+		shaderNp = new MeshShader("test.glsl");
 		
 		getLights().addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
 		for(int i = 0; i < 20; i++) {
@@ -155,21 +156,21 @@ public class test extends Game {
 		
 		
 		
-		//fbo.bind();
+		fbo.bind();
 		for(int i = 0; i < entites.size(); i++) {
 			render(entites.get(i));
 		}
-		//fbo.unBind();
+		fbo.unBind();
 		
 		
 		
 		
-		/*fbo.bindTexture();
+		fbo.bindTexture();
 		fbo.bindDepthTexture();
 		shader.bind();
-		fbo.useLights(shader, lights);
+		fbo.useLights(shader, getLights());
 		
-		fbo.render(shader, getCamera());*/
+		fbo.render(shader, getCamera());
 		value+=0.003f;
 		//lights.getLights().get(0).setPosition(lights.getLights().get(0).getPosition().add((float) Math.sin(value * 9),0,0));		
 		

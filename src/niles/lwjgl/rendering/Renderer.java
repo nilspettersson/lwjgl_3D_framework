@@ -11,7 +11,6 @@ import org.joml.Vector3f;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.npsl.Shader;
-import niles.lwjgl.npsl.ShaderNp;
 import niles.lwjgl.world.Camera;
 
 public class Renderer {

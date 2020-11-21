@@ -88,10 +88,6 @@ vec3 calculateFragementRay(in vec2 fragCoord, in vec3 resolution){
     return ray_dir;
 }
 
-vec3 mix(vec3 color1, vec3 color2, float mixValue){
-	return color1 * mixValue + color2 * (1 - mixValue);
-}
-
 
 void main(){
 	tex_coords.y = 1.0 - tex_coords.y;

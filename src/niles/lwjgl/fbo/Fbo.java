@@ -39,8 +39,8 @@ import org.joml.Vector4f;
 import static org.lwjgl.opengl.GL20.*;
 
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Model;
-import niles.lwjgl.util.Shader;
 import niles.lwjgl.world.Camera;
 
 public class Fbo {

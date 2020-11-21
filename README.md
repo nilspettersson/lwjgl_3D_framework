@@ -1,4 +1,5 @@
 # lwjgl_3D_library
+Current version: **1.0.0-alpha**
 
 ## Setup for eclipse
 * Download or clone lwjgl_3D_library.

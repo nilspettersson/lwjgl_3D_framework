@@ -24,7 +24,7 @@ public class test2 extends Game {
 		e.addTexture(new Texture("res/rock.jpg"));
 		
 		e2 = Entity.cube(0, -15, 0, 8, new Vector3f(1), shader);
-		e2.addTexture(new Texture("res/rock.jpg"));
+		e2.addTexture(new Texture("res/wood.jpg"));
 		e2.getTransform().setScale(new Vector3f(0.5f));
 		
 		getLights().addLight(new Vector3f(4,0,4), new Vector3f(1), 8);

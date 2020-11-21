@@ -1,6 +1,34 @@
 package niles.lwjgl.npsl;
 
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VALIDATE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glBindAttribLocation;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
+import static org.lwjgl.opengl.GL20.glGetProgrami;
+import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glGetUniformLocation;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1f;
+import static org.lwjgl.opengl.GL20.glUniform1fv;
+import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2f;
+import static org.lwjgl.opengl.GL20.glUniform2fv;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniform3fv;
+import static org.lwjgl.opengl.GL20.glUniform4f;
+import static org.lwjgl.opengl.GL20.glUniform4fv;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +37,6 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -17,64 +44,29 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
-public class ShaderNp {
+public abstract class Shader {
 	private int program;
 	private int vs;
 	private int fs;
 	
+	protected String filename;
+	
 	private static FloatBuffer matrix=BufferUtils.createFloatBuffer(16);  //this is used to store the matrix.
 	
-	private HashMap<String, Object> properties;
+	abstract String createVertexShader();
 	
-	public ShaderNp(String filename) {
-		properties = new HashMap<String, Object>();
+	abstract String createFragmentShader();
+	
+	public Shader(String filename) {
+		this.filename = filename;
 		
 		program=glCreateProgram();
 		vs=glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vs, "#version 330\r\n" + 
-				"\r\n" + 
-				"layout (location = 0) in vec3 vertices;\r\n" + 
-				"layout (location = 1) in vec4 a_color;\r\n" + 
-				"layout (location = 2) in float a_textureId;\r\n" + 
-				"layout (location = 3) in vec2 textures;\r\n" + 
-				"layout (location = 4) in vec3 a_normal;\r\n" + 
-				"\r\n" + 
-				"uniform mat4 projection;\r\n" + 
-				"uniform mat4 transform;\r\n" + 
-				"uniform mat4 objectTransform;\r\n" + 
-				"\r\n" + 
-				"uniform vec3 cameraPosition;\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"//object\r\n" + 
-				"out vec2 tex_coords;\r\n" + 
-				"out vec4 color;\r\n" + 
-				"out float textureId;\r\n" + 
-				"out vec3 normal;\r\n" + 
-				"out vec4 worldPosition;\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"out vec3 toCamera;\r\n" + 
-				"\r\n" + 
-				"void main(){\r\n" + 
-				"	color = a_color;\r\n" + 
-				"	tex_coords = textures;\r\n" + 
-				"	textureId = a_textureId;\r\n" + 
-				"	\r\n" + 
-				"	worldPosition = objectTransform * vec4(vertices,1);\r\n" + 
-				"	\r\n" + 
-				"	normal = (objectTransform * vec4(a_normal, 0)).xyz;\r\n" + 
-				"	\r\n" + 
-				"	//solidViewlight\r\n" + 
-				"	toCamera =worldPosition.xyz - cameraPosition;\r\n" + 
-				"	\r\n" + 
-				"	\r\n" + 
-				"	gl_Position = projection * transform * worldPosition;\r\n" + 
-				"\r\n" + 
-				"}");
+		
+		
+		
+		glShaderSource(vs, createVertexShader());
+		
 		glCompileShader(vs);
 		
 		if(glGetShaderi(vs, GL_COMPILE_STATUS)!=1) {
@@ -83,53 +75,10 @@ public class ShaderNp {
 		}
 		
 		
-		String[] npsl = readNpsl(filename); 
 		
-		String[] includes = npsl[0].split(",");
-		String libText = "";
-		for(int i = 0; i < includes.length; i++) {
-			libText += readFile("/" + includes[i]);
-		}
 		
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fs,"#version 130\r\n" + 
-				"\r\n" + 
-				"uniform sampler2D sampler[20];\r\n" + 
-				"\r\n" + 
-				"uniform vec3 lightColors[128];\r\n" + 
-				"uniform vec3 lightPositions[128];\r\n" + 
-				"uniform float lightIntensity[128];\r\n" + 
-				"uniform int lightCount;\r\n" + 
-				npsl[1],
-				"\r\n" + 
-				"in vec2 tex_coords;\r\n" + 
-				"in vec4 color;\r\n" + 
-				"in float textureId;\r\n" + 
-				"in vec3 normal;\r\n" + 
-				"\r\n" + 
-				"\r\n" + 
-				"in vec3 toCamera;\r\n" + 
-				"in vec4 worldPosition;\r\n" + 
-				"\r\n" + 
-				libText+
-				"\r\n" + 
-				"void main(){\r\n" + 
-				"\r\n" + 
-				"	float depth = gl_FragCoord.w;\r\n" + 
-				"	\r\n" + 
-				"	int id = int(textureId);\r\n" + 
-				"	vec4 texture=texture2D(sampler[id], tex_coords);\r\n" + 
-				"	\r\n" + 
-				"	\r\n" + 
-				"	//solidView lighting\r\n" + 
-				"	float SolidBrightness = dot((-normal), normalize(toCamera));\r\n" + 
-				"	SolidBrightness = max(SolidBrightness, 0.3);\r\n" + 
-				"	\r\n" + 
-				"	\r\n" + 
-				npsl[2],
-				"	\r\n" + 
-				"	\r\n" + 
-				"}");
+		glShaderSource(fs, createFragmentShader());
 		glCompileShader(fs);
 		if(glGetShaderi(fs, GL_COMPILE_STATUS)!=1) {
 			System.err.println(glGetShaderInfoLog(fs));
@@ -160,7 +109,16 @@ public class ShaderNp {
 		
 	}
 	
-	public String[] readNpsl(String filename) {
+	protected String getIncludedFiles(String[] npsl) {
+		String[] includes = npsl[0].split(",");
+		String libText = "";
+		for(int i = 0; i < includes.length; i++) {
+			libText += readFile("/" + includes[i]);
+		}
+		return libText;
+	}
+	
+	protected String[] readNpsl(String filename) {
 		String text = readFile(filename);
 		
 		String includes = "";
@@ -388,7 +346,7 @@ public class ShaderNp {
 	
 	
 	
-	private String readFile(String filename) {
+	protected String readFile(String filename) {
 		StringBuilder string=new StringBuilder();
 		BufferedReader br;
 		
@@ -420,6 +378,4 @@ public class ShaderNp {
 		this.program = program;
 	}
 	
-
 }
-

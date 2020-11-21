@@ -55,6 +55,14 @@ public class PostProcessingShader extends Shader{
 				"\r\n" + 
 				"\r\n" + 
 				"void main(){\r\n" + 
+				"tex_coords.y = 1.0 - tex_coords.y;\r\n" + 
+				"	\r\n" + 
+				"	//gets the color texture.\r\n" + 
+				"	vec4 texture=texture2D(sampler[9], tex_coords);\r\n" + 
+				"	\r\n" + 
+				"	//gets the depth texture\r\n" + 
+				"	vec4 rawDepth=texture2D(sampler[10], tex_coords);\r\n" + 
+				"	float depth = (0.1 * 1000.0) / (1000 - rawDepth.z * (1000 - 0.1));"+
 				npsl[2] +
 				"	\r\n" + 
 				"}";

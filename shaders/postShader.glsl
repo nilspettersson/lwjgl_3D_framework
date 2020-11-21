@@ -6,17 +6,6 @@ uniforms{
 
 
 fragment{
-	tex_coords.y = 1.0 - tex_coords.y;
-	
-	//gets the color texture.
-	vec4 texture=texture2D(sampler[9], tex_coords);
-	
-	//gets the depth texture
-	vec4 depth=texture2D(sampler[10], tex_coords);
-	float z = (0.1 * 1000.0) / (1000 - depth.z * (1000 - 0.1));
-	
-	
-
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
@@ -27,7 +16,7 @@ fragment{
 	rayDir = rotate_vector(cameraRotation, rayDir);
 	
 	
-	vec2 rayDis = rayMarch(rayOrigin, rayDir, z, cosA);
+	vec2 rayDis = rayMarch(rayOrigin, rayDir, depth, cosA);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
 	
@@ -49,10 +38,10 @@ fragment{
 		//dis: dis is the distance to ray hit.
 		float disToObject;
 		if(dis > 0){
-			disToObject = z - dis * cosA;
+			disToObject = depth - dis * cosA;
 		}
 		else{
-			disToObject = z;
+			disToObject = depth;
 		}
 		
 		float minDis = min(disToObject, rayDepth);

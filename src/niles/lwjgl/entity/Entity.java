@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import niles.lwjgl.npsl.Material;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 

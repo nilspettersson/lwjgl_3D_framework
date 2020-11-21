@@ -15,14 +15,6 @@ import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
 public class test extends Game {
-	/*implement later.
-	float maxAngle = 0.4f;
-	if(getCamera().getRotation().x > maxAngle && Mouse.myY < 0) {
-		Mouse.myY = 0;
-	}
-	else if(getCamera().getRotation().x < -maxAngle && Mouse.myY > 0) {
-		Mouse.myY = 0;
-	}*/
 
 	public static void main(String[] args) {
 		new test();
@@ -30,13 +22,12 @@ public class test extends Game {
 	
 	Geometry g;
 	ArrayList<Entity> entites;
-   // Fbo fbo = new Fbo();
     Shader post;
     Shader shader;
     
 	@Override
 	public void setup() {
-		post = new PostProcessingShader("postShader2.glsl");
+		post = new PostProcessingShader("postShader.glsl");
 		shader = new MeshShader("test.glsl");
 		
 		getLights().addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);

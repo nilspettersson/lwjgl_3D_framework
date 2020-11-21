@@ -1,4 +1,4 @@
-package niles.lwjgl.npsl;
+package niles.lwjgl.entity;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import niles.lwjgl.npsl.Shader;
 
 public class Material {
 	

@@ -34,7 +34,6 @@ public class PostProcessingShader extends Shader{
 		
 		String libText = getIncludedFiles(npsl);
 		
-		System.out.println(npsl[2]);
 		
 		return "#version 120\r\n" + 
 				"\r\n" + 

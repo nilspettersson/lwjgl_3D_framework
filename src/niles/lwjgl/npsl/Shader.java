@@ -157,28 +157,38 @@ public abstract class Shader {
 		}
 		
 		//get the fragment code from file.
+		
 		start = text.indexOf("fragment{") + 9;
 		int openIndex = text.indexOf("{", start);
 		int closeIndex = text.indexOf("}", start);
-		done = false;
+		int openCount = 1;
+		int closeCount = 0;
 		while(true) {
 			if(closeIndex < openIndex || openIndex == -1) {
-				break;
-			}
-			openIndex = text.indexOf("{", closeIndex + 1);
-			if(openIndex == -1) {
-				closeIndex = text.indexOf("}", closeIndex + 1);
+				closeCount++;
+				if(openCount - closeCount == 0) {
+					break;
+				}
+				
+				int newStart = closeIndex;
+				openIndex = text.indexOf("{", newStart + 1);
+				closeIndex = text.indexOf("}", newStart + 1);
 			}
 			else {
-				closeIndex = text.indexOf("}", openIndex + 1);
+				openCount++;
+				if(openCount - closeCount == 0) {
+					break;
+				}
+				
+				int newStart = openIndex;
+				openIndex = text.indexOf("{", newStart + 1);
+				closeIndex = text.indexOf("}", newStart + 1);
 			}
-			
 		}
+		
+		
 		int end = closeIndex;
 		String fragment = text.substring(start, end);
-		System.out.println("**********");
-		System.out.println(fragment);
-		System.out.println("**********");
 		fragment = fragment.replace("return ", "gl_FragColor = ");
 		
 		

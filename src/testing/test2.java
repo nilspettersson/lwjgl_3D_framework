@@ -39,6 +39,7 @@ public class test2 extends Game {
 		simpleCameraRotation(1f);
 		simpleCameraMovement(0.03f);
 		
+		
 		render(e);
 		render(e2);
 		

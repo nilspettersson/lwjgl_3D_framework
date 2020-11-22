@@ -10,16 +10,14 @@ fragment{
 	rayOrigin.z *=-1;
 	
 	
-	vec3 rayDir = calculateFragementRay(tex_coords, vec3(1.77, 1, 0.72));
+	vec4 rayDir = calculateFragementRay(tex_coords);
 	float cosA = rayDir.z;
 	
 	rayDir = rotate_vector(cameraRotation, rayDir);
 	
-	
 	vec2 rayDis = rayMarch(rayOrigin, rayDir, depth, cosA);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
-	
 	
 	
 	if(dis >= 1000){
@@ -27,7 +25,7 @@ fragment{
 		toLight = normalize(toLight);
 		toLight.z *= -1;
 		
-		float lightDot = dot(rayDir, toLight);
+		float lightDot = dot(rayDir.xyz, toLight);
 		
 		vec3 output = vec3(texture.xyz + max(lightDot, 0));
 		return texture;
@@ -54,7 +52,7 @@ fragment{
 			vec3 toLight = lightPositions[i] - cameraPosition;
 			toLight = normalize(toLight);
 			toLight.z *= -1;
-			float lightDot = dot(rayDir, toLight);
+			float lightDot = dot(rayDir.xyz, toLight);
 			
 			float light = pow(max(lightDot, 0), 8);
 			
@@ -65,7 +63,7 @@ fragment{
 		lightColor = vec3(min(lightColor.x, 1), min(lightColor.y, 1), min(lightColor.z, 1));
 		lightColor = max(lightColor, 0.05);
 		
-		vec3 output = mix(lightColor, texture.xyz, min(minDis, 0.9));
+		vec3 output = mix(lightColor, texture.xyz, 1 - min(minDis, 0.9));
 		return vec4(output, 1);
 	}
 	

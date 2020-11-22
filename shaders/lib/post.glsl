@@ -7,12 +7,19 @@ vec4 multQuat(vec4 q1, vec4 q2){
 	);
 }
 
-vec3 rotate_vector( vec4 quat, vec3 vec )
+/*vec3 rotate_vector( vec4 quat, vec3 vec )
 {
 	vec4 qv = multQuat( quat, vec4(vec, 0.0) );
 	return multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz;
-}
+}*/
 
+vec4 rotate_vector( vec4 quat, vec4 vec )
+{
+	float cosA = vec.z;
+	
+	vec4 qv = multQuat( quat, vec4(vec.xyz, 0.0) );
+	return vec4(multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz, cosA);
+}
 
 
 
@@ -28,11 +35,11 @@ float getDepth(vec3 point){
 	return ballDist;
 }
 
-vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth, float cosA){
+vec2 rayMarch(vec3 rayOrigin, vec4 rayDir, float maxDepth, float cosA){
 	float DistOrigin = 0;
 	
 	for(int i = 0; i < 100; i++){
-		vec3 point = rayOrigin + rayDir * DistOrigin;
+		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
 		float dist = getDist(point);
 		DistOrigin += dist;
 		if(DistOrigin  > 1000 || dist < 0.01 ){
@@ -47,7 +54,7 @@ vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth, float cosA){
 	float depth = DistOrigin  + 0.1;
 	
 	for(int i = 0; i < 100; i++){
-		vec3 point = rayOrigin + rayDir * depth;
+		vec3 point = rayOrigin + rayDir.xyz * depth;
 		float dist = getDepth(point);
 		depth += dist;
 		if(depth > 1000 || dist < 0.01 ){
@@ -58,7 +65,9 @@ vec2 rayMarch(vec3 rayOrigin, vec3 rayDir, float maxDepth, float cosA){
 	return vec2(DistOrigin, max((depth - DistOrigin), 0));
 }
 
-vec3 calculateFragementRay(in vec2 fragCoord, in vec3 resolution){
+vec4 calculateFragementRay(vec2 fragCoord){
+	vec3 resolution = vec3(1.77, 1, 0.72);
+
     vec2 uv = fragCoord;
     uv.x = (uv.x * 2.0) - 1.0;
     uv.y = (2.0 * uv.y) - 1.0;
@@ -70,9 +79,5 @@ vec3 calculateFragementRay(in vec2 fragCoord, in vec3 resolution){
     float tan_fov = tan(1.2217/2.0);
     vec2 pxy = uv * tan_fov;
     vec3 ray_dir = normalize(vec3(pxy, 1));
-    return ray_dir;
-}
-
-vec3 mix(vec3 color1, vec3 color2, float mixValue){
-	return color1 * mixValue + color2 * (1 - mixValue);
+    return vec4(ray_dir, ray_dir.z);
 }

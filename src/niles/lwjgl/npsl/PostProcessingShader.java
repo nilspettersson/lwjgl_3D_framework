@@ -55,10 +55,13 @@ public class PostProcessingShader extends Shader{
 				"\r\n" + 
 				"\r\n" + 
 				"void main(){\r\n" + 
-				"tex_coords.y = 1.0 - tex_coords.y;\r\n" + 
+				"	tex_coords.y = 1.0 - tex_coords.y;\r\n" + 
 				"	\r\n" + 
 				"	//gets the color texture.\r\n" + 
 				"	vec4 texture=texture2D(sampler[9], tex_coords);\r\n" + 
+				"	\r\n" + 
+				"	vec4 rayDir = calculateFragementRay(tex_coords);\r\n" + 
+				"	rayDir = rotate_vector(cameraRotation, rayDir);" +
 				"	\r\n" + 
 				"	//gets the depth texture\r\n" + 
 				"	vec4 rawDepth=texture2D(sampler[10], tex_coords);\r\n" + 

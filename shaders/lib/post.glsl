@@ -128,6 +128,49 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 	return DistOrigin;
 }
 
+vec3 getNormal(vec3 point, mat4[20] scene, int sceneSize){
+	float dist = getDistToScene(point, scene, sceneSize);
+	vec2 e = vec2(0.01, 0);
+
+	vec3 normal = dist - vec3(getDistToScene(point - e.xyy, scene, 2),
+				getDistToScene(point - e.yxy, scene, 2),
+				getDistToScene(point - e.yyx, scene, 2));
+	return normalize(normal);
+}
+
+vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, mat4[20] scene, int sceneSize){
+	vec4 color = vec4(1);
+
+	//finding the point of the intersection.
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *= -1;
+	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
+
+
+
+	vec3 normal = getNormal(point, scene, sceneSize);
+
+
+	vec3 allLight = vec3(0, 0, 0);
+	for(int i = 0; i < lightCount; i++){
+		vec3 toLight = normalize(lightPositions[i] - point);
+		toLight.z *= -1;
+		float disToLight = length(toLight) / 8;
+
+		float brightness = dot(normal, toLight);
+		brightness = max(brightness, 0);
+		float attenuation = lightIntensity[i] / (4.0 + 1*disToLight + 1 * disToLight * disToLight);
+		brightness *= attenuation;
+		
+		vec3 light = lightColors[i] * brightness;
+		allLight += light;
+	}
+
+	vec4 diffuse = color;
+	diffuse.xyz *= allLight;
+	return diffuse;
+}
+
 
 
 

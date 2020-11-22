@@ -5,7 +5,6 @@ uniforms{
 }
 
 fragment{
-
 	mat4 scene[20];
 	scene[0][0].x = 0;
 	scene[0][0].y = -7.5;
@@ -19,21 +18,16 @@ fragment{
 	scene[1][0].w = 1;
 	scene[1][3].w = 0;
 
-	vec4 rayDir = calculateFragementRay(tex_coords);
-	rayDir = rotate_vector(cameraRotation, rayDir);
 
-	float distance = rayMarch(rayDir, depth, scene, 2);
-	
+	float rayOutput = rayMarch(rayDir, depth, scene, 2);
+	vec4 diffuse = rayMarchDiffuse(rayOutput, rayDir, scene, 2);
+
 	vec4 output = texture;
-	if(distance == -1){
+	if(rayOutput == -1){
 		return vec4(output);
 	}
 	else{
-		return vec4(distance);
+		return vec4(diffuse);
 	}
-	
 
-	/*depth /= 10;
-	texture.x = 1;
-	return vec4(texture.x / depth, texture.y / depth, texture.z / depth, 1);*/
 }

@@ -6,16 +6,10 @@ uniforms{
 
 
 fragment{
-	vec3 rayOrigin = cameraPosition;
-	rayOrigin.z *=-1;
-	
-	
 	vec4 rayDir = calculateFragementRay(tex_coords);
-	float cosA = rayDir.z;
-	
 	rayDir = rotate_vector(cameraRotation, rayDir);
 	
-	vec2 rayDis = rayMarch(rayOrigin, rayDir, depth, cosA);
+	vec2 rayDis = rayMarch(rayDir, depth);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
 	
@@ -36,7 +30,7 @@ fragment{
 		//dis: dis is the distance to ray hit.
 		float disToObject;
 		if(dis > 0){
-			disToObject = depth - dis * cosA;
+			disToObject = depth - dis * rayDir.w;
 		}
 		else{
 			disToObject = depth;

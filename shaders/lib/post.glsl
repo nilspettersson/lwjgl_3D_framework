@@ -35,9 +35,12 @@ float getDepth(vec3 point){
 	return ballDist;
 }
 
-vec2 rayMarch(vec3 rayOrigin, vec4 rayDir, float maxDepth, float cosA){
-	float DistOrigin = 0;
+vec2 rayMarch(vec4 rayDir, float maxDepth){
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *=-1;
 	
+	float cosA = rayDir.w;
+	float DistOrigin = 0;
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
 		float dist = getDist(point);

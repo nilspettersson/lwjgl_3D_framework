@@ -4,6 +4,7 @@ import org.joml.Vector3f;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.npsl.MeshShader;
+import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
@@ -16,10 +17,11 @@ public class test2 extends Game {
 	Entity e2;
 	
 	Shader shader;
+	Shader postProcessing;
 	
 	@Override
 	public void setup() {
-		
+		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
 		
 		getCamera().setPosition(new Vector3f(0, 0, 10));
@@ -39,9 +41,12 @@ public class test2 extends Game {
 		simpleCameraRotation(1f);
 		simpleCameraMovement(0.03f);
 		
-		
+		bindFbo();
 		render(e);
 		render(e2);
+		unbindFbo();
+		
+		renderFbo(postProcessing);
 		
 		setFpsCap(120);
 	}

@@ -9,7 +9,7 @@ fragment{
 	vec4 rayDir = calculateFragementRay(tex_coords);
 	rayDir = rotate_vector(cameraRotation, rayDir);
 	
-	vec2 rayDis = rayMarch(rayDir, depth);
+	vec2 rayDis = rayMarchVolume(rayDir, depth);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;
 	

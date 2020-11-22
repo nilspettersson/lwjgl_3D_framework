@@ -21,21 +21,39 @@ vec4 rotate_vector( vec4 quat, vec4 vec )
 	return vec4(multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz, cosA);
 }
 
+vec4 calculateFragementRay(vec2 fragCoord){
+	vec3 resolution = vec3(1.77, 1, 0.72);
+
+    vec2 uv = fragCoord;
+    uv.x = (uv.x * 2.0) - 1.0;
+    uv.y = (2.0 * uv.y) - 1.0;
+    if(resolution.x >= resolution.y){
+        uv.x *= resolution.x/resolution.y;
+    }else{
+        uv.y *= resolution.y/resolution.x;
+    }
+    float tan_fov = tan(1.2217/2.0);
+    vec2 pxy = uv * tan_fov;
+    vec3 ray_dir = normalize(vec3(pxy, 1));
+    return vec4(ray_dir, ray_dir.z);
+}
+
+
 
 
 float getDist(vec3 point){
-	vec4 ball = vec4(-30, 30, 0, 70);
+	vec4 ball = vec4(0, 0, 8, 10);
 	float ballDist = length(point - ball.xyz) - ball.w;
 	return ballDist;
 }
 
 float getDepth(vec3 point){
-	vec4 ball = vec4(-30, 30, 0, 70);
+	vec4 ball = vec4(0, 0, 8, 10);
 	float ballDist = ball.w - length(point - ball.xyz);
 	return ballDist;
 }
 
-vec2 rayMarch(vec4 rayDir, float maxDepth){
+vec2 rayMarchVolume(vec4 rayDir, float maxDepth){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
@@ -68,19 +86,43 @@ vec2 rayMarch(vec4 rayDir, float maxDepth){
 	return vec2(DistOrigin, max((depth - DistOrigin), 0));
 }
 
-vec4 calculateFragementRay(vec2 fragCoord){
-	vec3 resolution = vec3(1.77, 1, 0.72);
 
-    vec2 uv = fragCoord;
-    uv.x = (uv.x * 2.0) - 1.0;
-    uv.y = (2.0 * uv.y) - 1.0;
-    if(resolution.x >= resolution.y){
-        uv.x *= resolution.x/resolution.y;
-    }else{
-        uv.y *= resolution.y/resolution.x;
-    }
-    float tan_fov = tan(1.2217/2.0);
-    vec2 pxy = uv * tan_fov;
-    vec3 ray_dir = normalize(vec3(pxy, 1));
-    return vec4(ray_dir, ray_dir.z);
+
+
+float getDistToScene(vec3 point, mat4[1] scene){
+	float distances[1];
+	if(scene[0][3].w == 0){
+		vec4 ball = vec4(scene[0][0]);
+		float ballDist = length(point - ball.xyz) - ball.w;
+		distances[0] = ballDist;
+	}
+	
+	return distances[0];
+	
 }
+
+float rayMarch(vec4 rayDir, float maxDepth, mat4[1] scene){
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *=-1;
+	
+	float cosA = rayDir.w;
+	float DistOrigin = 0;
+	for(int i = 0; i < 100; i++){
+		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
+		float dist = getDistToScene(point, scene);
+		DistOrigin += dist;
+		if(dist < 0.01 ){
+			break;
+		}
+		if(DistOrigin * cosA > maxDepth || DistOrigin  > 10000){
+			DistOrigin = -1;
+			break;
+		}
+	}
+
+	return DistOrigin;
+}
+
+
+
+

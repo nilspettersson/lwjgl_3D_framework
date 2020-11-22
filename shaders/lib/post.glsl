@@ -89,19 +89,24 @@ vec2 rayMarchVolume(vec4 rayDir, float maxDepth){
 
 
 
-float getDistToScene(vec3 point, mat4[1] scene){
-	float distances[1];
-	if(scene[0][3].w == 0){
-		vec4 ball = vec4(scene[0][0]);
-		float ballDist = length(point - ball.xyz) - ball.w;
-		distances[0] = ballDist;
+float getDistToScene(vec3 point, mat4[20] scene, int sceneSize){
+	float minDistance = 10000;
+	for(int i = 0; i < sceneSize; i++){
+		if(scene[0][3].w == 0){
+			vec4 ball = vec4(scene[i][0]);
+			float ballDist = length(point - ball.xyz) - ball.w;
+			
+			if(ballDist < minDistance){
+				minDistance = ballDist;
+			}
+		}
 	}
 	
-	return distances[0];
+	return minDistance;
 	
 }
 
-float rayMarch(vec4 rayDir, float maxDepth, mat4[1] scene){
+float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
@@ -109,7 +114,7 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[1] scene){
 	float DistOrigin = 0;
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
-		float dist = getDistToScene(point, scene);
+		float dist = getDistToScene(point, scene, sceneSize);
 		DistOrigin += dist;
 		if(dist < 0.01 ){
 			break;

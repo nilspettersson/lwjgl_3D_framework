@@ -1,3 +1,13 @@
+### 1.1.0
+#### features
+* added ray marching system. Raymarcher will go through scene of objects and calculate distance. float scene(vec3 point) needs to be created.
+*  you can now create functions between uniforms and fragment in shaders.
+*  added list of uniform in fbo to be make it posible to add uniforms for post processing shaders.
+
+#### bugfixes
+* fixed issue with rayMarching.glsl needed to be included even when it was not used.
+* fixed bug with uniforms not working.
+
 ### 1.0.0
 #### features
 * revamped shaders. Added mesh shader and post processing shader for easier shader creation.

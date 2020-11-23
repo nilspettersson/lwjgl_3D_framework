@@ -1,5 +1,5 @@
 # lwjgl_3D_library
-Current version: **1.0.0**
+Current version: **1.1.0**
 
 ## Core functionality
 #### Game loop handling
@@ -18,12 +18,14 @@ Current version: **1.0.0**
 * The Geometry class contains vertices and methods to add vertices. Geometry can be added by specifying the amount of vertices or by loading an obj file. You need to bind the geometry every time it is updated including on creation. 
 #### point Lights
 * Lights will be passed on to the gpu once every frame. Lights are used by the shaders to create lighting. The Game class contains all lights and functionality to add, remove and edit them.
-#### Material and shader
-* A material has properties that will be sent to the shader as uniforms. The uniforms will be sent once per Entity so materials should not have properties related to the world. **World uniforms will soon be added**.
-ShaderNp is a new Shader class that is easier to use. When creating glsl code you can use pre made functions that can create different lighting efects. Glsl version 330 is used.
+#### Material
+* A material has properties that will be sent to the shader as uniforms. The uniforms will be sent once per Entity so materials should not have properties related to the world.
+#### Shader
+When creating glsl code you can use pre made functions that can create different lighting efects. Glsl version 330 is used. The Shader has include system so glsl libraries can be included.
 #### Post Processing
-* You can create a post processing shader using pre made functions.
-
+* You can create a post processing shader that add effects to the image.
+#### Ray marcher
+* You can add [distance functions](https://iquilezles.org/www/articles/distfunctions/distfunctions.htm) to a scene function and then use ray marcher to find closest objects.
 
 
 ## Setup for eclipse

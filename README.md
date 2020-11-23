@@ -21,7 +21,7 @@ Current version: **1.1.0**
 #### Material
 * A material has properties that will be sent to the shader as uniforms. The uniforms will be sent once per Entity so materials should not have properties related to the world.
 #### Shader
-When creating glsl code you can use pre made functions that can create different lighting efects. Glsl version 330 is used. The Shader has include system so glsl libraries can be included.
+* When creating glsl code you can use pre made functions that can create different lighting efects. Glsl version 330 is used. The Shader has include system so glsl libraries can be included.
 #### Post Processing
 * You can create a post processing shader that add effects to the image.
 #### Ray marcher

@@ -4,6 +4,11 @@ uniforms{
 	
 }
 
+
+float sceneDistance(vec3 point){
+	return 0.2;
+}
+
 fragment{
 	mat4 scene[20];
 	scene[0][0].x = 0;

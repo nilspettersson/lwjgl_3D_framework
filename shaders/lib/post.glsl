@@ -1,3 +1,7 @@
+float sceneDistance(vec3 point);
+
+
+
 vec4 multQuat(vec4 q1, vec4 q2){
 	return vec4(
 	q1.w * q2.x + q1.x * q2.w + q1.z * q2.y - q1.y * q2.z,
@@ -114,7 +118,8 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 	float DistOrigin = 0;
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
-		float dist = getDistToScene(point, scene, sceneSize);
+		//float dist = getDistToScene(point, scene, sceneSize);
+		float dist = sceneDistance(point);
 		DistOrigin += dist;
 		if(dist < 0.01 ){
 			break;
@@ -130,11 +135,11 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 
 vec3 getNormal(vec3 point, mat4[20] scene, int sceneSize){
 	float dist = getDistToScene(point, scene, sceneSize);
-	vec2 e = vec2(0.001, 0);
+	vec2 e = vec2(0.01, 0);
 
 	vec3 normal = dist - vec3(getDistToScene(point - e.xyy, scene, 2),
-				getDistToScene(point - e.yxy, scene, 2),
-				getDistToScene(point - e.yyx, scene, 2));
+		getDistToScene(point - e.yxy, scene, 2),
+		getDistToScene(point - e.yyx, scene, 2));
 	return normalize(normal);
 }
 
@@ -145,9 +150,6 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, mat4[20] scene, int sceneSize
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;
 	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
-
-
-
 	vec3 normal = getNormal(point, scene, sceneSize);
 
 

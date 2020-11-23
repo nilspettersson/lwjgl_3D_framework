@@ -81,6 +81,7 @@ public class MeshShader extends Shader {
 				"in vec4 worldPosition;\r\n" + 
 				"\r\n" + 
 				libText +
+				npsl[3] +
 				"\r\n" + 
 				"void main(){\r\n" + 
 				"\r\n" + 

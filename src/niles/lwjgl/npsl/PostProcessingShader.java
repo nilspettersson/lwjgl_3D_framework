@@ -51,7 +51,9 @@ public class PostProcessingShader extends Shader{
 				"in vec2 tex_coords;\r\n" + 
 				"\r\n" + 
 				"\r\n" + 
+				
 				libText +
+				npsl[3] +
 				"\r\n" + 
 				"\r\n" + 
 				"void main(){\r\n" + 

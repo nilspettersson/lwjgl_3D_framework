@@ -139,11 +139,12 @@ public abstract class Shader {
 		
 		//get the uniforms from file.
 		start = text.indexOf("uniforms{") + 10;
+		int end = -1;
 		String uniforms = "";
 		boolean done = false;
 		int loopCount = 0;
 		while(!done) {
-			int end = text.indexOf(",", start);
+			end = text.indexOf(",", start);
 			if(end == -1 || text.indexOf("}", start) < end) {
 				end = text.indexOf("}", start) - 1;
 				done = true;
@@ -155,6 +156,12 @@ public abstract class Shader {
 				uniforms = "";
 			}
 		}
+		
+		
+		//gets all functions created between uniforms and fragment.
+		//these functions will be created above included functions.
+		String functions = text.substring(end + 2, text.indexOf("fragment{"));
+		
 		
 		//get the fragment code from file.
 		start = text.indexOf("fragment{") + 9;
@@ -184,12 +191,12 @@ public abstract class Shader {
 		}
 		
 		
-		int end = closeIndex;
+		end = closeIndex;
 		String fragment = text.substring(start, end);
 		fragment = fragment.replace("return ", "gl_FragColor = ");
 		
 		
-		return new String[]{includes, uniforms, fragment};
+		return new String[]{includes, uniforms, fragment, functions};
 	}
 	
 	

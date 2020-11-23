@@ -5,27 +5,15 @@ uniforms{
 }
 
 
-float sceneDistance(vec3 point){
-	return 0.2;
+float scene(vec3 point){
+	vec4 ball = vec4(4, -6, 2, 3);
+	float ballDist = length(point - ball.xyz) - ball.w;
+	return ballDist;
 }
 
 fragment{
-	mat4 scene[20];
-	scene[0][0].x = 0;
-	scene[0][0].y = -5.5;
-	scene[0][0].z = -3;
-	scene[0][0].w = 1;
-	scene[0][3].w = 0;
-
-	scene[1][0].x = -3;
-	scene[1][0].y = -7.5;
-	scene[1][0].z = -3;
-	scene[1][0].w = 1;
-	scene[1][3].w = 0;
-
-
-	float rayOutput = rayMarch(rayDir, depth, scene, 2);
-	vec4 diffuse = rayMarchDiffuse(rayOutput, rayDir, scene, 2);
+	float rayOutput = rayMarch(rayDir, depth);
+	vec4 diffuse = rayMarchDiffuse(rayOutput, rayDir);
 
 	/*vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;

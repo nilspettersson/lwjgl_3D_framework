@@ -1,4 +1,4 @@
-float sceneDistance(vec3 point);
+float scene(vec3 point);
 
 
 
@@ -92,25 +92,7 @@ vec2 rayMarchVolume(vec4 rayDir, float maxDepth){
 
 
 
-
-float getDistToScene(vec3 point, mat4[20] scene, int sceneSize){
-	float minDistance = 10000;
-	for(int i = 0; i < sceneSize; i++){
-		if(scene[0][3].w == 0){
-			vec4 ball = vec4(scene[i][0]);
-			float ballDist = length(point - ball.xyz) - ball.w;
-			
-			if(ballDist < minDistance){
-				minDistance = ballDist;
-			}
-		}
-	}
-	
-	return minDistance;
-	
-}
-
-float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
+float rayMarch(vec4 rayDir, float maxDepth){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
@@ -118,8 +100,9 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 	float DistOrigin = 0;
 	for(int i = 0; i < 100; i++){
 		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
-		//float dist = getDistToScene(point, scene, sceneSize);
-		float dist = sceneDistance(point);
+		
+		float dist = scene(point);
+		
 		DistOrigin += dist;
 		if(dist < 0.01 ){
 			break;
@@ -133,24 +116,24 @@ float rayMarch(vec4 rayDir, float maxDepth, mat4[20] scene, int sceneSize){
 	return DistOrigin;
 }
 
-vec3 getNormal(vec3 point, mat4[20] scene, int sceneSize){
-	float dist = getDistToScene(point, scene, sceneSize);
+vec3 getNormal(vec3 point){
+	float dist = scene(point);
 	vec2 e = vec2(0.01, 0);
 
-	vec3 normal = dist - vec3(getDistToScene(point - e.xyy, scene, 2),
-		getDistToScene(point - e.yxy, scene, 2),
-		getDistToScene(point - e.yyx, scene, 2));
+	vec3 normal = dist - vec3(scene(point - e.xyy),
+		scene(point - e.yxy),
+		scene(point - e.yyx));
 	return normalize(normal);
 }
 
-vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, mat4[20] scene, int sceneSize){
+vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir){
 	vec4 color = vec4(1);
 
 	//finding the point of the intersection.
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;
 	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
-	vec3 normal = getNormal(point, scene, sceneSize);
+	vec3 normal = getNormal(point);
 
 
 	vec3 allLight = vec3(0, 0, 0);

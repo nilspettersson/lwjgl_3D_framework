@@ -7,6 +7,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
+import java.util.HashMap;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -160,6 +162,11 @@ public abstract class Game {
 	
 	public void unbindFbo() {
 		fbo.unbind();
+	}
+	
+	
+	public void setFboUniform(String name, Object value) {
+		fbo.setUniform(name, value);
 	}
 	
 	

@@ -34,7 +34,6 @@ public class PostProcessingShader extends Shader{
 		
 		String libText = getIncludedFiles(npsl);
 		
-		
 		return "#version 120\r\n" + 
 				"\r\n" + 
 				"uniform vec3 lightColors[128];\r\n" + 

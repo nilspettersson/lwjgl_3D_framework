@@ -152,9 +152,6 @@ public abstract class Shader {
 			String uniform = "uniform " + text.substring(start, end) + ";";
 			uniforms += uniform.trim() + "\r\n";
 			start = end + 2;
-			if(loopCount == 0 && done == true) {
-				uniforms = "";
-			}
 		}
 		
 		

@@ -1,7 +1,7 @@
 #include lib/rayMarching.glsl;
 
 uniforms{
-	
+	float time
 }
 
 
@@ -14,14 +14,12 @@ float sdBox( vec3 p, vec3 b )
 
 float scene(vec3 point){
 	vec4 ball = vec4(4, -7, 2, 1);
-	float ballDist = length(mod(point, 4) - vec3(0, 1, 0)) - ball.w;
+	float ballDist = length(point - ball.xyz) - ball.w;
 
 	vec3 transform1 = vec3(0, -7.5, -2);
 	float box = sdBox(point - transform1, vec3(0.5, 0.5, 0.5));
 
-	point = mod(point + 0.6, 1.2) - 0.6;
-	float balls = length(point - vec3(0., 0., 0.)) - 0.02;
-    return balls;
+    return min(ballDist, box);
 }
 
 fragment{

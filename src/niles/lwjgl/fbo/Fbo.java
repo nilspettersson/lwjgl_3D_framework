@@ -31,8 +31,12 @@ import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL14.GL_DEPTH_COMPONENT24;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -50,7 +54,11 @@ public class Fbo {
 	private int framebufferID;
 	private int depthRenderBufferID;
 	
+	private HashMap<String, Object> uniforms;
+	
 	public Fbo() {
+		uniforms = new HashMap<String, Object>();
+		
 		framebufferID = glGenFramebuffersEXT();
         colorTextureID = glGenTextures();
         depthTextureID = glGenTextures();
@@ -99,7 +107,7 @@ public class Fbo {
 	}
 	
 	public void render(Shader shader, Camera camera, Lights lights) {
-		shader.bind();
+		useShader(shader);
 		
 		bindTexture();
 		bindDepthTexture();
@@ -132,6 +140,36 @@ public class Fbo {
 		shader.setUniform("lightColors", colors);
 		shader.setUniform("lightIntensity", intensity);
 		shader.setUniform("lightCount", colors.length);
+	}
+	
+	public void setUniform(String name, Object value) {
+		uniforms.put(name, value);
+	}
+	
+	public void useShader(Shader shader) {
+		shader.bind();
+		
+		for (Entry<String, Object> property : uniforms.entrySet()) {
+		    if(property.getValue().getClass() == Integer.class){
+		    	shader.setUniform(property.getKey(), (int) property.getValue());
+		    }
+		    else if(property.getValue().getClass() == Float.class){
+		    	shader.setUniform(property.getKey(), (float) property.getValue());
+		    }
+		    else if(property.getValue().getClass() == Vector2f.class){
+		    	shader.setUniform(property.getKey(), (Vector2f) property.getValue());
+		    }
+		    else if(property.getValue().getClass() == Vector3f.class){
+		    	shader.setUniform(property.getKey(), (Vector3f) property.getValue());
+		    }
+		    else if(property.getValue().getClass() == Vector4f.class){
+		    	shader.setUniform(property.getKey(), (Vector4f) property.getValue());
+		    }
+		    else {
+		    	System.err.print("uniform type is not a valid property: " + property.getValue().getClass());
+		    	System.exit(0);
+		    }
+		}
 	}
 
 	public void bindTexture() {

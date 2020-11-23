@@ -101,7 +101,7 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
 	}
 
 	vec4 diffuse = color;
-	diffuse.xyz *= max(allLight, 0.0);
+	diffuse.xyz *= max(allLight, 0);
 	return diffuse;
 }
 

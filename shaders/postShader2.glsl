@@ -12,13 +12,10 @@ float scene(vec3 point){
 }
 
 fragment{
+	vec4 rayDir = getRay();
 	float rayOutput = rayMarch(rayDir, depth);
 	vec4 diffuse = rayMarchDiffuse(rayOutput, rayDir);
 
-	/*vec3 rayOrigin = cameraPosition;
-	rayOrigin.z *= -1;
-	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
-	vec4 diffuse = vec4(getNormal(point, scene, 2), 1);*/
 
 	vec4 output = texture;
 	if(rayOutput == -1){

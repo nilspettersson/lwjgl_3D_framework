@@ -18,10 +18,10 @@ vec4 rotate_vector( vec4 quat, vec4 vec )
 	return vec4(multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz, cosA);
 }
 
-vec4 calculateFragementRay(vec2 fragCoord){
+vec4 getRay(){
 	vec3 resolution = vec3(1.77, 1, 0.72);
 
-    vec2 uv = fragCoord;
+    vec2 uv = tex_coords;
     uv.x = (uv.x * 2.0) - 1.0;
     uv.y = (2.0 * uv.y) - 1.0;
     if(resolution.x >= resolution.y){
@@ -31,8 +31,11 @@ vec4 calculateFragementRay(vec2 fragCoord){
     }
     float tan_fov = tan(1.2217/2.0);
     vec2 pxy = uv * tan_fov;
-    vec3 ray_dir = normalize(vec3(pxy, 1));
-    return vec4(ray_dir, ray_dir.z);
+    vec3 rayDir = normalize(vec3(pxy, 1));
+
+	vec4 dir = rotate_vector(cameraRotation, vec4(rayDir, rayDir.z));
+
+    return dir;
 }
 
 //gets the distance to the closest object in the scene.
@@ -102,3 +105,4 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir){
 	diffuse.xyz *= allLight;
 	return diffuse;
 }
+

@@ -74,8 +74,7 @@ vec3 getNormal(vec3 point){
 	return normalize(normal);
 }
 
-vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir){
-	vec4 color = vec4(1);
+vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
 
 	//finding the point of the intersection.
 	vec3 rayOrigin = cameraPosition;
@@ -102,7 +101,7 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir){
 	}
 
 	vec4 diffuse = color;
-	diffuse.xyz *= allLight;
+	diffuse.xyz *= max(allLight, 0.0);
 	return diffuse;
 }
 

@@ -33,7 +33,7 @@ public class test2 extends Game {
 		e2.addTexture(new Texture("res/wood.jpg"));
 		e2.getTransform().setScale(new Vector3f(0.5f));
 		
-		getLights().addLight(new Vector3f(-3,-6,-4), new Vector3f(1), 6);
+		getLights().addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1), 14);
 	}
 	
 	@Override

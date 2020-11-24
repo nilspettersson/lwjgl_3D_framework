@@ -40,6 +40,9 @@ public class test2 extends Game {
 				e2.addTexture(new Texture("res/wood.jpg"));
 				e2.getTransform().setScale(new Vector3f(0.5f));
 				
+				addEntity(e);
+				addEntity(e2);
+				
 				getLights().addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1), 6);
 				getLights().addLight(new Vector3f(8,-4 ,-4), new Vector3f(1), 6);
 			}
@@ -49,14 +52,17 @@ public class test2 extends Game {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
-				setFboUniform("time", 1);
+				
+				
+				
+				/*setFboUniform("time", 1);
 				
 				bindFbo();
 				render(e);
 				render(e2);
 				unbindFbo();
 				
-				renderFbo(postProcessing);
+				renderFbo(postProcessing);*/
 			}
 			
 			

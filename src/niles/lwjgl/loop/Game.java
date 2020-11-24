@@ -27,7 +27,7 @@ public abstract class Game {
 	
 	private Window window;
 	//private Camera camera;
-	private Renderer renderer;
+	//private Renderer renderer;
 	private Input input;
 	
 	private Vector4f backgroundColor;
@@ -63,29 +63,29 @@ public abstract class Game {
 	public abstract void init();
 	
 	public void loop() {
-		renderer = new Renderer();
+		//renderer = new Renderer();
 		
 		init();
 		
 		while(window.shouldUpdate()) {
 			window.drawInit(backgroundColor);
 			
-			if(scenes.get(currentScene).isLoaded() == false) {
+			/*if(scenes.get(currentScene).isLoaded() == false) {
 				scenes.get(currentScene).onload();
 				scenes.get(currentScene).setLoaded(true);
-			}
+			}*/
 			
-			scenes.get(currentScene).update();
+			scenes.get(currentScene).loop();
 			
-			renderer.clean();
+			//renderer.clean();
 			window.clean();
 			window.update(fpsCap);
 		}
 	}
 	
-	public void render(Entity entity) {
+	/*public void render(Entity entity) {
 		renderer.render(scenes.get(currentScene).getCamera(), entity, scenes.get(currentScene).getLights());
-	}
+	}*/
 	
 	public void rotateCamera(float xAxis, float yAxis) {
 		scenes.get(currentScene).getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
@@ -183,9 +183,9 @@ public abstract class Game {
 		return window.getFps();
 	}
 
-	public Renderer getRenderer() {
+	/*public Renderer getRenderer() {
 		return renderer;
-	}
+	}*/
 
 	public Input getInput() {
 		return input;

@@ -8,11 +8,13 @@ import niles.lwjgl.entity.Entity;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.npsl.Shader;
+import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
 
 public abstract class Scene {
 	
 	private Camera camera;
+	private Renderer renderer;
 	
 	private ArrayList<Entity> entities;
 	private Lights lights;
@@ -24,6 +26,7 @@ public abstract class Scene {
 		camera = new Camera();
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		
+		renderer = new Renderer();
 		lights = new Lights();
 		fbo = new Fbo();
 		entities = new ArrayList<Entity>();
@@ -35,7 +38,24 @@ public abstract class Scene {
 	
 	public abstract void update();
 	
-
+	public void loop() {
+		if(!isLoaded){
+			onload();
+			isLoaded = true;
+		}
+		update();
+		
+		for(int i = 0; i < entities.size(); i++) {
+			render(entities.get(i));
+		}
+		
+		renderer.clean();
+	}
+	
+	
+	public void render(Entity entity) {
+		renderer.render(getCamera(), entity, getLights());
+	}
 
 	public void addEntity(Entity entity) {
 		entities.add(entity);

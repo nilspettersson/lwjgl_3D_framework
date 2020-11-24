@@ -22,7 +22,7 @@ public class test2 extends Game {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
 		
-		Scene scene = new Scene() {
+		addScene(new Scene() {
 			
 			@Override
 			public void onload() {
@@ -38,6 +38,7 @@ public class test2 extends Game {
 				addEntityToScene(e);
 				addEntityToScene(e2);
 				
+				
 				getLights().addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1), 6);
 				getLights().addLight(new Vector3f(8,-4 ,-4), new Vector3f(1), 6);
 			}
@@ -48,16 +49,9 @@ public class test2 extends Game {
 				simpleCameraMovement(0.03f);
 				
 				usePostProcessing(postProcessing);
-				
-
 			}
-			
-			
-		};
-		
-		addScene(scene);
+		});
 		
 		setFpsCap(120);
 	}
-	
 }

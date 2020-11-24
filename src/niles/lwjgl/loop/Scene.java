@@ -44,7 +44,7 @@ public abstract class Scene {
 	
 	public abstract void update();
 	
-	public void loop() {
+	protected void loop() {
 		if(!isLoaded){
 			onload();
 			isLoaded = true;

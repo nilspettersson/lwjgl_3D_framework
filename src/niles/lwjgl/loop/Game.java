@@ -53,14 +53,16 @@ public abstract class Game {
 	
 	public abstract void init();
 	
-	public void loop() {
+	private void loop() {
 		
 		init();
 		
 		while(window.shouldUpdate()) {
 			window.drawInit(backgroundColor);
 			
-			scenes.get(currentScene).loop();
+			if(scenes.size() > 0) {
+				scenes.get(currentScene).loop();
+			}
 			
 			window.clean();
 			window.update(fpsCap);
@@ -98,6 +100,10 @@ public abstract class Game {
 	
 	public void addScene(Scene scene) {
 		scenes.add(scene);
+	}
+	
+	public void useScene(int sceneIndex) {
+		currentScene = sceneIndex;
 	}
 	
 	

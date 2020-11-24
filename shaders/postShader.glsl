@@ -7,6 +7,7 @@ uniforms{
 
 
 fragment{
+	vec4 rayDir = getRay();
 	vec2 rayDis = rayMarchVolume(rayDir, depth);
 	float dis = rayDis.x;
 	float rayDepth = rayDis.y;

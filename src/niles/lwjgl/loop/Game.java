@@ -8,17 +8,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import niles.lwjgl.entity.Entity;
-import niles.lwjgl.fbo.Fbo;
-import niles.lwjgl.light.Lights;
-import niles.lwjgl.npsl.Shader;
-import niles.lwjgl.rendering.Renderer;
-import niles.lwjgl.world.Camera;
 import niles.lwjgl.world.Input;
 import niles.lwjgl.world.Mouse;
 import niles.lwjgl.world.Window;
@@ -26,15 +19,13 @@ import niles.lwjgl.world.Window;
 public abstract class Game {
 	
 	private Window window;
-	//private Camera camera;
-	//private Renderer renderer;
 	private Input input;
 	
 	private Vector4f backgroundColor;
 	private int fpsCap;
 	
 	private ArrayList<Scene> scenes;
-	private int currentScene = -1;
+	private int currentScene = 0;
 	
 	public Game(int width,int height,boolean fullsceen,Vector4f backgroundColor,int fpsCap) {
 		window=new Window(width, height, fullsceen);
@@ -63,30 +54,20 @@ public abstract class Game {
 	public abstract void init();
 	
 	public void loop() {
-		//renderer = new Renderer();
 		
 		init();
 		
 		while(window.shouldUpdate()) {
 			window.drawInit(backgroundColor);
 			
-			/*if(scenes.get(currentScene).isLoaded() == false) {
-				scenes.get(currentScene).onload();
-				scenes.get(currentScene).setLoaded(true);
-			}*/
-			
 			scenes.get(currentScene).loop();
 			
-			//renderer.clean();
 			window.clean();
 			window.update(fpsCap);
 		}
 	}
 	
-	/*public void render(Entity entity) {
-		renderer.render(scenes.get(currentScene).getCamera(), entity, scenes.get(currentScene).getLights());
-	}*/
-	
+
 	public void rotateCamera(float xAxis, float yAxis) {
 		scenes.get(currentScene).getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
 		scenes.get(currentScene).getCamera().getRotation().rotate(xAxis, 0, 0);
@@ -154,7 +135,6 @@ public abstract class Game {
 	
 	public void addScene(Scene scene) {
 		scenes.add(scene);
-		currentScene++;
 	}
 	
 	
@@ -182,11 +162,6 @@ public abstract class Game {
 	public int getFps() {
 		return window.getFps();
 	}
-
-	/*public Renderer getRenderer() {
-		return renderer;
-	}*/
-
 	public Input getInput() {
 		return input;
 	}

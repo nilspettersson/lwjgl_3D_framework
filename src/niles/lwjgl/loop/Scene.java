@@ -7,6 +7,7 @@ import org.joml.Vector4f;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
@@ -18,7 +19,10 @@ public abstract class Scene {
 	
 	private ArrayList<Entity> entities;
 	private Lights lights;
+	
 	private Fbo fbo;
+	private Shader postProcessingShader;
+	private boolean postProcessing;
 	
 	private boolean isLoaded;
 	
@@ -29,6 +33,7 @@ public abstract class Scene {
 		renderer = new Renderer();
 		lights = new Lights();
 		fbo = new Fbo();
+		postProcessing = false;
 		entities = new ArrayList<Entity>();
 		
 		isLoaded = false;
@@ -45,8 +50,18 @@ public abstract class Scene {
 		}
 		update();
 		
-		for(int i = 0; i < entities.size(); i++) {
-			render(entities.get(i));
+		if(postProcessing) {
+			bindFbo();
+			for(int i = 0; i < entities.size(); i++) {
+				render(entities.get(i));
+			}
+			unbindFbo();
+			renderFbo(postProcessingShader);
+		}
+		else {
+			for(int i = 0; i < entities.size(); i++) {
+				render(entities.get(i));
+			}
 		}
 		
 		renderer.clean();
@@ -59,6 +74,16 @@ public abstract class Scene {
 
 	public void addEntity(Entity entity) {
 		entities.add(entity);
+	}
+	
+	public void usePostProcessing(Shader shader) {
+		postProcessingShader = shader;
+		postProcessing = true;
+	}
+	
+	public void removePostProcessing() {
+		postProcessingShader = null;
+		postProcessing = false;
 	}
 	
 	//fbo is used for post processing

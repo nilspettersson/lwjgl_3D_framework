@@ -7,6 +7,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.joml.Vector3f;
@@ -25,22 +26,21 @@ import niles.lwjgl.world.Window;
 public abstract class Game {
 	
 	private Window window;
-	private Camera camera;
+	//private Camera camera;
 	private Renderer renderer;
 	private Input input;
-	
-	private Lights lights;
-	private Fbo fbo;
 	
 	private Vector4f backgroundColor;
 	private int fpsCap;
 	
+	private ArrayList<Scene> scenes;
+	private int currentScene = -1;
+	
 	public Game(int width,int height,boolean fullsceen,Vector4f backgroundColor,int fpsCap) {
 		window=new Window(width, height, fullsceen);
-		camera=new Camera();
 		input = new Input(getWindow());
-		lights = new Lights();
-		fbo = new Fbo();
+		
+		scenes = new ArrayList<Scene>();
 		
 		this.backgroundColor=backgroundColor;
 		this.fpsCap=fpsCap;
@@ -50,11 +50,9 @@ public abstract class Game {
 	
 	public Game() {
 		window=new Window(1920, 1080, true);
-		camera=new Camera();
-		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		input = new Input(getWindow());
-		lights = new Lights();
-		fbo = new Fbo();
+		
+		scenes = new ArrayList<Scene>();
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);
 		this.fpsCap=120;
@@ -62,19 +60,22 @@ public abstract class Game {
 		loop();
 	}
 	
-	public abstract void setup();
-	
-	public abstract void update();
+	public abstract void init();
 	
 	public void loop() {
 		renderer = new Renderer();
 		
-		setup();
+		init();
 		
 		while(window.shouldUpdate()) {
 			window.drawInit(backgroundColor);
 			
-			update();
+			if(scenes.get(currentScene).isLoaded() == false) {
+				scenes.get(currentScene).onload();
+				scenes.get(currentScene).setLoaded(true);
+			}
+			
+			scenes.get(currentScene).update();
 			
 			renderer.clean();
 			window.clean();
@@ -83,43 +84,43 @@ public abstract class Game {
 	}
 	
 	public void render(Entity entity) {
-		renderer.render(getCamera(), entity, lights);
+		renderer.render(scenes.get(currentScene).getCamera(), entity, scenes.get(currentScene).getLights());
 	}
 	
 	public void rotateCamera(float xAxis, float yAxis) {
-		getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
-		getCamera().getRotation().rotate(xAxis, 0, 0);
+		scenes.get(currentScene).getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
+		scenes.get(currentScene).getCamera().getRotation().rotate(xAxis, 0, 0);
 	}
 	
 	public void moveCameraForward(float amount) {
 		Vector3f move = new Vector3f(0, 0, -amount);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	public void moveCameraBackward(float amount) {
 		Vector3f move = new Vector3f(0, 0, amount);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	public void moveCameraLeft(float amount) {
 		Vector3f move = new Vector3f(-amount, 0, 0);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	public void moveCameraRight(float amount) {
 		Vector3f move = new Vector3f(amount, 0, 0);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	public void moveCameraUp(float amount) {
 		Vector3f move = new Vector3f(0, amount, 0);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	public void moveCameraDown(float amount) {
 		Vector3f move = new Vector3f(0, -amount, 0);
-		move.rotate(getCamera().getRotation());
-		getCamera().getPosition().add(move);
+		move.rotate(scenes.get(currentScene).getCamera().getRotation());
+		scenes.get(currentScene).getCamera().getPosition().add(move);
 	}
 	
 	
@@ -149,33 +150,16 @@ public abstract class Game {
 			moveCameraUp(speed);
 		}
 	}
-
-	
-	//fbo is used for post processing
-	public void renderFbo(Shader shader) {
-		fbo.render(shader, getCamera(), getLights());
-	}
-	
-	public void bindFbo() {
-		fbo.bind();
-	}
-	
-	public void unbindFbo() {
-		fbo.unbind();
-	}
 	
 	
-	public void setFboUniform(String name, Object value) {
-		fbo.setUniform(name, value);
+	public void addScene(Scene scene) {
+		scenes.add(scene);
+		currentScene++;
 	}
 	
 	
 	public Window getWindow() {
 		return window;
-	}
-
-	public Camera getCamera() {
-		return camera;
 	}
 
 	public Vector4f getBackgroundColor() {
@@ -207,16 +191,5 @@ public abstract class Game {
 		return input;
 	}
 
-	public Lights getLights() {
-		return lights;
-	}
-
-	public void setLights(Lights lights) {
-		this.lights = lights;
-	}
-
-
-	
-	
 
 }

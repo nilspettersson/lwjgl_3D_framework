@@ -67,68 +67,31 @@ public abstract class Game {
 		}
 	}
 	
-
-	public void rotateCamera(float xAxis, float yAxis) {
-		scenes.get(currentScene).getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
-		scenes.get(currentScene).getCamera().getRotation().rotate(xAxis, 0, 0);
-	}
-	
-	public void moveCameraForward(float amount) {
-		Vector3f move = new Vector3f(0, 0, -amount);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	public void moveCameraBackward(float amount) {
-		Vector3f move = new Vector3f(0, 0, amount);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	public void moveCameraLeft(float amount) {
-		Vector3f move = new Vector3f(-amount, 0, 0);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	public void moveCameraRight(float amount) {
-		Vector3f move = new Vector3f(amount, 0, 0);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	public void moveCameraUp(float amount) {
-		Vector3f move = new Vector3f(0, amount, 0);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	public void moveCameraDown(float amount) {
-		Vector3f move = new Vector3f(0, -amount, 0);
-		move.rotate(scenes.get(currentScene).getCamera().getRotation());
-		scenes.get(currentScene).getCamera().getPosition().add(move);
-	}
-	
 	
 	public void simpleCameraRotation(float sensitivity) {
 		Mouse.isVisible(getWindow(), false);
 		Mouse.moveMouse(getWindow(), 1f);
-		rotateCamera(-Mouse.myY, -Mouse.myX);
+		scenes.get(currentScene).rotateCamera(-Mouse.myY, -Mouse.myX);
 	}
 	
 	public void simpleCameraMovement(float speed) {
 		if(getInput().isDown(GLFW_KEY_W)) {
-			moveCameraForward(speed);
+			scenes.get(currentScene).moveCameraForward(speed);
 		}
 		if(getInput().isDown(GLFW_KEY_S)) {
-			moveCameraBackward(speed);
+			scenes.get(currentScene).moveCameraBackward(speed);
 		}
 		if(getInput().isDown(GLFW_KEY_A)) {
-			moveCameraLeft(speed);
+			scenes.get(currentScene).moveCameraLeft(speed);
 		}
 		if(getInput().isDown(GLFW_KEY_D)) {
-			moveCameraRight(speed);
+			scenes.get(currentScene).moveCameraRight(speed);
 		}
 		if(getInput().isDown(GLFW_KEY_Q)) {
-			moveCameraDown(speed);
+			scenes.get(currentScene).moveCameraDown(speed);
 		}
 		if(getInput().isDown(GLFW_KEY_E)) {
-			moveCameraUp(speed);
+			scenes.get(currentScene).moveCameraUp(speed);
 		}
 	}
 	

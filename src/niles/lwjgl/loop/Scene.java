@@ -2,6 +2,7 @@ package niles.lwjgl.loop;
 
 import java.util.ArrayList;
 
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import niles.lwjgl.entity.Entity;
@@ -72,7 +73,7 @@ public abstract class Scene {
 		renderer.render(getCamera(), entity, getLights());
 	}
 
-	public void addEntity(Entity entity) {
+	public void addEntityToScene(Entity entity) {
 		entities.add(entity);
 	}
 	
@@ -102,6 +103,43 @@ public abstract class Scene {
 	
 	public void setFboUniform(String name, Object value) {
 		fbo.setUniform(name, value);
+	}
+	
+	
+	public void rotateCamera(float xAxis, float yAxis) {
+		getCamera().getRotation().setAngleAxis(yAxis, 0, 1, 0);
+		getCamera().getRotation().rotate(xAxis, 0, 0);
+	}
+	
+	public void moveCameraForward(float amount) {
+		Vector3f move = new Vector3f(0, 0, -amount);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraBackward(float amount) {
+		Vector3f move = new Vector3f(0, 0, amount);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraLeft(float amount) {
+		Vector3f move = new Vector3f(-amount, 0, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraRight(float amount) {
+		Vector3f move = new Vector3f(amount, 0, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraUp(float amount) {
+		Vector3f move = new Vector3f(0, amount, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
+	}
+	public void moveCameraDown(float amount) {
+		Vector3f move = new Vector3f(0, -amount, 0);
+		move.rotate(getCamera().getRotation());
+		getCamera().getPosition().add(move);
 	}
 	
 	

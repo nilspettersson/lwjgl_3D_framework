@@ -1,3 +1,10 @@
+### current develop
+#### changed
+* changed the game loop.
+* added scene system. You can now create many scenes and switch between them. A scene has a load and update function. A scene will remove all its content when a different scene is loaded.
+#### bugfixes
+* fixed memory leaks.
+* ray marching now works with different window resolutions
 ### 1.1.0
 #### features
 * added ray marching system. Raymarcher will go through scene of objects and calculate distance. float scene(vec3 point) needs to be created.

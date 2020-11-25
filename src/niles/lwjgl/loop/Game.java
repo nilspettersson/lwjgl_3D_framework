@@ -27,14 +27,14 @@ public abstract class Game {
 	private ArrayList<Scene> scenes;
 	private int currentScene = 0;
 	
-	public Game(int width,int height,boolean fullsceen,Vector4f backgroundColor,int fpsCap) {
+	
+	public Game(int width,int height,boolean fullsceen) {
 		window=new Window(width, height, fullsceen);
 		input = new Input(getWindow());
-		
 		scenes = new ArrayList<Scene>();
 		
-		this.backgroundColor=backgroundColor;
-		this.fpsCap=fpsCap;
+		this.backgroundColor=new Vector4f(0,0,0,1);
+		this.fpsCap=120;
 		
 		loop();
 	}

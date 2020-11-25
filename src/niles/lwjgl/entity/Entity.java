@@ -44,6 +44,13 @@ public class Entity {
 		}
 	}
 	
+	//textures should be deleted when not used anymore.
+	public void DeleteTextures() {
+		for(int i = 0; i < textures.size(); i++) {
+			textures.get(i).delete();
+		}
+	}
+	
 	public void bindGeometry() {
 		geometry.updateVertices();
 		geometry.updateIndices();

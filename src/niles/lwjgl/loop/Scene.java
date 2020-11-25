@@ -12,11 +12,13 @@ import niles.lwjgl.light.Lights;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
+import niles.lwjgl.world.Window;
 
 public abstract class Scene {
 	
 	private Camera camera;
 	private Renderer renderer;
+	private Window window;
 	
 	private ArrayList<Entity> entities;
 	private Lights lights;
@@ -27,9 +29,10 @@ public abstract class Scene {
 	
 	private boolean isLoaded;
 	
-	public Scene() {
+	public Scene(Window window) {
 		camera = new Camera();
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
+		this.window = window;
 		
 		renderer = new Renderer();
 		lights = new Lights();
@@ -48,8 +51,10 @@ public abstract class Scene {
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		lights = new Lights();
 		
+		
 		for(int i = 0; i < entities.size(); i++) {
 			entities.get(i).getGeometry().deleteBuffers();
+			entities.get(i).DeleteTextures();
 		}
 		entities = new ArrayList<Entity>();
 		
@@ -94,7 +99,7 @@ public abstract class Scene {
 	public void usePostProcessing(Shader shader) {
 		postProcessingShader = shader;
 		if(fbo == null) {
-			fbo = new Fbo();
+			fbo = new Fbo(window);
 		}
 		postProcessing = true;
 	}

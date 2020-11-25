@@ -46,6 +46,7 @@ import niles.lwjgl.light.Lights;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Model;
 import niles.lwjgl.world.Camera;
+import niles.lwjgl.world.Window;
 
 public class Fbo {
 	
@@ -56,7 +57,7 @@ public class Fbo {
 	
 	private HashMap<String, Object> uniforms;
 	
-	public Fbo() {
+	public Fbo(Window window) {
 		uniforms = new HashMap<String, Object>();
 		
 		framebufferID = glGenFramebuffersEXT();
@@ -69,7 +70,7 @@ public class Fbo {
         // initialize color texture
         glBindTexture(GL_TEXTURE_2D, colorTextureID);
         glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, 1920, 1080, 0,GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, window.getWidth(), window.getHeight(), 0, GL_RGBA, GL_INT, (java.nio.ByteBuffer) null);
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL_TEXTURE_2D, colorTextureID, 0);
         
         
@@ -77,11 +78,11 @@ public class Fbo {
         
         // initialize depth renderbuffer
         glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthRenderBufferID);
-        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, 1920, 1080);
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT, window.getWidth(), window.getHeight());
         glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT, depthRenderBufferID);
         
         glBindTexture(GL_TEXTURE_2D, depthTextureID);
-        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, 1920, 1080, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT24, window.getWidth(), window.getHeight(), 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
     	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

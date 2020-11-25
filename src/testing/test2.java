@@ -10,6 +10,7 @@ import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
 public class test2 extends Game {
+	
 	public static void main(String[] args) {
 		new test2();
 	}
@@ -22,7 +23,7 @@ public class test2 extends Game {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
 		
-		addScene(new Scene() {
+		addScene(new Scene(getWindow()) {
 			
 			@Override
 			public void onload() {

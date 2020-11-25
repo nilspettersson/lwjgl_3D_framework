@@ -40,7 +40,7 @@ public abstract class Game {
 	}
 	
 	public Game() {
-		window=new Window(1920, 1080, true);
+		window=new Window(1920/2, 1080/2, false);
 		input = new Input(getWindow());
 		
 		scenes = new ArrayList<Scene>();
@@ -73,7 +73,7 @@ public abstract class Game {
 	public void simpleCameraRotation(float sensitivity) {
 		Mouse.isVisible(getWindow(), false);
 		Mouse.moveMouse(getWindow(), 1f);
-		scenes.get(currentScene).rotateCamera(-Mouse.myY, -Mouse.myX);
+		scenes.get(currentScene).rotateCamera(-Mouse.y, -Mouse.x);
 	}
 	
 	public void simpleCameraMovement(float speed) {
@@ -103,6 +103,10 @@ public abstract class Game {
 	}
 	
 	public void useScene(int sceneIndex) {
+		Mouse.x = 0;
+		Mouse.y = 0;
+		scenes.get(currentScene).clean();
+		
 		currentScene = sceneIndex;
 	}
 	

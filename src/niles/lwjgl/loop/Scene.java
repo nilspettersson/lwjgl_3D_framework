@@ -1,14 +1,14 @@
 package niles.lwjgl.loop;
 
+import static org.lwjgl.opengl.GL15.*;
+
 import java.util.ArrayList;
 
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Lights;
-import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
@@ -33,7 +33,6 @@ public abstract class Scene {
 		
 		renderer = new Renderer();
 		lights = new Lights();
-		fbo = new Fbo();
 		postProcessing = false;
 		entities = new ArrayList<Entity>();
 		
@@ -44,12 +43,25 @@ public abstract class Scene {
 	
 	public abstract void update();
 	
+	protected void clean() {
+		camera = new Camera();
+		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
+		lights = new Lights();
+		
+		for(int i = 0; i < entities.size(); i++) {
+			entities.get(i).getGeometry().deleteBuffers();
+		}
+		entities = new ArrayList<Entity>();
+		
+		isLoaded = false;
+		System.gc();
+	}
+	
 	protected void loop() {
 		if(!isLoaded){
 			onload();
 			isLoaded = true;
 		}
-		update();
 		
 		if(postProcessing) {
 			bindFbo();
@@ -65,6 +77,8 @@ public abstract class Scene {
 			}
 		}
 		
+		update();
+		
 		renderer.clean();
 	}
 	
@@ -79,6 +93,9 @@ public abstract class Scene {
 	
 	public void usePostProcessing(Shader shader) {
 		postProcessingShader = shader;
+		if(fbo == null) {
+			fbo = new Fbo();
+		}
 		postProcessing = true;
 	}
 	
@@ -92,16 +109,16 @@ public abstract class Scene {
 		fbo.render(shader, getCamera(), getLights());
 	}
 	
-	public void bindFbo() {
+	private void bindFbo() {
 		fbo.bind();
 	}
 	
-	public void unbindFbo() {
+	private void unbindFbo() {
 		fbo.unbind();
 	}
 	
 	
-	public void setFboUniform(String name, Object value) {
+	public void setPostProcessingUniform(String name, Object value) {
 		fbo.setUniform(name, value);
 	}
 	

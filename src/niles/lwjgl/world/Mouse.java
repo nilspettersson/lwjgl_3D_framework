@@ -10,15 +10,15 @@ import org.lwjgl.BufferUtils;
 
 public class Mouse {
 	
-     static double newX = 1920/4;
-     static double newY = 1080/4;
+     private static double newX = 1920/4;
+     private static double newY = 1080/4;
 
-     static double prevX = 0;
-     static double prevY = 0;
+     private static double prevX = 0;
+     private static double prevY = 0;
 
      
-     public static float myX=0;
-     public static float myY=0;
+     public static float x=0;
+     public static float y=0;
      
      public Mouse() {
     	 
@@ -46,25 +46,25 @@ public class Mouse {
      public static void moveCamera(Window win,Camera camera,float sensitivity ) {
     	 
     	 Vector2f temp=getMousePosition(win,sensitivity);
-    	 myX+=temp.x;
-    	 myY+=temp.y;
+    	 x+=temp.x;
+    	 y+=temp.y;
     	 
-    	 camera.setPosition(new Vector3f(-(float)myX,(float)myY,0));
+    	 camera.setPosition(new Vector3f(-(float)x,(float)y,0));
     	 
     	 setMouseLocation(win, win.getWidth()/2, win.getHeight()/2);
      }
      
      
      public static Vector2f getMousePosition(Window win,float sensitivity) {
-    	 DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
-         DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
+    	 DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
+         DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
 
-         glfwGetCursorPos(win.getWindow(), x, y);
-         x.rewind();
-         y.rewind();
+         glfwGetCursorPos(win.getWindow(), xb, yb);
+         xb.rewind();
+         yb.rewind();
 
-         newX = x.get();
-         newY = y.get();
+         newX = xb.get();
+         newY = yb.get();
 
          double deltaX = newX - win.getWidth()/2;
          double deltaY = newY - win.getHeight()/2;
@@ -74,8 +74,8 @@ public class Mouse {
          prevX = newX;
          prevY = newY;
 
-         myX = (float) deltaX;
-         myY = (float) deltaY;
+         x = (float) deltaX;
+         y = (float) deltaY;
 
          
          Mouse.setMouseLocation(win, 1920/2, 1080/2);
@@ -85,20 +85,20 @@ public class Mouse {
      
      
      public static void moveMouse(Window win,float sensitivity) {
-    	 DoubleBuffer x = BufferUtils.createDoubleBuffer(1);
-         DoubleBuffer y = BufferUtils.createDoubleBuffer(1);
+    	 DoubleBuffer xb = BufferUtils.createDoubleBuffer(1);
+         DoubleBuffer yb = BufferUtils.createDoubleBuffer(1);
 
-         glfwGetCursorPos(win.getWindow(), x, y);
-         x.rewind();
-         y.rewind();
-
-
-         double deltaX = x.get() - win.getWidth()/2;
-         double deltaY = y.get() - win.getHeight()/2;
+         glfwGetCursorPos(win.getWindow(), xb, yb);
+         xb.rewind();
+         yb.rewind();
 
 
-         myX += (float) deltaX * sensitivity / 1920;
-         myY += (float) deltaY * sensitivity / 1080;
+         double deltaX = xb.get() - win.getWidth()/2;
+         double deltaY = yb.get() - win.getHeight()/2;
+
+
+         x += (float) deltaX * sensitivity / 1920;
+         y += (float) deltaY * sensitivity / 1080;
          
          setMouseLocation(win, win.getWidth()/2, win.getHeight()/2);
      }

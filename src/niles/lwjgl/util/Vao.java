@@ -76,6 +76,14 @@ public class Vao {
 		glEnableVertexAttribArray(4);
 	}
 	
+	public void deleteBuffers() {
+		glBindBuffer(GL_ARRAY_BUFFER, v_id);
+		glDeleteBuffers(v_id);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
+		glDeleteBuffers(i_id);
+	}
+	
 	private FloatBuffer createBuffer(float[] data) {
 		FloatBuffer buffer=BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);

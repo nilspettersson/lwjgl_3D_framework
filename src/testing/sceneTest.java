@@ -28,23 +28,24 @@ public class sceneTest extends Game{
 		
 		post = new PostProcessingShader("postShader2.glsl");
 		
-		addScene(new Scene() {
+		addScene(new Scene(getWindow()) {
 			
 			@Override
 			public void onload() {
 				Entity e2 = Entity.cube(1, 0, 0, 1, new Vector3f(1), shader);
+				e2.addTexture(new Texture("res/rock.jpg"));
 				
 				addEntityToScene(e2);
-				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 100);
+				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 10);
 				
 			}
 			
 			@Override
 			public void update() {
-				//usePostProcessing(post);
-				
 				simpleCameraMovement(0.06f);
-				//simpleCameraRotation(1);
+				simpleCameraRotation(1);
+				
+				getEntities().get(0).getTransform().getRotation().rotateAxis(0.01f, new Vector3f(0, 1, 1));
 				
 				if(getInput().isDown(GLFW.GLFW_KEY_1)) {
 					useScene(1);
@@ -52,20 +53,19 @@ public class sceneTest extends Game{
 			}
 		});
 		
-		addScene(new Scene() {
+		addScene(new Scene(getWindow()) {
 			
 			@Override
 			public void onload() {
 				
 				addEntityToScene(Entity.cube(0, 0, 0, 1, new Vector3f(1, 0, 0), shader));
-				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 50);
+				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 100);
 			}
 			
 			@Override
 			public void update() {
-				
 				simpleCameraMovement(0.06f);
-				//simpleCameraRotation(1);
+				simpleCameraRotation(1);
 				
 				if(getInput().isDown(GLFW.GLFW_KEY_2)) {
 					useScene(0);

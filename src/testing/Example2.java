@@ -9,10 +9,10 @@ import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
-public class test2 extends Game {
+public class Example2 extends Game {
 	
 	public static void main(String[] args) {
-		new test2();
+		new Example2();
 	}
 	
 	Shader shader;

@@ -15,10 +15,10 @@ import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
-public class test extends Game {
+public class Example1 extends Game {
 
 	public static void main(String[] args) {
-		new test();
+		new Example1();
 	}
 	
 	Geometry g;
@@ -31,7 +31,7 @@ public class test extends Game {
 		post = new PostProcessingShader("postShader.glsl");
 		shader = new MeshShader("test.glsl");
 		
-		addScene(new Scene() {
+		addScene(new Scene(getWindow()) {
 			
 			@Override
 			public void onload() {
@@ -86,8 +86,7 @@ public class test extends Game {
 				entites.get(entites.size()-1).getGeometry().updateIndices();
 				
 				entites.get(0).addTexture(new Texture("res/wood.jpg"));
-				entites.get(0).bindTextures();
-				
+				entites.get(1).addTexture(new Texture("res/wood.jpg"));
 				for(int i = 0; i < entites.size(); i++) {
 					addEntityToScene(entites.get(i));
 				}

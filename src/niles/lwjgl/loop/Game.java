@@ -40,7 +40,7 @@ public abstract class Game {
 	}
 	
 	public Game() {
-		window=new Window(1920/2, 1080/2, false);
+		window=new Window(1920, 1080, true);
 		input = new Input(getWindow());
 		
 		scenes = new ArrayList<Scene>();

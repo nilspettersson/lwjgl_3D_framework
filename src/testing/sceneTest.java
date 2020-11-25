@@ -10,6 +10,7 @@ import niles.lwjgl.loop.Scene;
 import niles.lwjgl.npsl.MeshShader;
 import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
+import niles.lwjgl.util.Texture;
 
 public class sceneTest extends Game{
 
@@ -32,18 +33,19 @@ public class sceneTest extends Game{
 			@Override
 			public void onload() {
 				Geometry g = Geometry.loadModel("res/terain");
-				
+				Texture t = new Texture("res/rock.jpg");
 				Entity e = new Entity(10, shader);
 				e.setGeometry(g);
 				e.getTransform().setScale(new Vector3f(8));
 				e.getTransform().setPosition(new Vector3f(0, -4, 0));
 				addEntityToScene(e);
 				
-				addEntityToScene(Entity.cube(0, 0, 0, 1, new Vector3f(1), shader));
+				Entity e2 = Entity.cube(0, 0, 0, 1, new Vector3f(1), shader);
+				e2.addTexture(t);
+				addEntityToScene(e2);
 				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 10);
 				
 				
-				//g = null;
 			}
 			
 			@Override
@@ -51,7 +53,7 @@ public class sceneTest extends Game{
 				//usePostProcessing(post);
 				
 				simpleCameraMovement(0.06f);
-				//simpleCameraRotation(1);
+				simpleCameraRotation(1);
 				
 				if(getInput().isDown(GLFW.GLFW_KEY_1)) {
 					useScene(1);
@@ -72,7 +74,7 @@ public class sceneTest extends Game{
 			public void update() {
 				
 				simpleCameraMovement(0.06f);
-				//simpleCameraRotation(1);
+				simpleCameraRotation(1);
 				
 				if(getInput().isDown(GLFW.GLFW_KEY_2)) {
 					useScene(0);

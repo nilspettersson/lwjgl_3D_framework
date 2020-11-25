@@ -129,7 +129,7 @@ public class Texture {
 	}
 	
 	
-	public static void unBind() {
+	public static void unbind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	

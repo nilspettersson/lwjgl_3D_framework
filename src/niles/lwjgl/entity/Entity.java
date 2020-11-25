@@ -36,6 +36,9 @@ public class Entity {
 		textures.add(texture);
 	}
 	public void bindTextures() {
+		if(textures.size() == 0) {
+			Texture.unbind();
+		}
 		for(int i = 0; i < textures.size(); i++) {
 			textures.get(i).bind(i);
 		}

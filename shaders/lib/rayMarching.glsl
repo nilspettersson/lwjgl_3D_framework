@@ -1,5 +1,9 @@
 float scene(vec3 point);
 
+struct Ray{
+	vec4 dir;
+	float length;
+};
 
 vec4 multQuat(vec4 q1, vec4 q2){
 	return vec4(

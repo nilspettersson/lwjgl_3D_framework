@@ -13,11 +13,11 @@ float scene(vec3 point){
 
 fragment{
 
-	vec4 rayDir = getRay();
-	float ray = rayMarch(rayDir);
+	Ray ray = getRay();
+	ray = rayMarch(ray);
 	
-	if(ray != -1){
-		return rayMarchDiffuse(ray, rayDir, vec4(1));
+	if(ray.length != -1){
+		return rayMarchDiffuse(ray, vec4(1));
 	}
 	else{
 		return vec4(0);

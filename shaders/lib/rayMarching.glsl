@@ -22,7 +22,7 @@ vec4 rotate_vector( vec4 quat, vec4 vec )
 	return vec4(multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz, cosA);
 }
 
-vec4 getRay(){
+Ray getRay(){
 	vec3 resolution = vec3(1.77, 1, 0.72);
 
     vec2 uv = tex_coords;
@@ -39,18 +39,18 @@ vec4 getRay(){
 
 	vec4 dir = rotate_vector(cameraRotation, vec4(rayDir, rayDir.z));
 
-    return dir;
+    return Ray(dir, 0);
 }
 
 //gets the distance to the closest object in the scene.
-float rayMarch(vec4 rayDir){
+Ray rayMarch(Ray ray){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
-	float cosA = rayDir.w;
+	float cosA = ray.dir.w;
 	float DistOrigin = 0;
 	for(int i = 0; i < 100; i++){
-		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
+		vec3 point = rayOrigin + ray.dir.xyz * DistOrigin;
 		
 		float dist = scene(point);
 		
@@ -64,7 +64,7 @@ float rayMarch(vec4 rayDir){
 		}
 	}
 
-	return (DistOrigin);
+	return Ray(ray.dir, DistOrigin);
 }
 
 //gets the normal for a pixel in ray marcher.
@@ -78,12 +78,12 @@ vec3 getNormal(vec3 point){
 	return normalize(normal);
 }
 
-vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
+vec4 rayMarchDiffuse(Ray ray, vec4 color){
 
 	//finding the point of the intersection.
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;
-	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
+	vec3 point = rayOrigin + ray.dir.xyz * ray.length;
 	vec3 normal = getNormal(point);
 
 

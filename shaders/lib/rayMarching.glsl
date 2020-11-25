@@ -39,7 +39,7 @@ vec4 getRay(){
 }
 
 //gets the distance to the closest object in the scene.
-float rayMarch(vec4 rayDir, float maxDepth){
+float rayMarch(vec4 rayDir){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
@@ -54,13 +54,13 @@ float rayMarch(vec4 rayDir, float maxDepth){
 		if(dist < 0.01 ){
 			break;
 		}
-		if(DistOrigin * cosA > maxDepth || DistOrigin  > 10000){
+		if(DistOrigin * cosA > depth || DistOrigin  > 10000){
 			DistOrigin = -1;
 			break;
 		}
 	}
 
-	return DistOrigin;
+	return (DistOrigin);
 }
 
 //gets the normal for a pixel in ray marcher.

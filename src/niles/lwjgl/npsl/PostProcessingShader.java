@@ -50,6 +50,8 @@ public class PostProcessingShader extends Shader{
 				"in vec2 tex_coords;\r\n" + 
 				"\r\n" + 
 				"\r\n" + 
+				"	vec4 rawDepth = texture2D(sampler[10], tex_coords);\r\n" + 
+				"	float depth = (0.1 * 1000.0) / (1000 - rawDepth.z * (1000 - 0.1));"+
 				
 				libText +
 				npsl[3] +
@@ -63,8 +65,7 @@ public class PostProcessingShader extends Shader{
 				"	\r\n" + 
 				"	\r\n" + 
 				"	//gets the depth texture\r\n" + 
-				"	vec4 rawDepth=texture2D(sampler[10], tex_coords);\r\n" + 
-				"	float depth = (0.1 * 1000.0) / (1000 - rawDepth.z * (1000 - 0.1));"+
+				
 				npsl[2] +
 				"	\r\n" + 
 				"}";

@@ -19,17 +19,17 @@ float sdf(vec3 point){
 	vec3 transform1 = vec3(0, -7.5, -2);
 	float box = sdBox(point - transform1, vec3(0.5, 0.5, 0.5));
 
-    return min(ballDist, box);
+    return ballDist;
 }
 
 fragment{
-	vec4 rayDir = getRay();
-	float rayOutput = rayMarch(rayDir, depth);
-	vec4 diffuse = rayMarchDiffuse(rayOutput, rayDir, vec4(1, 0, 0, 1));
+	Ray rayDir = getRay();
+	rayDir = rayMarch(rayDir);
+	vec4 diffuse = rayMarchDiffuse(rayDir, vec3(1));
 
 
 	vec4 output = texture;
-	if(rayOutput == -1){
+	if(rayDir.length == -1){
 		return vec4(output);
 	}
 	else{

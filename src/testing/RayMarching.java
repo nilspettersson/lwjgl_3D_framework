@@ -2,8 +2,10 @@ package testing;
 
 import org.joml.Vector3f;
 
+import niles.lwjgl.entity.Entity;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.loop.Scene;
+import niles.lwjgl.npsl.MeshShader;
 import niles.lwjgl.npsl.PostProcessingShader;
 
 public class RayMarching extends Game{

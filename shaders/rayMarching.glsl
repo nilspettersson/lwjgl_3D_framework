@@ -6,8 +6,6 @@ uniforms{
 }
 
 float sdf(vec3 p){
-
-	//p = opRep(p, 4);
 	float plane = sdplane(p, -1);
 
 	p = opRepLim(p, 4, vec3(500, 0, 500));

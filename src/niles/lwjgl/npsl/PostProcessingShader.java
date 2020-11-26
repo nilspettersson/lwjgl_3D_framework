@@ -50,7 +50,7 @@ public class PostProcessingShader extends Shader{
 				"in vec2 tex_coords;\r\n" + 
 				"\r\n" + 
 				"\r\n" + 
-				"	vec4 rawDepth = texture2D(sampler[10], tex_coords);\r\n" + 
+				"	vec4 rawDepth = texture2D(sampler[10], vec2(tex_coords.x, 1 - tex_coords.y));\r\n" + 
 				"	float depth = (0.1 * 1000.0) / (1000 - rawDepth.z * (1000 - 0.1));"+
 				"vec2 uv;" +
 				libText +
@@ -59,10 +59,10 @@ public class PostProcessingShader extends Shader{
 				"\r\n" + 
 				"void main(){\r\n" + 
 				"	uv = tex_coords;" +
-				"	uv.y = 1.0 - uv.y;" +
+				"	uv.y = 1 - uv.y;" +
 				"	\r\n" + 
 				"	//gets the color texture.\r\n" + 
-				"	vec4 texture=texture2D(sampler[9], uv);\r\n" + 
+				"	vec4 texture=texture2D(sampler[9], vec2(tex_coords.x, 1 - tex_coords.y));\r\n" + 
 				"	\r\n" + 
 				"	\r\n" + 
 				"	//gets the depth texture\r\n" + 

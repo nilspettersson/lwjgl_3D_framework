@@ -3,6 +3,7 @@ float sdf(vec3 point);
 struct Ray{
 	vec4 dir;
 	float length;
+	int steps;
 };
 
 vec4 multQuat(vec4 q1, vec4 q2){
@@ -39,7 +40,7 @@ Ray getRay(){
 
 	vec4 dir = rotate_vector(cameraRotation, vec4(rayDir, rayDir.z));
 
-    return Ray(dir, 0);
+    return Ray(dir, 0, 0);
 }
 
 //gets the distance to the closest object in the sdf function.
@@ -49,6 +50,7 @@ Ray rayMarch(Ray ray){
 	
 	float cosA = ray.dir.w;
 	float DistOrigin = 0;
+	int steps = 0;
 	for(int i = 0; i < 200; i++){
 		vec3 point = rayOrigin + ray.dir.xyz * DistOrigin;
 		
@@ -62,15 +64,18 @@ Ray rayMarch(Ray ray){
 			DistOrigin = -1;
 			break;
 		}
+
+		steps++;
 	}
 
-	return Ray(ray.dir, DistOrigin);
+	return Ray(ray.dir, DistOrigin, steps);
 }
 
 Ray rayMarch(Ray ray, vec3 origin, float length){
 	
 	float cosA = ray.dir.w;
 	float DistOrigin = 0;
+	int steps = 0;
 	for(int i = 0; i < 200; i++){
 		vec3 point = origin + ray.dir.xyz * DistOrigin;
 		
@@ -84,9 +89,10 @@ Ray rayMarch(Ray ray, vec3 origin, float length){
 			DistOrigin = -1;
 			break;
 		}
+		steps++;
 	}
 
-	return Ray(ray.dir, DistOrigin);
+	return Ray(ray.dir, DistOrigin, steps);
 }
 
 //gets the normal for a pixel in ray marcher.
@@ -100,8 +106,7 @@ vec3 getNormal(vec3 point){
 	return normalize(normal);
 }
 
-vec4 rayMarchDiffuse(Ray ray, vec3 color, vec3 ambientColor){
-
+vec4 rayMarchDiffuse(Ray ray, vec3 color){
 	//finding the point of the intersection.
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;
@@ -117,8 +122,8 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color, vec3 ambientColor){
 		float disToLight = length(toLight) / 8;
 
 
-		//simple shadowing.
-		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight));
+		//if pixel is in shadow dont add current light.
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
 		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
 		toLightRay = rayMarch(toLightRay, point2, disToLight);
 		if(toLightRay.length != -1){
@@ -133,9 +138,16 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color, vec3 ambientColor){
 		vec3 light = lightColors[i] * brightness;
 		allLight += light;
 	}
-	allLight += ambientColor / (lightCount + 1);
+
 	vec4 diffuse = vec4(color, 1);
 	diffuse.xyz *= max(allLight, 0);
 	return diffuse;
 }
 
+
+//ambient occlusion to give objects more depth.
+vec4 rayMarchAmbient(Ray ray, vec3 ambientColor, float amount){
+	ambientColor /= max(ray.steps * amount, 4);
+	vec4 output = vec4(ambientColor, 1);
+	return output;
+}

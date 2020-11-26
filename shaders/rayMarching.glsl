@@ -9,12 +9,12 @@ uniforms{
 
 float sdf(vec3 p){
 
-	//p = opRepLim(p, 4, vec3(20, 20, 20));
 	//p = opRep(p, 4);
+	float plane = sdplane(p, -1);
 
-	float box = sdBox(p - vec3(0, 2 , 0), vec3(1, 1, 1) );
-	float plane = sdplane(p, 0);
-	//float test = length(abs(cos(p)) - s * 0.01);
+	p = opRepLim(p, 4, vec3(5, 0, 5));
+	float box = sdBox(p - vec3(0, 0, 0), vec3(1, 1, 1) );
+
 	return min(box, plane);
 }
 

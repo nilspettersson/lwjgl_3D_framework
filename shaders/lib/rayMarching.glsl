@@ -67,6 +67,28 @@ Ray rayMarch(Ray ray){
 	return Ray(ray.dir, DistOrigin);
 }
 
+Ray rayMarch(Ray ray, vec3 origin, float length){
+	
+	float cosA = ray.dir.w;
+	float DistOrigin = 0;
+	for(int i = 0; i < 200; i++){
+		vec3 point = origin + ray.dir.xyz * DistOrigin;
+		
+		float dist = sdf(point);
+		
+		DistOrigin += dist;
+		if(dist < 0.01 ){
+			break;
+		}
+		if(DistOrigin > length + 400 || DistOrigin  > 10000){
+			DistOrigin = -1;
+			break;
+		}
+	}
+
+	return Ray(ray.dir, DistOrigin);
+}
+
 //gets the normal for a pixel in ray marcher.
 vec3 getNormal(vec3 point){
 	float dist = sdf(point);
@@ -92,8 +114,16 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color, vec3 ambientColor){
 		vec3 pos = lightPositions[i];
 		pos.z *= -1;
 		vec3 toLight = pos - point;
-
 		float disToLight = length(toLight) / 8;
+
+
+		//simple shadowing.
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight));
+		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
+		toLightRay = rayMarch(toLightRay, point2, disToLight);
+		if(toLightRay.length != -1){
+			continue;
+		}
 
 		float brightness = dot(normal, normalize(toLight));
 		brightness = max(brightness, 0);

@@ -19,12 +19,12 @@ public class RayMarching extends Game{
 			public void onload() {
 				usePostProcessing(new PostProcessingShader("RayMarching.glsl"));
 				
-				getLights().addLight(new Vector3f(1), new Vector3f(1), 10);
+				getLights().addLight(new Vector3f(6, 30, 1), new Vector3f(1), 10);
 			}
 			
 			@Override
 			public void update() {
-				simpleCameraMovement(0.2f);
+				simpleCameraMovement(0.1f);
 				simpleCameraRotation(1);
 				
 			}

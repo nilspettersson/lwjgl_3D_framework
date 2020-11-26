@@ -34,7 +34,7 @@ public class PostProcessingShader extends Shader{
 		
 		String libText = getIncludedFiles(npsl);
 		
-		return "#version 120\r\n" + 
+		return "#version 130\r\n" + 
 				"\r\n" + 
 				"uniform vec3 lightColors[128];\r\n" + 
 				"uniform vec3 lightPositions[128];\r\n" + 
@@ -52,16 +52,17 @@ public class PostProcessingShader extends Shader{
 				"\r\n" + 
 				"	vec4 rawDepth = texture2D(sampler[10], tex_coords);\r\n" + 
 				"	float depth = (0.1 * 1000.0) / (1000 - rawDepth.z * (1000 - 0.1));"+
-				
+				"vec2 uv;" +
 				libText +
 				npsl[3] +
 				"\r\n" + 
 				"\r\n" + 
 				"void main(){\r\n" + 
-				"	tex_coords.y = 1.0 - tex_coords.y;\r\n" + 
+				"	uv = tex_coords;" +
+				"	uv.y = 1.0 - uv.y;" +
 				"	\r\n" + 
 				"	//gets the color texture.\r\n" + 
-				"	vec4 texture=texture2D(sampler[9], tex_coords);\r\n" + 
+				"	vec4 texture=texture2D(sampler[9], uv);\r\n" + 
 				"	\r\n" + 
 				"	\r\n" + 
 				"	//gets the depth texture\r\n" + 

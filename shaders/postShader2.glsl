@@ -12,7 +12,7 @@ float sdBox( vec3 p, vec3 b )
 }
 
 
-float scene(vec3 point){
+float sdf(vec3 point){
 	vec4 ball = vec4(4, -7, 2, 1);
 	float ballDist = length(point - ball.xyz) - ball.w;
 

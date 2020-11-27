@@ -93,18 +93,18 @@ public class Example1 extends Game {
 				
 				
 				getCamera().setPosition(new Vector3f(0, 0, 10));
-				getWindow().setVSync(true);
+				getWindow().setVSync(false);
 			}
 			
 			@Override
 			public void update() {
-				simpleCameraRotation(1f);
+				simpleCameraRotation(1.8f);
 				simpleCameraMovement(0.3f);
 				
 				usePostProcessing(post);
 				
 				System.out.println(getFps());
-				setFpsCap(120*4);
+				setFpsCap(120);
 			}
 			
 		});

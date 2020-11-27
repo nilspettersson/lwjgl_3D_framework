@@ -72,7 +72,7 @@ public abstract class Game {
 	
 	public void simpleCameraRotation(float sensitivity) {
 		Mouse.isVisible(getWindow(), false);
-		Mouse.moveMouse(getWindow(), 1f);
+		Mouse.moveMouse(getWindow(), sensitivity);
 		scenes.get(currentScene).rotateCamera(-Mouse.y, -Mouse.x);
 	}
 	

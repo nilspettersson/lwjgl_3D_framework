@@ -28,7 +28,7 @@ public class Example1 extends Game {
     
 	@Override
 	public void init() {
-		post = new PostProcessingShader("postShader.glsl");
+		post = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
 		
 		addScene(new Scene(getWindow()) {
@@ -93,7 +93,7 @@ public class Example1 extends Game {
 				
 				
 				getCamera().setPosition(new Vector3f(0, 0, 10));
-				getWindow().setVSync(false);
+				getWindow().setVSync(true);
 			}
 			
 			@Override
@@ -104,7 +104,7 @@ public class Example1 extends Game {
 				usePostProcessing(post);
 				
 				System.out.println(getFps());
-				setFpsCap(120);
+				setFpsCap(120*4);
 			}
 			
 		});

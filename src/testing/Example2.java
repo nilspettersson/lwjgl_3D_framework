@@ -49,6 +49,7 @@ public class Example2 extends Game {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
+				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.
 				usePostProcessing(postProcessing);
 			}
 		});

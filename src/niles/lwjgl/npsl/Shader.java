@@ -110,6 +110,9 @@ public abstract class Shader {
 	}
 	
 	protected String getIncludedFiles(String[] npsl) {
+		if(npsl[0].length() == 0) {
+			return "";
+		}
 		String[] includes = npsl[0].split(",");
 		String libText = "";
 		for(int i = 0; i < includes.length; i++) {
@@ -123,17 +126,19 @@ public abstract class Shader {
 		
 		String includes = "";
 		int start = text.indexOf("#include ") + 9;
-		while(true) {
-			int end = text.indexOf(";", start);
-			String include = text.substring(start, end);
-			includes += include + ",";
-			
-			start = text.indexOf("#include ", end);
-			
-			if(start == -1) {
-				break;
+		if(text.indexOf("#include ") != -1) {
+			while(true) {
+				int end = text.indexOf(";", start);
+				String include = text.substring(start, end);
+				includes += include + ",";
+				
+				start = text.indexOf("#include ", end);
+				
+				if(start == -1) {
+					break;
+				}
+				start += 9;
 			}
-			start += 9;
 		}
 		
 		

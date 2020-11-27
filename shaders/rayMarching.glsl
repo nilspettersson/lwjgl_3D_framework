@@ -23,7 +23,8 @@ fragment{
 		return rayMarchDiffuse(ray, vec3(1)) + rayMarchAmbient(ray, vec3(0.2, 0.3, 0.4), 1);
 	}
 	else{
-		vec3 col = vec3(0.30, 0.36, 0.60) - ((1 - ray.dir.y) * 0.2);
+		vec3 col = vec3(0.40, 0.46, 0.60) - ((1 - ray.dir.y) * 0.3);
 		return vec4(col, 1);
 	}
+	
 }

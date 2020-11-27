@@ -76,12 +76,18 @@ public abstract class Shader {
 		
 		
 		
-		
+		String shaderCode = createFragmentShader();
 		fs=glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fs, createFragmentShader());
+		glShaderSource(fs, shaderCode);
 		glCompileShader(fs);
 		if(glGetShaderi(fs, GL_COMPILE_STATUS)!=1) {
-			System.err.println(glGetShaderInfoLog(fs));
+			String error = glGetShaderInfoLog(fs);
+			System.err.println(error);
+			String[] lines = shaderCode.split("\n");
+			int lineIndex = Integer.parseInt(error.substring(error.indexOf('(') + 1, error.indexOf(')')));
+			for(int i = Math.max(lineIndex - 4, 0); i <= Math.min(lineIndex + 4, lines.length - 1); i++) {
+				System.err.println(i + ":" + lines[i]);
+			}
 			System.exit(1);
 		}
 		
@@ -148,15 +154,21 @@ public abstract class Shader {
 		String uniforms = "";
 		boolean done = false;
 		int loopCount = 0;
-		while(!done) {
-			end = text.indexOf(",", start);
-			if(end == -1 || text.indexOf("}", start) < end) {
-				end = text.indexOf("}", start) - 1;
-				done = true;
+		try {
+			while(!done) {
+				end = text.indexOf(",", start);
+				if(end == -1 || text.indexOf("}", start) < end) {
+					end = text.indexOf("}", start) - 1;
+					done = true;
+				}
+				String uniform = "uniform " + text.substring(start, end) + ";";
+				uniforms += uniform.trim() + "\r\n";
+				start = end + 2;
 			}
-			String uniform = "uniform " + text.substring(start, end) + ";";
-			uniforms += uniform.trim() + "\r\n";
-			start = end + 2;
+		}
+		catch (StringIndexOutOfBoundsException e) {
+			System.err.print("uniform list is not properly formatted in shader");
+			System.exit(0);
 		}
 		
 		

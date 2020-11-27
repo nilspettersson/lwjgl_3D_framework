@@ -2,7 +2,7 @@
 #include lib/sdf.glsl;
 
 uniforms{
-
+	int x
 }
 
 float sdf(vec3 p){

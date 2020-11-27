@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.fbo.Fbo;
+import niles.lwjgl.light.Light;
 import niles.lwjgl.light.Lights;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
@@ -89,7 +90,7 @@ public abstract class Scene {
 	
 	
 	public void render(Entity entity) {
-		renderer.render(getCamera(), entity, getLights());
+		renderer.render(getCamera(), entity, lights);
 	}
 
 	public void addEntityToScene(Entity entity) {
@@ -111,7 +112,7 @@ public abstract class Scene {
 	
 	//fbo is used for post processing
 	public void renderFbo(Shader shader) {
-		fbo.render(shader, getCamera(), getLights());
+		fbo.render(shader, getCamera(), lights);
 	}
 	
 	private void bindFbo() {
@@ -185,31 +186,16 @@ public abstract class Scene {
 	}
 
 
-	public Lights getLights() {
-		return lights;
+	public ArrayList<Light> getLights() {
+		return lights.getLights();
 	}
-
+	
+	public void addLight(Vector3f position,Vector3f color, float intensity) {
+		lights.addLight(position, color, intensity);
+	}
 
 	public void setLights(Lights lights) {
 		this.lights = lights;
-	}
-
-
-	public Fbo getFbo() {
-		return fbo;
-	}
-
-
-	public void setFbo(Fbo fbo) {
-		this.fbo = fbo;
-	}
-
-	public boolean isLoaded() {
-		return isLoaded;
-	}
-
-	public void setLoaded(boolean isLoaded) {
-		this.isLoaded = isLoaded;
 	}
 	
 }

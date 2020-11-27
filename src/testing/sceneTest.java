@@ -19,14 +19,12 @@ public class sceneTest extends Game{
 	}
 
 	
-	Shader shader;
-	Shader post;
 	
 	@Override
 	public void init() {
-		shader = new MeshShader("test.glsl");
+		Shader shader = new MeshShader("test.glsl");
 		
-		post = new PostProcessingShader("postShader2.glsl");
+		Shader post = new PostProcessingShader("postShader2.glsl");
 		
 		addScene(new Scene(getWindow()) {
 			
@@ -36,7 +34,7 @@ public class sceneTest extends Game{
 				e2.addTexture(new Texture("res/rock.jpg"));
 				
 				addEntityToScene(e2);
-				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 10);
+				addLight(new Vector3f(0, 8, 8), new Vector3f(1), 10);
 				
 			}
 			
@@ -59,7 +57,7 @@ public class sceneTest extends Game{
 			public void onload() {
 				
 				addEntityToScene(Entity.cube(0, 0, 0, 1, new Vector3f(1, 0, 0), shader));
-				getLights().addLight(new Vector3f(0, 8, 8), new Vector3f(1), 100);
+				addLight(new Vector3f(0, 8, 8), new Vector3f(1), 100);
 			}
 			
 			@Override

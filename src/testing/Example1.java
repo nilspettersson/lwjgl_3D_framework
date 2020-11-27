@@ -35,9 +35,9 @@ public class Example1 extends Game {
 			
 			@Override
 			public void onload() {
-				getLights().addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
+				addLight(new Vector3f(-44, 12, 12), new Vector3f(0f, 0.6f, 1f), 10);
 				for(int i = 0; i < 20; i++) {
-					getLights().addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
+					addLight(new Vector3f((float) (Math.random() * 200) - 100, (float) (Math.random() * 40) + 6, (float) (Math.random() * 200) - 100), new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()), 10);
 				}
 				
 				//testing many cubes in one buffer. one cube has 36 vertices.

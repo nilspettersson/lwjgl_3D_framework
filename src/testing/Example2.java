@@ -40,8 +40,8 @@ public class Example2 extends Game {
 				addEntityToScene(e2);
 				
 				
-				getLights().addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1), 6);
-				getLights().addLight(new Vector3f(8,-4 ,-4), new Vector3f(1), 6);
+				addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1), 6);
+				addLight(new Vector3f(8,-4 ,-4), new Vector3f(1), 6);
 			}
 			
 			@Override

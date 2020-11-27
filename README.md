@@ -1,5 +1,5 @@
 # lwjgl_3D_library
-Current version: **1.1.0**
+Current version: **2.0.0**
 
 ## Core functionality
 #### Game loop handling
@@ -9,7 +9,7 @@ Current version: **1.1.0**
 #### Camera
  * There is a Camera that can be moved and rotated using functions in Game class.
  #### keybord Input
- * Input from keybord is Posible using the Input class.
+ * Input from keybord is Possible using the Input class.
   #### Mouse Input
  * There is a Mouse class with static functions for changing Mouse location and visibility. It also contains x and y values that can be used to rotate camera.
 #### Renderer

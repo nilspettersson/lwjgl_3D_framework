@@ -23,16 +23,16 @@ public class RayMarching extends Game{
 			public void onload() {
 				getCamera().setPosition(new Vector3f(0, 4, 0));
 				
-				addLight(new Vector3f(8, 8, 1), new Vector3f(1, 0.4f, 0.4f), 12);
-				addLight(new Vector3f(-20, 8, 5), new Vector3f(0.4f, 0.4f, 1), 12);
-				addLight(new Vector3f(0, 6, 8), new Vector3f(0.4f, 1, 0.4f), 12);
+				addLight(new Vector3f(8, 9, 1), new Vector3f(1, 0.4f, 0.4f), 12);
+				addLight(new Vector3f(-20, 9, 5), new Vector3f(0.4f, 0.4f, 1), 12);
+				addLight(new Vector3f(0, 6, 14), new Vector3f(0.4f, 1, 0.4f), 12);
 				
 				usePostProcessing(new PostProcessingShader("RayMarching.glsl"));
 			}
 			
 			@Override
 			public void update() {
-				simpleCameraMovement(1f);
+				simpleCameraMovement(0.4f);
 				simpleCameraRotation(1);
 				
 				value += 0.01f;

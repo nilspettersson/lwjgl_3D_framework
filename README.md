@@ -2,9 +2,9 @@
 Current version: **2.0.0**
 
 ## Screenshots
-| Ray marching| 
-| --- |
-| <img src="https://github.com/nilspettersson/lwjgl_3D_framework/blob/develop/images/img1.png" width="500"> |
+| Ray marching| Rasterization and ray marching| 
+| --- | --- |
+| <img src="https://github.com/nilspettersson/lwjgl_3D_framework/blob/develop/images/img1.png" width="500"> | <img src="https://github.com/nilspettersson/lwjgl_3D_framework/blob/develop/images/img2.png" width="500"> |
 
 
 ## Core functionality

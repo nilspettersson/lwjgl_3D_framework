@@ -50,10 +50,15 @@ public class Texture {
 			
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 			
+			System.gc();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 	
 	
@@ -128,8 +133,11 @@ public class Texture {
 		}
 	}
 	
+	public void delete() {
+		glDeleteTextures(id);
+	}
 	
-	public static void unBind() {
+	public static void unbind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	

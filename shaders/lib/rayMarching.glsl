@@ -1,5 +1,10 @@
-float scene(vec3 point);
+float sdf(vec3 point);
 
+struct Ray{
+	vec4 dir;
+	float length;
+	int steps;
+};
 
 vec4 multQuat(vec4 q1, vec4 q2){
 	return vec4(
@@ -18,68 +23,94 @@ vec4 rotate_vector( vec4 quat, vec4 vec )
 	return vec4(multQuat( qv, vec4(-quat.x, -quat.y, -quat.z, quat.w) ).xyz, cosA);
 }
 
-vec4 getRay(){
+Ray getRay(){
 	vec3 resolution = vec3(1.77, 1, 0.72);
 
-    vec2 uv = tex_coords;
-    uv.x = (uv.x * 2.0) - 1.0;
-    uv.y = (2.0 * uv.y) - 1.0;
+    vec2 uv2 = uv;
+    uv2.x = (uv2.x * 2.0) - 1.0;
+    uv2.y = (2.0 * uv2.y) - 1.0;
     if(resolution.x >= resolution.y){
-        uv.x *= resolution.x/resolution.y;
+        uv2.x *= resolution.x/resolution.y;
     }else{
-        uv.y *= resolution.y/resolution.x;
+        uv2.y *= resolution.y/resolution.x;
     }
     float tan_fov = tan(1.2217/2.0);
-    vec2 pxy = uv * tan_fov;
+    vec2 pxy = uv2 * tan_fov;
     vec3 rayDir = normalize(vec3(pxy, 1));
 
 	vec4 dir = rotate_vector(cameraRotation, vec4(rayDir, rayDir.z));
 
-    return dir;
+    return Ray(dir, 0, 0);
 }
 
-//gets the distance to the closest object in the scene.
-float rayMarch(vec4 rayDir, float maxDepth){
+//gets the distance to the closest object in the sdf function.
+Ray rayMarch(Ray ray){
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *=-1;
 	
-	float cosA = rayDir.w;
+	float cosA = ray.dir.w;
 	float DistOrigin = 0;
-	for(int i = 0; i < 100; i++){
-		vec3 point = rayOrigin + rayDir.xyz * DistOrigin;
+	int steps = 0;
+	for(int i = 0; i < 200; i++){
+		vec3 point = rayOrigin + ray.dir.xyz * DistOrigin;
 		
-		float dist = scene(point);
+		float dist = sdf(point);
 		
 		DistOrigin += dist;
 		if(dist < 0.01 ){
 			break;
 		}
-		if(DistOrigin * cosA > maxDepth || DistOrigin  > 10000){
+		if(DistOrigin * cosA > depth || DistOrigin  > 10000){
 			DistOrigin = -1;
 			break;
 		}
+
+		steps++;
 	}
 
-	return DistOrigin;
+	return Ray(ray.dir, DistOrigin, steps);
+}
+
+Ray rayMarch(Ray ray, vec3 origin, float length){
+	
+	float cosA = ray.dir.w;
+	float DistOrigin = 0;
+	int steps = 0;
+	for(int i = 0; i < 200; i++){
+		vec3 point = origin + ray.dir.xyz * DistOrigin;
+		
+		float dist = sdf(point);
+		
+		DistOrigin += dist;
+		if(dist < 0.01 ){
+			break;
+		}
+		if(DistOrigin > length + 400 || DistOrigin  > 10000){
+			DistOrigin = -1;
+			break;
+		}
+		steps++;
+	}
+
+	return Ray(ray.dir, DistOrigin, steps);
 }
 
 //gets the normal for a pixel in ray marcher.
 vec3 getNormal(vec3 point){
-	float dist = scene(point);
+	float dist = sdf(point);
 	vec2 e = vec2(0.01, 0);
 
-	vec3 normal = dist - vec3(scene(point - e.xyy),
-		scene(point - e.yxy),
-		scene(point - e.yyx));
+	vec3 normal = dist - vec3(sdf(point - e.xyy),
+		sdf(point - e.yxy),
+		sdf(point - e.yyx));
 	return normalize(normal);
 }
 
-vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
-
+vec4 rayMarchDiffuse(Ray ray, vec3 color){
 	//finding the point of the intersection.
 	vec3 rayOrigin = cameraPosition;
 	rayOrigin.z *= -1;
-	vec3 point = rayOrigin + rayDir.xyz * rayOutput;
+	vec3 point = rayOrigin + ray.dir.xyz * ray.length;
 	vec3 normal = getNormal(point);
 
 
@@ -88,8 +119,16 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
 		vec3 pos = lightPositions[i];
 		pos.z *= -1;
 		vec3 toLight = pos - point;
-
 		float disToLight = length(toLight) / 8;
+
+
+		//if pixel is in shadow dont add current light.
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
+		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
+		toLightRay = rayMarch(toLightRay, point2, disToLight);
+		if(toLightRay.length != -1){
+			continue;
+		}
 
 		float brightness = dot(normal, normalize(toLight));
 		brightness = max(brightness, 0);
@@ -100,8 +139,15 @@ vec4 rayMarchDiffuse(float rayOutput, vec4 rayDir, vec4 color){
 		allLight += light;
 	}
 
-	vec4 diffuse = color;
+	vec4 diffuse = vec4(color, 1);
 	diffuse.xyz *= max(allLight, 0);
 	return diffuse;
 }
 
+
+//ambient occlusion to give objects more depth.
+vec4 rayMarchAmbient(Ray ray, vec3 ambientColor, float amount){
+	ambientColor /= max(ray.steps * amount, 4);
+	vec4 output = vec4(ambientColor, 1);
+	return output;
+}

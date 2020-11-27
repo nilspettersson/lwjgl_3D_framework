@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL15.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -51,6 +52,7 @@ public class Geometry {
 		
 		this.size = 0;
 		indexSize = 0;
+		
 	}
 	
 	public static Geometry loadModel(String fileName) {
@@ -77,15 +79,12 @@ public class Geometry {
 				String line = reader.readLine();
 				String[] values = line.split(" ");
 				if(line.startsWith("v ")) {
-					System.out.println("v ");
 					positions.add(new Vector3f(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3])));
 				}
 				else if(line.startsWith("vt ")) {
-					System.out.println("vt ");
 					textures.add(new Vector2f(Float.parseFloat(values[1]), Float.parseFloat(values[2])));
 				}
 				else if(line.startsWith("vn ")) {
-					System.out.println("vn ");
 					normals.add(new Vector3f(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3])));
 				}
 				
@@ -106,7 +105,15 @@ public class Geometry {
 			
 		}
 		catch (Exception e) {
-			
+			// TODO: handle exception
+		}
+		finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		geometry.updateVertices();
@@ -272,6 +279,9 @@ public class Geometry {
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_DYNAMIC_DRAW);
 	}
 	
+	public void deleteBuffers() {
+		vao.deleteBuffers();
+	}
 
 	public Vao getVao() {
 		return vao;

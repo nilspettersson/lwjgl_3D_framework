@@ -1,3 +1,20 @@
+### 2.0.0
+#### changed
+* changed the game loop.
+* added scene system. You can now create many scenes and switch between them. A scene has a load and update function. A scene will remove all its content when a different scene is loaded.
+* improved ray marching api.
+* changed how lights are added.
+
+#### features
+* added sdf shader to library for using ray marching distance functions.
+* added shadows to ray marching.
+* added ambient occlusion to ray marcher
+
+#### bugfixes
+* fixed memory leaks.
+* ray marching now works with different window resolutions
+* fixed issue when having no imports in shader
+
 ### 1.1.0
 #### features
 * added ray marching system. Raymarcher will go through scene of objects and calculate distance. float scene(vec3 point) needs to be created.

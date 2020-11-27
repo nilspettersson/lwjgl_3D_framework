@@ -4,6 +4,8 @@ Current version: **1.1.0**
 ## Core functionality
 #### Game loop handling
 * The Game class should be inherited, this will controll the flow of the application for you. The Game class contains all functionality for this library.
+#### Scenes
+* You can create many scenes and switch between them. Every scene has its own entites, ligths and camera.
 #### Camera
  * There is a Camera that can be moved and rotated using functions in Game class.
  #### keybord Input
@@ -25,7 +27,7 @@ Current version: **1.1.0**
 #### Post Processing
 * You can create a post processing shader that add effects to the image.
 #### Ray marcher
-* You can add [distance functions](https://iquilezles.org/www/articles/distfunctions/distfunctions.htm) to a scene function and then use ray marcher to find closest objects.
+* You can add [distance functions](https://iquilezles.org/www/articles/distfunctions/distfunctions.htm) to an sdf function and then use ray marcher to find closest objects. It can calculate diffuse, shadows and ambient occlusion.
 
 
 ## Setup for eclipse

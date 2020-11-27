@@ -3,6 +3,7 @@
 * changed the game loop.
 * added scene system. You can now create many scenes and switch between them. A scene has a load and update function. A scene will remove all its content when a different scene is loaded.
 * improved ray marching api.
+* changed how lights are added.
 
 #### features
 * added sdf shader to library for using ray marching distance functions.

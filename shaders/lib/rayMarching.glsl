@@ -4,6 +4,7 @@ struct Ray{
 	vec4 dir;
 	float length;
 	int steps;
+	bool hitRasterized;
 };
 
 vec4 multQuat(vec4 q1, vec4 q2){
@@ -40,7 +41,7 @@ Ray getRay(){
 
 	vec4 dir = rotate_vector(cameraRotation, vec4(rayDir, rayDir.z));
 
-    return Ray(dir, 0, 0);
+    return Ray(dir, 0, 0, false);
 }
 
 //gets the distance to the closest object in the sdf function.
@@ -60,23 +61,30 @@ Ray rayMarch(Ray ray){
 		if(dist < 0.01 ){
 			break;
 		}
-		if(DistOrigin * cosA > depth || DistOrigin  > 10000){
+		//if ray does not hit anything
+		if(DistOrigin  > 900){
 			DistOrigin = -1;
+			break;
+		}
+		//if ray hits rasterized object
+		if(DistOrigin * cosA > depth){
+			ray.hitRasterized = true;
+			DistOrigin *= cosA;
 			break;
 		}
 
 		steps++;
 	}
 
-	return Ray(ray.dir, DistOrigin, steps);
+	return Ray(ray.dir, DistOrigin, steps, ray.hitRasterized);
 }
 
-Ray rayMarchShadow(Ray ray, vec3 origin, float length){
+Ray rayMarchShadow(Ray ray, vec3 origin){
 	
 	float cosA = ray.dir.w;
 	float DistOrigin = 0;
 	int steps = 0;
-	for(int i = 0; i < 150; i++){
+	for(int i = 0; i < 200; i++){
 		vec3 point = origin + ray.dir.xyz * DistOrigin;
 		
 		float dist = sdf(point);
@@ -85,14 +93,15 @@ Ray rayMarchShadow(Ray ray, vec3 origin, float length){
 		if(dist < 0.01 ){
 			break;
 		}
-		if(DistOrigin > length + 400 || DistOrigin  > 10000){
+		if(DistOrigin > 10000){
 			DistOrigin = -1;
 			break;
 		}
+		
 		steps++;
 	}
 
-	return Ray(ray.dir, DistOrigin, steps);
+	return Ray(ray.dir, DistOrigin, steps, ray.hitRasterized);
 }
 
 //gets the normal for a pixel in ray marcher.
@@ -123,9 +132,9 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color){
 
 
 		//if pixel is in shadow dont add current light.
-		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0, false);
 		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
-		toLightRay = rayMarchShadow(toLightRay, point2, disToLight);
+		toLightRay = rayMarchShadow(toLightRay, point2);
 		if(toLightRay.length != -1){
 			continue;
 		}
@@ -160,9 +169,9 @@ vec4 rayMarchGlossy(Ray ray, float roughness){
 		float disToLight = length(toLight) * 1.2;
 
 		//if pixel is in shadow dont add current light.
-		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0, false);
 		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
-		toLightRay = rayMarchShadow(toLightRay, point2, disToLight);
+		toLightRay = rayMarchShadow(toLightRay, point2);
 		if(toLightRay.length != -1){
 			continue;
 		}
@@ -201,4 +210,34 @@ vec4 rayMarchAmbient(Ray ray, vec3 ambientColor, float amount){
 	ambientColor /= max(ray.steps * amount, 4);
 	vec4 output = vec4(ambientColor, 1);
 	return output;
+}
+
+vec4 rayMarchShadows(Ray ray, vec3 color){
+	//finding the point of the intersection.
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *= -1;
+	vec3 point = rayOrigin + ray.dir.xyz * ray.length;
+
+
+	int shadowCount = 0;
+	for(int i = 0; i < lightCount; i++){
+		vec3 pos = lightPositions[i];
+		pos.z *= -1;
+		vec3 toLight = pos - point;
+		float disToLight = length(toLight);
+
+
+		//if pixel is in shadow dont add current light.
+		Ray toLightRay = Ray(vec4(normalize(toLight), ray.dir.z), length(toLight), 0, false);
+		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
+		toLightRay = rayMarchShadow(toLightRay, point2);
+		if(toLightRay.length != -1){
+			shadowCount++;
+		}
+
+	}
+
+	vec4 diffuse = vec4(color, 1);
+	diffuse.xyz /= shadowCount + 1;
+	return diffuse;
 }

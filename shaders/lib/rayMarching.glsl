@@ -44,6 +44,7 @@ Ray getRay(){
     return Ray(dir, 0, 0, false);
 }
 
+
 //gets the distance to the closest object in the sdf function.
 Ray rayMarch(Ray ray){
 	vec3 rayOrigin = cameraPosition;
@@ -69,7 +70,8 @@ Ray rayMarch(Ray ray){
 		//if ray hits rasterized object
 		if(DistOrigin * cosA > depth){
 			ray.hitRasterized = true;
-			DistOrigin *= cosA;
+			//gets the real depth value.
+			DistOrigin = depth / cosA;
 			break;
 		}
 
@@ -79,6 +81,7 @@ Ray rayMarch(Ray ray){
 	return Ray(ray.dir, DistOrigin, steps, ray.hitRasterized);
 }
 
+
 Ray rayMarchShadow(Ray ray, vec3 origin){
 	
 	float cosA = ray.dir.w;
@@ -86,7 +89,6 @@ Ray rayMarchShadow(Ray ray, vec3 origin){
 	int steps = 0;
 	for(int i = 0; i < 200; i++){
 		vec3 point = origin + ray.dir.xyz * DistOrigin;
-		
 		float dist = sdf(point);
 		
 		DistOrigin += dist;
@@ -218,13 +220,19 @@ vec4 rayMarchShadows(Ray ray, vec3 color){
 	rayOrigin.z *= -1;
 	vec3 point = rayOrigin + ray.dir.xyz * ray.length;
 
-
+	vec3 allLight = vec3(0, 0, 0);
 	int shadowCount = 0;
 	for(int i = 0; i < lightCount; i++){
 		vec3 pos = lightPositions[i];
 		pos.z *= -1;
 		vec3 toLight = pos - point;
-		float disToLight = length(toLight);
+		float disToLight = length(toLight) / 8;
+
+
+		float brightness = 1;
+		brightness = max(brightness, 0);
+		float attenuation = lightIntensity[i] / (4.0 + 1 * disToLight + 1 * disToLight * disToLight);
+		brightness *= attenuation;
 
 
 		//if pixel is in shadow dont add current light.
@@ -234,10 +242,18 @@ vec4 rayMarchShadows(Ray ray, vec3 color){
 		if(toLightRay.length != -1){
 			shadowCount++;
 		}
-
+		else{
+			vec3 light = lightColors[i] * brightness;
+			allLight += light;
+		}
 	}
 
+	if(shadowCount > 0){
+		color *= allLight / lightCount;
+	}
+	
 	vec4 diffuse = vec4(color, 1);
-	diffuse.xyz /= shadowCount + 1;
+	//diffuse.xyz /= shadowCount + 1;
 	return diffuse;
 }
+

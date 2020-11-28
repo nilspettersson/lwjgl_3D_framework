@@ -16,21 +16,18 @@ float sdf(vec3 point){
 	transform1 = vec3(4, -8, 2);
 	float box2 = sdBox(point - transform1, vec3(2, 0.2, 2));
 
-    return (box);
+    return min(box, box2);
 }
 
 fragment{
 	Ray ray = getRay();
 	ray = rayMarch(ray);
-	//vec4 diffuse = rayMarchDiffuse(rayDir, vec3(1, 0.5, 0.5));
-
 
 	vec4 output = texture;
 	if(ray.length == -1){
 		return vec4(output);
 	}
 	else if(ray.hitRasterized == true){
-		ray.length = depth / ray.dir.w;
 		return rayMarchShadows(ray, vec3(texture.xyz));
 	}
 	else{

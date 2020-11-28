@@ -1,5 +1,5 @@
-# lwjgl_3D_library
-Current version: **2.0.0**
+# lwjgl_3D_framework
+Current version: **2.1.0**
 
 ## Screenshots
 | Ray marching| Rasterization and ray marching| 

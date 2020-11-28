@@ -1,3 +1,9 @@
+### 2.1.0
+#### features
+* added glosy function to ray marcher.
+* ray marched objects can now cast shadows on rasterized objects.
+
+
 ### 2.0.0
 #### changed
 * changed the game loop.

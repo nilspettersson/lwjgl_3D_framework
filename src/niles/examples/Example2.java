@@ -1,4 +1,4 @@
-package testing;
+package niles.examples;
 
 import org.joml.Vector3f;
 import niles.lwjgl.entity.Entity;

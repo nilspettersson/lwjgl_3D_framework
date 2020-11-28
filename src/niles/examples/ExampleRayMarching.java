@@ -1,4 +1,4 @@
-package testing;
+package niles.examples;
 
 import org.joml.Vector3f;
 
@@ -8,10 +8,10 @@ import niles.lwjgl.loop.Scene;
 import niles.lwjgl.npsl.MeshShader;
 import niles.lwjgl.npsl.PostProcessingShader;
 
-public class RayMarching extends Game{
+public class ExampleRayMarching extends Game{
 
 	public static void main(String[] args) {
-		new RayMarching();
+		new ExampleRayMarching();
 	}
 	
 	float value = 0;

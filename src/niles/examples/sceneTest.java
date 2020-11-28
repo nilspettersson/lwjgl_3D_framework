@@ -1,4 +1,4 @@
-package testing;
+package niles.examples;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;

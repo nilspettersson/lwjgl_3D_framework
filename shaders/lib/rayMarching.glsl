@@ -71,12 +71,12 @@ Ray rayMarch(Ray ray){
 	return Ray(ray.dir, DistOrigin, steps);
 }
 
-Ray rayMarch(Ray ray, vec3 origin, float length){
+Ray rayMarchShadow(Ray ray, vec3 origin, float length){
 	
 	float cosA = ray.dir.w;
 	float DistOrigin = 0;
 	int steps = 0;
-	for(int i = 0; i < 200; i++){
+	for(int i = 0; i < 150; i++){
 		vec3 point = origin + ray.dir.xyz * DistOrigin;
 		
 		float dist = sdf(point);
@@ -125,7 +125,7 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color){
 		//if pixel is in shadow dont add current light.
 		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
 		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
-		toLightRay = rayMarch(toLightRay, point2, disToLight);
+		toLightRay = rayMarchShadow(toLightRay, point2, disToLight);
 		if(toLightRay.length != -1){
 			continue;
 		}
@@ -142,6 +142,57 @@ vec4 rayMarchDiffuse(Ray ray, vec3 color){
 	vec4 diffuse = vec4(color, 1);
 	diffuse.xyz *= max(allLight, 0);
 	return diffuse;
+}
+
+vec4 rayMarchGlossy(Ray ray, float roughness){
+	vec3 rayOrigin = cameraPosition;
+	rayOrigin.z *= -1;
+	vec3 point = rayOrigin + ray.dir.xyz * ray.length;
+	vec3 normal = getNormal(point);
+
+
+	vec3 toCamera = point - rayOrigin;
+	vec3 allLight = vec3(0, 0, 0);
+	for(int i = 0; i < lightCount; i++){
+		vec3 pos = lightPositions[i];
+		pos.z *= -1;
+		vec3 toLight = pos - point;
+		float disToLight = length(toLight) * 1.2;
+
+		//if pixel is in shadow dont add current light.
+		Ray toLightRay = Ray(vec4(normalize(toLight), 0), length(toLight), 0);
+		vec3 point2 = rayOrigin + ray.dir.xyz * (ray.length - 0.02);
+		toLightRay = rayMarchShadow(toLightRay, point2, disToLight);
+		if(toLightRay.length != -1){
+			continue;
+		}
+
+
+		vec3 lightDir = normalize(toLight);
+		vec3 viewDir = normalize(toCamera);
+		vec3 halfwayDir = normalize(lightDir - viewDir);
+		float brightness = pow(max(dot(normalize(normal), halfwayDir), 0), 1 + (1 / roughness));
+		float attenuation = ((lightIntensity[i] / roughness)) / (4.0 + 1*disToLight + 0.1 * disToLight * disToLight);
+		brightness *= attenuation;
+		
+
+		//makes it less bright when right over object.
+		float cameraDot = dot(normalize(toCamera), normalize(normal));
+		brightness *= smoothstep(-1.4, 1,cameraDot);
+		
+		
+		if(dot(normalize(normal), normalize(toLight)) <= 0){
+			brightness = 0;
+		}
+		brightness = max(brightness, 0.01);
+		
+		vec3 light = lightColors[i] * brightness;
+		allLight += light;
+	}
+
+	vec4 glossy = vec4(1, 1, 1, 1);
+	glossy.xyz *= allLight;
+	return glossy;
 }
 
 

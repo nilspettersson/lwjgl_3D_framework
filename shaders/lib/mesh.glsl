@@ -119,15 +119,12 @@ vec4 glossy(vec4 color, float roughness, vec4 normalMap){
 	vec3 bumpDif = normalMap.xyz - vec3(0, 0, 1);
 	if(normal.x < 0){
 		bumpDif.x *= -1;
-		//return vec4(1, 0, 0, 1);
 	}
 	if(normal.y < 0){
 		bumpDif.x *= -1;
-		//return vec4(1, 0, 0, 1);
 	}
 	if(abs(normal.y) > abs(normal.x)){
 		bumpDif.xy = bumpDif.yx;
-		//return vec4(1, 0, 0, 1);
 	}
 
 	vec3 newNormal = normalize(normalize(normal) + bumpDif * normalMap.w);

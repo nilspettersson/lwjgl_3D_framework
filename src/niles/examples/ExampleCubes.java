@@ -1,4 +1,4 @@
-package testing;
+package niles.examples;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -15,10 +15,10 @@ import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.util.Texture;
 
-public class Example1 extends Game {
+public class ExampleCubes extends Game {
 
 	public static void main(String[] args) {
-		new Example1();
+		new ExampleCubes();
 	}
 	
 	Geometry g;

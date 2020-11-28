@@ -43,11 +43,11 @@ public abstract class Scene {
 		isLoaded = false;
 	}
 	
-	public abstract void onload();
+	protected abstract void onload();
 	
-	public abstract void update();
+	protected abstract void update();
 	
-	protected void clean() {
+	void clean() {
 		camera = new Camera();
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		lights = new Lights();
@@ -63,7 +63,7 @@ public abstract class Scene {
 		System.gc();
 	}
 	
-	protected void loop() {
+	void loop() {
 		if(!isLoaded){
 			onload();
 			isLoaded = true;
@@ -111,7 +111,7 @@ public abstract class Scene {
 	}
 	
 	//fbo is used for post processing
-	public void renderFbo(Shader shader) {
+	private void renderFbo(Shader shader) {
 		fbo.render(shader, getCamera(), lights);
 	}
 	
@@ -170,21 +170,13 @@ public abstract class Scene {
 		return camera;
 	}
 	
-	
 	public void setCamera(Camera camera) {
 		this.camera = camera;
 	}
 
-
 	public ArrayList<Entity> getEntities() {
 		return entities;
 	}
-
-
-	public void setEntities(ArrayList<Entity> entities) {
-		this.entities = entities;
-	}
-
 
 	public ArrayList<Light> getLights() {
 		return lights.getLights();

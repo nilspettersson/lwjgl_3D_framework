@@ -42,7 +42,6 @@ public abstract class Game {
 	public Game() {
 		window=new Window(1920, 1080, true);
 		input = new Input(getWindow());
-		
 		scenes = new ArrayList<Scene>();
 		
 		this.backgroundColor=new Vector4f(0,0,0,1);

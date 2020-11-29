@@ -6,9 +6,8 @@ uniforms{
 }
 
 
-
 float sdf(vec3 point){
-	vec4 ball = vec4(4, -7, 2, 1);
+	vec4 ball = vec4(4, -6.6, 2, 0.4);
 	float ballDist = length(point - ball.xyz) - ball.w;
 
 	vec3 transform1 = vec3(4, -7.5, 2);
@@ -16,7 +15,10 @@ float sdf(vec3 point){
 	transform1 = vec3(4, -8, 2);
 	float box2 = sdBox(point - transform1, vec3(2, 0.2, 2));
 
-    return min(box, box2);
+	float sm1 = opSmoothUnion(box, box2, 1);
+	float sm2 = opSmoothUnion(box, ballDist, 0.2);
+
+    return min(sm1, sm2);
 }
 
 fragment{

@@ -63,9 +63,7 @@ public class Vao {
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
 		
-		
 		glDrawElements(GL_TRIANGLES, draw_count,GL_UNSIGNED_INT,0);
-		
 	}
 	
 	public static void init() {

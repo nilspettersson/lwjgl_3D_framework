@@ -1,6 +1,9 @@
 package niles.examples;
 
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
+
+import niles.lwjgl.draw.Lines;
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.loop.Scene;
@@ -18,6 +21,8 @@ public class Example2 extends Game {
 	Shader shader;
 	Shader postProcessing;
 	
+	Lines lines;
+	
 	@Override
 	public void init() {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
@@ -27,6 +32,14 @@ public class Example2 extends Game {
 			
 			@Override
 			public void onload() {
+				lines = new Lines(2);
+				lines.addVertice(0, 0, 0);
+				lines.addVertice(2, 3, 3);
+				lines.addVertice(2, 3, 3);
+				lines.addVertice(5, 0, 3);
+				
+				lines.updateVertices();
+				
 				getCamera().setPosition(new Vector3f(0, 0, 10));
 				
 				Entity e = Entity.cube(0, -2, 0, 8, new Vector3f(1), shader);
@@ -49,8 +62,11 @@ public class Example2 extends Game {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
+				//lines.getShader().bind();
+				lines.getVao().render();
+				
 				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.
-				usePostProcessing(postProcessing);
+				//usePostProcessing(postProcessing);
 			}
 		});
 		

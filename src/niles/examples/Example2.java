@@ -14,6 +14,10 @@ import niles.lwjgl.util.Texture;
 
 public class Example2 extends Game {
 	
+	public Example2() {
+		super(1200, 700, false);
+	}
+	
 	public static void main(String[] args) {
 		new Example2();
 	}
@@ -21,7 +25,7 @@ public class Example2 extends Game {
 	Shader shader;
 	Shader postProcessing;
 	
-	LineEntity lines;
+	
 	Renderer renderer;
 	
 	@Override
@@ -35,9 +39,10 @@ public class Example2 extends Game {
 			
 			@Override
 			public void onload() {
-				lines = new LineEntity(2);
+				LineEntity lines = new LineEntity(20);
 				lines.addLine(0, 0, 0, 2, 3, 3);
 				lines.addLine(2, 3, 3, 5, 0, 3);
+				lines.updateVertices();
 				
 				
 				getCamera().setPosition(new Vector3f(0, 0, 10));
@@ -61,7 +66,7 @@ public class Example2 extends Game {
 			
 			@Override
 			public void update() {
-				simpleCameraRotation(1f);
+				//simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
 				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.

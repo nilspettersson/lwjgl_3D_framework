@@ -44,7 +44,7 @@ public class LineEntity {
 		index += 3 * 2;
 		size++;
 		
-		updateVertices();
+		
 	}
 	
 	public void updateVertices() {
@@ -73,16 +73,8 @@ public class LineEntity {
 		return size;
 	}
 
-	public void setSize(int size) {
-		this.size = size;
-	}
-
 	public Shader getShader() {
 		return shader;
-	}
-
-	public void setShader(Shader shader) {
-		this.shader = shader;
 	}
 	
 	public Transform getTransform() {
@@ -92,7 +84,5 @@ public class LineEntity {
 	public void setTransform(Transform transform) {
 		this.transform = transform;
 	}
-	
-	
 
 }

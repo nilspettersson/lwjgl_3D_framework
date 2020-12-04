@@ -20,6 +20,9 @@ public class Texture {
 	private int width;
 	private int height;
 	
+	private int spriteWidth;
+	private int spriteHeight;
+	
 	public Texture(String filename) {
 		BufferedImage image;
 		try {
@@ -55,6 +58,7 @@ public class Texture {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(0);
 		}
 		
 		
@@ -140,6 +144,38 @@ public class Texture {
 	public static void unbind() {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
 	
+	public int getSpriteWidth() {
+		return spriteWidth;
+	}
+
+	public void setSpriteWidth(int spriteWidth) {
+		this.spriteWidth = spriteWidth;
+	}
+
+	public int getSpriteHeight() {
+		return spriteHeight;
+	}
+
+	public void setSpriteHeight(int spriteHeight) {
+		this.spriteHeight = spriteHeight;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 
 }

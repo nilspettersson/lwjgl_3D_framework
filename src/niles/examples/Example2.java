@@ -10,6 +10,7 @@ import niles.lwjgl.loop.Scene;
 import niles.lwjgl.npsl.MeshShader;
 import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
+import niles.lwjgl.rendering.LineRenderer;
 import niles.lwjgl.util.Texture;
 
 public class Example2 extends Game {
@@ -22,11 +23,14 @@ public class Example2 extends Game {
 	Shader postProcessing;
 	
 	Lines lines;
+	LineRenderer renderer;
 	
 	@Override
 	public void init() {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
+		
+		renderer = new LineRenderer();
 		
 		addScene(new Scene(getWindow()) {
 			
@@ -62,8 +66,7 @@ public class Example2 extends Game {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
-				//lines.getShader().bind();
-				lines.getVao().render();
+				renderer.render(getCamera(), lines);
 				
 				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.
 				//usePostProcessing(postProcessing);

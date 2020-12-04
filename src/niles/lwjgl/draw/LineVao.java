@@ -19,7 +19,7 @@ public class LineVao {
 		
 		v_id = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, v_id);
-		glBufferData(GL_ARRAY_BUFFER, 4 * lines, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 0, GL_DYNAMIC_DRAW);
 		
 		
 		i_id = glGenBuffers();
@@ -30,7 +30,6 @@ public class LineVao {
 		for(int i = 0; i < index.length; i++) {
 			index[i] = i;
 		}
-		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, index, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		

@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
+import niles.lwjgl.entity.Transform;
 import niles.lwjgl.npsl.LineShader;
 import niles.lwjgl.npsl.Shader;
 
@@ -17,12 +18,14 @@ public class Lines {
 	private Shader shader;
 	private LineVao vao;
 	private FloatBuffer vertices;
+	private Transform transform;
 	
 	private int index;
 	private int size;
 	
 	public Lines(int lines) {
 		shader = new LineShader("lineShader.glsl");
+		transform = new Transform();
 		
 		vao = new LineVao(lines);
 		
@@ -81,6 +84,13 @@ public class Lines {
 		this.shader = shader;
 	}
 	
+	public Transform getTransform() {
+		return transform;
+	}
+
+	public void setTransform(Transform transform) {
+		this.transform = transform;
+	}
 	
 	
 

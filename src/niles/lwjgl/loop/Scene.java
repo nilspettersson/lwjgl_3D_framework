@@ -138,6 +138,15 @@ public abstract class Scene {
 		fbo.unbind();
 	}
 	
+	public void delete(Entity entity){
+		for(int i = 0; i < entities.size(); i++) {
+			if(entities.get(i).equals(entity)) {
+				entities.get(i).DeleteTextures();
+				entities.get(i).getGeometry().deleteBuffers();
+				entities.remove(i);
+			}
+		}
+	}
 	
 	public void setPostProcessingUniform(String name, Object value) {
 		fbo.setUniform(name, value);

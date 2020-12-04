@@ -29,11 +29,15 @@ public class TextureAtlasExample extends Game {
 				texture.setSpriteHeight(16);
 				
 				e.addTexture(texture);
-				e.getGeometry().createFace(0, 0, 0, texture, 1, 1);
+				e.getGeometry().createFaceBack(0, 0, 0, texture, 1, 1);
+				e.getGeometry().createFaceFront(0, 0, 0, texture, 1, 1);
+				e.getGeometry().createFaceUp(0, 0, 0, texture, 1, 1);
+				e.getGeometry().createFaceLeft(0, 0, 0, texture, 1, 1);
+				e.getGeometry().createFaceRight(0, 0, 0, texture, 1, 1);
 				e.bindGeometry();
 				
 				addEntityToScene(e);
-				addLight(new Vector3f(0, 3, 8), new Vector3f(1), 10);
+				addLight(new Vector3f(0, 6, -3), new Vector3f(1), 10);
 			}
 			
 			@Override

@@ -1,16 +1,15 @@
 package niles.examples;
 
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 
 import niles.lwjgl.entity.Entity;
-import niles.lwjgl.line.Lines;
+import niles.lwjgl.line.LineEntity;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.loop.Scene;
 import niles.lwjgl.npsl.MeshShader;
 import niles.lwjgl.npsl.PostProcessingShader;
 import niles.lwjgl.npsl.Shader;
-import niles.lwjgl.rendering.LineRenderer;
+import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.util.Texture;
 
 public class Example2 extends Game {
@@ -22,21 +21,21 @@ public class Example2 extends Game {
 	Shader shader;
 	Shader postProcessing;
 	
-	Lines lines;
-	LineRenderer renderer;
+	LineEntity lines;
+	Renderer renderer;
 	
 	@Override
 	public void init() {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
 		
-		renderer = new LineRenderer();
+		renderer = new Renderer();
 		
 		addScene(new Scene(getWindow()) {
 			
 			@Override
 			public void onload() {
-				lines = new Lines(2);
+				lines = new LineEntity(2);
 				lines.addLine(0, 0, 0, 2, 3, 3);
 				lines.addLine(2, 3, 3, 5, 0, 3);
 				
@@ -53,6 +52,8 @@ public class Example2 extends Game {
 				addEntityToScene(e);
 				addEntityToScene(e2);
 				
+				addLineEntityToScene(lines);
+				
 				
 				addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1, 0.6f, 0.6f), 6);
 				addLight(new Vector3f(8,-4 ,-4), new Vector3f(0.6f, 0.6f, 1), 6);
@@ -63,10 +64,8 @@ public class Example2 extends Game {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
 				
-				renderer.render(getCamera(), lines);
-				
 				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.
-				//usePostProcessing(postProcessing);
+				usePostProcessing(postProcessing);
 			}
 		});
 		

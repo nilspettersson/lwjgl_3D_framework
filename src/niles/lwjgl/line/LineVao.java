@@ -47,7 +47,7 @@ public class LineVao {
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
 		
-		glLineWidth(4);
+		glLineWidth(1);
 		glEnable(GL_LINE_SMOOTH);
 		glDrawElements(GL_LINES, draw_count * 2, GL_UNSIGNED_INT, 0);
 		

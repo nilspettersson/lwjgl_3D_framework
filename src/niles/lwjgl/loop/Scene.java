@@ -10,6 +10,8 @@ import niles.lwjgl.entity.Entity;
 import niles.lwjgl.fbo.Fbo;
 import niles.lwjgl.light.Light;
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.line.LineEntity;
+import niles.lwjgl.line.LineEntity;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.rendering.Renderer;
 import niles.lwjgl.world.Camera;
@@ -23,6 +25,7 @@ public abstract class Scene {
 	
 	private ArrayList<Entity> entities;
 	private Lights lights;
+	private ArrayList<LineEntity> lineEntites;
 	
 	private Fbo fbo;
 	private Shader postProcessingShader;
@@ -39,6 +42,7 @@ public abstract class Scene {
 		lights = new Lights();
 		postProcessing = false;
 		entities = new ArrayList<Entity>();
+		lineEntites = new ArrayList<>();
 		
 		isLoaded = false;
 	}
@@ -74,12 +78,18 @@ public abstract class Scene {
 			for(int i = 0; i < entities.size(); i++) {
 				render(entities.get(i));
 			}
+			for(int i = 0; i < lineEntites.size(); i++) {
+				renderer.render(camera, lineEntites.get(i));
+			}
 			unbindFbo();
 			renderFbo(postProcessingShader);
 		}
 		else {
 			for(int i = 0; i < entities.size(); i++) {
 				render(entities.get(i));
+			}
+			for(int i = 0; i < lineEntites.size(); i++) {
+				renderer.render(camera, lineEntites.get(i));
 			}
 		}
 		
@@ -96,6 +106,11 @@ public abstract class Scene {
 	public void addEntityToScene(Entity entity) {
 		entities.add(entity);
 	}
+	
+	public void addLineEntityToScene(LineEntity lines) {
+		lineEntites.add(lines);
+	}
+	
 	
 	public void usePostProcessing(Shader shader) {
 		postProcessingShader = shader;

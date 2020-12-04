@@ -13,7 +13,7 @@ import niles.lwjgl.entity.Transform;
 import niles.lwjgl.npsl.LineShader;
 import niles.lwjgl.npsl.Shader;
 
-public class Lines {
+public class LineEntity {
 	
 	private static Shader shader = new LineShader("lineShader.glsl");;
 	private LineVao vao;
@@ -23,7 +23,7 @@ public class Lines {
 	private int index;
 	private int size;
 	
-	public Lines(int lines) {
+	public LineEntity(int lines) {
 		transform = new Transform();
 		
 		vao = new LineVao(lines);

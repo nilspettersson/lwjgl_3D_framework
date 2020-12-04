@@ -10,6 +10,7 @@ import org.joml.Vector3f;
 
 import niles.lwjgl.entity.Entity;
 import niles.lwjgl.light.Lights;
+import niles.lwjgl.line.LineEntity;
 import niles.lwjgl.npsl.Shader;
 import niles.lwjgl.world.Camera;
 
@@ -69,6 +70,23 @@ public class Renderer {
 		entity.getGeometry().getVao().render();
 	}
 	
+	public void render(Camera camera, LineEntity lines) {
+		lines.getShader().bind();
+		
+		
+		Matrix4f projection = camera.getProjection();
+		Matrix4f transform = camera.getTransformation();
+		Matrix4f object = lines.getTransform().getTransformation();
+		
+		lines.getShader().setUniform("projection", projection);
+		lines.getShader().setUniform("transform", transform);	
+		lines.getShader().setUniform("objectTransform", object);
+		lines.getShader().setUniform("cameraPosition", camera.getPosition());
+		
+		
+		lines.getVao().render();
+	}
+	
 	
 	public void useLights(Lights lights, Shader shader) {
 		int size = lights.getLights().size();
@@ -87,30 +105,9 @@ public class Renderer {
 		shader.setUniform("lightIntensity", intensity);
 		shader.setUniform("lightCount", colors.length);
 	}
-	
-	/*public void useLights(Lights lights, Shader shader) {
-		int size = lights.getLights().size();
-		Vector3f[] positions = new Vector3f[size];
-		Vector3f[] colors = new Vector3f[size];
-		float[] intensity = new float[size];
 		
-		for(int i = 0; i < size; i++) {
-			positions[i] = lights.getLights().get(i).getPosition();
-			colors[i] = lights.getLights().get(i).getColor();
-			intensity[i] = lights.getLights().get(i).getIntensity();
-		}
-		
-		shader.setUniform("lightPositions", positions);
-		shader.setUniform("lightColors", colors);
-		shader.setUniform("lightIntensity", intensity);
-		shader.setUniform("lightCount", colors.length);
-	}*/
-	
-	
 	public void clean() {
 		usedShaders = new ArrayList<Object>();
 	}
-
-
 
 }

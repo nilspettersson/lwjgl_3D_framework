@@ -1,4 +1,4 @@
-package niles.lwjgl.draw;
+package niles.lwjgl.line;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;

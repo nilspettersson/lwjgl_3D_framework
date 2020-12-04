@@ -3,8 +3,8 @@ package niles.examples;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-import niles.lwjgl.draw.Lines;
 import niles.lwjgl.entity.Entity;
+import niles.lwjgl.line.Lines;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.loop.Scene;
 import niles.lwjgl.npsl.MeshShader;
@@ -37,12 +37,9 @@ public class Example2 extends Game {
 			@Override
 			public void onload() {
 				lines = new Lines(2);
-				lines.addVertice(0, 0, 0);
-				lines.addVertice(2, 3, 3);
-				lines.addVertice(2, 3, 3);
-				lines.addVertice(5, 0, 3);
+				lines.addLine(0, 0, 0, 2, 3, 3);
+				lines.addLine(2, 3, 3, 5, 0, 3);
 				
-				lines.updateVertices();
 				
 				getCamera().setPosition(new Vector3f(0, 0, 10));
 				

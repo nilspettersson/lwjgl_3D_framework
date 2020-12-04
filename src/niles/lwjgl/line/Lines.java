@@ -1,4 +1,4 @@
-package niles.lwjgl.draw;
+package niles.lwjgl.line;
 
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
@@ -15,7 +15,7 @@ import niles.lwjgl.npsl.Shader;
 
 public class Lines {
 	
-	private Shader shader;
+	private static Shader shader = new LineShader("lineShader.glsl");;
 	private LineVao vao;
 	private FloatBuffer vertices;
 	private Transform transform;
@@ -24,7 +24,6 @@ public class Lines {
 	private int size;
 	
 	public Lines(int lines) {
-		shader = new LineShader("lineShader.glsl");
 		transform = new Transform();
 		
 		vao = new LineVao(lines);
@@ -37,13 +36,15 @@ public class Lines {
 		this.size = 0;
 	}
 	
-	public void addVertice(float x, float y, float z) {
-		float[] vert = new float[] {x, y, z};
-		for(int i = 0; i < vert.length; i++) {
-			vertices.put(index + i, vert[i]);
+	public void addLine(float x1, float y1, float z1, float x2, float y2, float z2) {
+		float[] line = new float[] {x1, y1, z1, x2, y2, z2};
+		for(int i = 0; i < line.length; i++) {
+			vertices.put(index + i, line[i]);
 		}
-		index += 3;
+		index += 3 * 2;
 		size++;
+		
+		updateVertices();
 	}
 	
 	public void updateVertices() {

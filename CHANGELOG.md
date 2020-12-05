@@ -1,8 +1,13 @@
+### 2.2.0
+#### features
+* you can now render simple lines.
+* you can now set texture sprite size in texture to use it as a texture atlas for quads.
+* added delete function to remove entity and its buffers from scene.
+
 ### 2.1.0
 #### features
 * added glosy function to ray marcher.
 * ray marched objects can now cast shadows on rasterized objects.
-
 
 ### 2.0.0
 #### changed

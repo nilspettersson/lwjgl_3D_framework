@@ -40,6 +40,7 @@ public class Geometry {
 	    bb.order(ByteOrder.nativeOrder());
 	    vertices = bb.asFloatBuffer();
 	    
+	    
 	    ByteBuffer bb2 = ByteBuffer.allocateDirect(size * Vertex.size * 4);
 	    bb2.order(ByteOrder.nativeOrder());
 	    indices = bb2.asIntBuffer();
@@ -56,8 +57,29 @@ public class Geometry {
 		
 	}
 	
+	//will increase the buffer capacity with 50% when needed.
+	private void increaseBufferSize() {
+		FloatBuffer newVertices = FloatBuffer.allocate(vertices.capacity() + (size / 2 + 1) * Vertex.size);
+		int limit = newVertices.limit();
+		
+		vertices.rewind();
+		newVertices.put(vertices);
+        vertices.rewind();
+        newVertices.flip();
+        vertices = newVertices;
+        vertices.limit(limit);
+        
+        IntBuffer newIndices = IntBuffer.allocate(indices.capacity() + (size / 2 + 1) * Vertex.size);
+        indices.rewind();
+        newIndices.put(indices);
+        indices.rewind();
+        newIndices.flip();
+        indices = newIndices;
+        indices.limit(limit);
+	}
+	
 	public static Geometry loadModel(String fileName) {
-		Geometry geometry = new Geometry(3000000);
+		Geometry geometry = new Geometry(10);
 		
 		
 		FileReader fr = null;
@@ -405,6 +427,9 @@ public class Geometry {
 	}
 	
 	public void addVertice(Vertex vertex) {
+		if(size * Vertex.size >= vertices.capacity() - (Vertex.size)) {
+			increaseBufferSize();
+		}
 		float[] vert = vertex.toArray();
 		for(int i = 0; i < vert.length; i++) {
 			vertices.put(index + i, vert[i]);
@@ -463,9 +488,22 @@ public class Geometry {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	
-	
-	
+
+	public FloatBuffer getVertices() {
+		return vertices;
+	}
+
+	public void setVertices(FloatBuffer vertices) {
+		this.vertices = vertices;
+	}
+
+	public IntBuffer getIndices() {
+		return indices;
+	}
+
+	public void setIndices(IntBuffer indices) {
+		this.indices = indices;
+	}
 	
 
 }

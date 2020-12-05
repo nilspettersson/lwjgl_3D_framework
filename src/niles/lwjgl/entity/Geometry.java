@@ -232,7 +232,7 @@ public class Geometry {
 	//creates a face with sprite from a texture atlas.
 	//Texture need to set spriteWidth and spriteHeight.
 	public void createFaceFront(float x, float y, float z, Texture textureAtlas, int spriteX, int spriteY) {
-		Vector3f normal = new  Vector3f(0, 0, 1);
+		Vector3f normal = new  Vector3f(0, 0, -1);
 		
 		Vector3f pos1 = new Vector3f(-1 + x, 1 + y, -1 + z);
 		Vector3f pos2 = new Vector3f(1 + x, 1 + y, -1 + z);
@@ -242,7 +242,7 @@ public class Geometry {
 		float xStart = ((float)spriteX * (float)textureAtlas.getSpriteWidth()) / (float)textureAtlas.getWidth();
 		float yStart = ((float)spriteY * (float)textureAtlas.getSpriteHeight()) / (float)textureAtlas.getHeight();
 		float xEnd = xStart + (float)textureAtlas.getSpriteWidth() / (float)textureAtlas.getWidth();
-		float yEnd = xStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
+		float yEnd = yStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
 		
 		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(xStart, yStart), normal));
 		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(xEnd, yStart), normal));
@@ -259,17 +259,17 @@ public class Geometry {
 	}
 	
 	public void createFaceBack(float x, float y, float z, Texture textureAtlas, int spriteX, int spriteY) {
-		Vector3f normal = new  Vector3f(0, 0, -1);
+		Vector3f normal = new  Vector3f(0, 0, 1);
 		
-		Vector3f pos1 = new Vector3f(-1 + x, 1 + y, 1 + z);
-		Vector3f pos2 = new Vector3f(1 + x, 1 + y, 1 + z);
-		Vector3f pos3 = new Vector3f(1 + x, -1 + y, 1 + z);
-		Vector3f pos4 = new Vector3f(-1 + x, -1 + y, 1 + z);
+		Vector3f pos1 = new Vector3f(-1 + x, 1 + y, -1 + z);
+		Vector3f pos2 = new Vector3f(1 + x, 1 + y, -1 + z);
+		Vector3f pos3 = new Vector3f(1 + x, -1 + y, -1 + z);
+		Vector3f pos4 = new Vector3f(-1 + x, -1 + y, -1 + z);
 		
 		float xStart = ((float)spriteX * (float)textureAtlas.getSpriteWidth()) / (float)textureAtlas.getWidth();
 		float yStart = ((float)spriteY * (float)textureAtlas.getSpriteHeight()) / (float)textureAtlas.getHeight();
 		float xEnd = xStart + (float)textureAtlas.getSpriteWidth() / (float)textureAtlas.getWidth();
-		float yEnd = xStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
+		float yEnd = yStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
 		
 		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(xStart, yStart), normal));
 		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(xEnd, yStart), normal));
@@ -296,7 +296,7 @@ public class Geometry {
 		float xStart = ((float)spriteX * (float)textureAtlas.getSpriteWidth()) / (float)textureAtlas.getWidth();
 		float yStart = ((float)spriteY * (float)textureAtlas.getSpriteHeight()) / (float)textureAtlas.getHeight();
 		float xEnd = xStart + (float)textureAtlas.getSpriteWidth() / (float)textureAtlas.getWidth();
-		float yEnd = xStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
+		float yEnd = yStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
 		
 		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(xStart, yStart), normal));
 		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(xEnd, yStart), normal));
@@ -323,7 +323,7 @@ public class Geometry {
 		float xStart = ((float)spriteX * (float)textureAtlas.getSpriteWidth()) / (float)textureAtlas.getWidth();
 		float yStart = ((float)spriteY * (float)textureAtlas.getSpriteHeight()) / (float)textureAtlas.getHeight();
 		float xEnd = xStart + (float)textureAtlas.getSpriteWidth() / (float)textureAtlas.getWidth();
-		float yEnd = xStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
+		float yEnd = yStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
 		
 		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(xStart, yStart), normal));
 		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(xEnd, yStart), normal));
@@ -350,7 +350,7 @@ public class Geometry {
 		float xStart = ((float)spriteX * (float)textureAtlas.getSpriteWidth()) / (float)textureAtlas.getWidth();
 		float yStart = ((float)spriteY * (float)textureAtlas.getSpriteHeight()) / (float)textureAtlas.getHeight();
 		float xEnd = xStart + (float)textureAtlas.getSpriteWidth() / (float)textureAtlas.getWidth();
-		float yEnd = xStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
+		float yEnd = yStart + (float)textureAtlas.getSpriteHeight() / (float)textureAtlas.getHeight();
 		
 		addVertice(new Vertex(pos1, new Vector4f(1), 0, new Vector2f(xStart, yStart), normal));
 		addVertice(new Vertex(pos2, new Vector4f(1), 0, new Vector2f(xEnd, yStart), normal));

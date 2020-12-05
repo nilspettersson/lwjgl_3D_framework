@@ -3,6 +3,7 @@ package niles.examples;
 import org.joml.Vector3f;
 
 import niles.lwjgl.entity.Entity;
+import niles.lwjgl.entity.Geometry;
 import niles.lwjgl.line.LineEntity;
 import niles.lwjgl.loop.Game;
 import niles.lwjgl.loop.Scene;
@@ -48,6 +49,7 @@ public class Example2 extends Game {
 				getCamera().setPosition(new Vector3f(0, 0, 10));
 				
 				Entity e = Entity.cube(0, -2, 0, 8, new Vector3f(1), shader);
+				
 				e.addTexture(new Texture("res/rock.jpg"));
 				
 				Entity e2 = Entity.cube(0, -15, 0, 8, new Vector3f(1), shader);
@@ -62,12 +64,14 @@ public class Example2 extends Game {
 				
 				addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1, 0.6f, 0.6f), 6);
 				addLight(new Vector3f(8,-4 ,-4), new Vector3f(0.6f, 0.6f, 1), 6);
+				
 			}
 			
 			@Override
 			public void update() {
 				simpleCameraRotation(1f);
 				simpleCameraMovement(0.03f);
+				
 				
 				//will change renderer to render to an fbo and then render the fbo texture to the screen using using a post processing shader.
 				usePostProcessing(postProcessing);

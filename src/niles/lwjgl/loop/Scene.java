@@ -143,9 +143,11 @@ public abstract class Scene {
 			if(entities.get(i).equals(entity)) {
 				entities.get(i).DeleteTextures();
 				entities.get(i).getGeometry().deleteBuffers();
+				entities.get(i).setGeometry(null);
 				entities.remove(i);
 			}
 		}
+		System.gc();
 	}
 	
 	public void setPostProcessingUniform(String name, Object value) {

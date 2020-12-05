@@ -32,13 +32,13 @@ public class Vao {
 		
 		v_id=glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, v_id);
-		glBufferData(GL_ARRAY_BUFFER, 4 * maxVertices, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 0, GL_DYNAMIC_DRAW);
 		
 		
 		i_id=glGenBuffers();
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, i_id);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 40 * maxVertices, GL_DYNAMIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

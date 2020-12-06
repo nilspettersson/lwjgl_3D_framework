@@ -1,3 +1,10 @@
+### 2.3.0
+#### features
+* made geometry buffer dynamic.
+* made draw call count dynamic.
+#### bugfixes
+* fixed memory issue in delete function.
+
 ### 2.2.0
 #### features
 * you can now render simple lines.

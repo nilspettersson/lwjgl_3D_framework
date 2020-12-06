@@ -30,14 +30,11 @@ public class Example2 extends Game {
 	Shader postProcessing;
 	
 	
-	Renderer renderer;
 	
 	@Override
 	public void init() {
 		postProcessing = new PostProcessingShader("postShader2.glsl");
 		shader = new MeshShader("test.glsl");
-		
-		renderer = new Renderer();
 		
 		addScene(new Scene(getWindow()) {
 			
@@ -64,8 +61,14 @@ public class Example2 extends Game {
 				
 				addLineEntityToScene(lines);
 				
-				addLight(new Vector3f(-3,-4 ,-4), new Vector3f(1, 0.6f, 0.6f), 6);
-				addLight(new Vector3f(8,-4 ,-4), new Vector3f(0.6f, 0.6f, 1), 6);
+				/*Geometry g = Geometry.loadModel("res/cube_flat");
+				Entity e = new Entity(0, shader);
+				e.addTexture(new Texture("res/wood.jpg"));
+				e.setGeometry(g);
+				addEntityToScene(e);*/
+				
+				addLight(new Vector3f(-3,40 ,-4), new Vector3f(1, 0.6f, 0.6f), 60);
+				addLight(new Vector3f(8,40 ,-4), new Vector3f(0.6f, 0.6f, 1), 60);
 				
 			}
 			

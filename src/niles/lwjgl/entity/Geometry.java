@@ -11,6 +11,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
@@ -54,28 +55,33 @@ public class Geometry {
 		this.size = 0;
 		indexSize = 0;
 		
-		
 	}
 	
 	//will increase the buffer capacity with 50% when needed.
 	private void increaseBufferSize() {
-		FloatBuffer newVertices = FloatBuffer.allocate(vertices.capacity() + (size / 2 + 1) * Vertex.size);
-		int limit = newVertices.limit();
+		int limit = vertices.capacity();
 		
-		vertices.rewind();
-		newVertices.put(vertices);
-        vertices.rewind();
-        newVertices.flip();
+		ByteBuffer bb = ByteBuffer.allocateDirect(limit * 4 + (size / 2 + 1) * Vertex.size * 4);
+	    bb.order(ByteOrder.nativeOrder());
+	    FloatBuffer newVertices = bb.asFloatBuffer();
+		
+		int newLimit = newVertices.limit();
+		for(int i = 0; i < limit; i++) {
+			newVertices.put(vertices.get(i));
+		}
         vertices = newVertices;
-        vertices.limit(limit);
         
-        IntBuffer newIndices = IntBuffer.allocate(indices.capacity() + (size / 2 + 1) * Vertex.size);
-        indices.rewind();
-        newIndices.put(indices);
-        indices.rewind();
-        newIndices.flip();
-        indices = newIndices;
-        indices.limit(limit);
+        
+        
+        ByteBuffer bb2 = ByteBuffer.allocateDirect(limit * 4 + (size / 2 + 1) * Vertex.size * 4);
+	    bb2.order(ByteOrder.nativeOrder());
+	    IntBuffer newIndices = bb2.asIntBuffer();
+	    
+	    for(int i = 0; i < limit; i++) {
+	    	newIndices.put(indices.get(i));
+		}
+	    
+	    indices = newIndices;
 	}
 	
 	public static Geometry loadModel(String fileName) {
@@ -100,6 +106,9 @@ public class Geometry {
 			
 			while(true) {
 				String line = reader.readLine();
+				if(line == null) {
+					break;
+				}
 				String[] values = line.split(" ");
 				if(line.startsWith("v ")) {
 					positions.add(new Vector3f(Float.parseFloat(values[1]), Float.parseFloat(values[2]), Float.parseFloat(values[3])));
@@ -128,8 +137,7 @@ public class Geometry {
 			
 		}
 		catch (Exception e) {
-			// TODO: handle exception
-		}
+			e.printStackTrace();		}
 		finally {
 			try {
 				reader.close();
@@ -141,6 +149,7 @@ public class Geometry {
 		
 		geometry.updateVertices();
 		geometry.updateIndices();
+		
 		
 		return geometry;
 	}
@@ -427,10 +436,12 @@ public class Geometry {
 	}
 	
 	public void addVertice(Vertex vertex) {
+		//if there is no space in buffer increase the capacity
 		if(size * Vertex.size >= vertices.capacity() - (Vertex.size)) {
 			increaseBufferSize();
 		}
 		float[] vert = vertex.toArray();
+		
 		for(int i = 0; i < vert.length; i++) {
 			vertices.put(index + i, vert[i]);
 		}
@@ -441,6 +452,11 @@ public class Geometry {
 	public void addIndex(int index) {
 		indices.put(indexSize, index);
 		indexSize++;
+		
+		//increases the draw count when index count is more then draw count.
+		if(indexSize > vao.getDraw_count()) {
+			vao.setDraw_count(vao.getDraw_count() + 1);
+		}
 	}
 	
 	
@@ -453,18 +469,20 @@ public class Geometry {
 		}
 	}
 	
-	
 	public int size() {
 		return size;
 	}
 	
 	public void updateVertices() {
+		vertices.position(0);
+		
 		glBindBuffer(GL_ARRAY_BUFFER, vao.getV_id());
 		glBufferData(GL_ARRAY_BUFFER, vertices, GL_DYNAMIC_DRAW);
-		
 	}
 	
 	public void updateIndices() {
+		indices.position(0);
+		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao.getI_id());
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_DYNAMIC_DRAW);
 	}

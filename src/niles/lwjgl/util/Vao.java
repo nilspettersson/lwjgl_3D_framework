@@ -109,8 +109,16 @@ public class Vao {
 	public void setI_id(int i_id) {
 		this.i_id = i_id;
 	}
-	
-	
+
+
+	public int getDraw_count() {
+		return draw_count;
+	}
+
+
+	public void setDraw_count(int draw_count) {
+		this.draw_count = draw_count;
+	}
 	
 	
 }

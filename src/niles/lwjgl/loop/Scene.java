@@ -24,6 +24,7 @@ public abstract class Scene {
 	private Window window;
 	
 	private ArrayList<Entity> entities;
+	private ArrayList<Entity> transparentEntities;
 	private Lights lights;
 	private ArrayList<LineEntity> lineEntites;
 	
@@ -42,6 +43,7 @@ public abstract class Scene {
 		lights = new Lights();
 		postProcessing = false;
 		entities = new ArrayList<Entity>();
+		transparentEntities = new ArrayList<Entity>();
 		lineEntites = new ArrayList<>();
 		
 		isLoaded = false;
@@ -62,6 +64,12 @@ public abstract class Scene {
 		}
 		entities = new ArrayList<Entity>();
 		
+		for(int i = 0; i < transparentEntities.size(); i++) {
+			transparentEntities.get(i).getGeometry().deleteBuffers();
+			transparentEntities.get(i).DeleteTextures();
+		}
+		transparentEntities = new ArrayList<Entity>();
+		
 		isLoaded = false;
 		System.gc();
 	}
@@ -77,6 +85,9 @@ public abstract class Scene {
 			for(int i = 0; i < entities.size(); i++) {
 				render(entities.get(i));
 			}
+			for(int i = 0; i < transparentEntities.size(); i++) {
+				render(transparentEntities.get(i));
+			}
 			for(int i = 0; i < lineEntites.size(); i++) {
 				renderer.render(camera, lineEntites.get(i));
 			}
@@ -86,6 +97,9 @@ public abstract class Scene {
 		else {
 			for(int i = 0; i < entities.size(); i++) {
 				render(entities.get(i));
+			}
+			for(int i = 0; i < transparentEntities.size(); i++) {
+				render(transparentEntities.get(i));
 			}
 			for(int i = 0; i < lineEntites.size(); i++) {
 				renderer.render(camera, lineEntites.get(i));
@@ -104,6 +118,10 @@ public abstract class Scene {
 
 	public void addEntityToScene(Entity entity) {
 		entities.add(entity);
+	}
+	
+	public void addtransparentEntityToScene(Entity entity) {
+		transparentEntities.add(entity);
 	}
 	
 	public void addLineEntityToScene(LineEntity lines) {
@@ -145,12 +163,25 @@ public abstract class Scene {
 				entities.remove(i);
 			}
 		}
+		for(int i = 0; i < transparentEntities.size(); i++) {
+			if(transparentEntities.get(i).equals(entity)) {
+				transparentEntities.get(i).getGeometry().deleteBuffers();
+				transparentEntities.get(i).setGeometry(null);
+				transparentEntities.remove(i);
+			}
+		}
 	}
 	
 	public void delete(int entityIndex){
 		entities.get(entityIndex).getGeometry().deleteBuffers();
 		entities.get(entityIndex).setGeometry(null);
 		entities.remove(entityIndex);
+	}
+	
+	public void deleteTransparent(int entityIndex){
+		transparentEntities.get(entityIndex).getGeometry().deleteBuffers();
+		transparentEntities.get(entityIndex).setGeometry(null);
+		transparentEntities.remove(entityIndex);
 	}
 	
 	public void setPostProcessingUniform(String name, Object value) {
@@ -217,6 +248,14 @@ public abstract class Scene {
 
 	public void setLights(Lights lights) {
 		this.lights = lights;
+	}
+
+	public ArrayList<Entity> getTransparentEntities() {
+		return transparentEntities;
+	}
+
+	public ArrayList<LineEntity> getLineEntites() {
+		return lineEntites;
 	}
 	
 }

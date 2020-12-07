@@ -56,7 +56,6 @@ public abstract class Scene {
 		camera.setPerspective((float) Math.toRadians(70), 1920f / 1080f, 0.1f, 1000);
 		lights = new Lights();
 		
-		
 		for(int i = 0; i < entities.size(); i++) {
 			entities.get(i).getGeometry().deleteBuffers();
 			entities.get(i).DeleteTextures();
@@ -141,13 +140,17 @@ public abstract class Scene {
 	public void delete(Entity entity){
 		for(int i = 0; i < entities.size(); i++) {
 			if(entities.get(i).equals(entity)) {
-				entities.get(i).DeleteTextures();
 				entities.get(i).getGeometry().deleteBuffers();
 				entities.get(i).setGeometry(null);
 				entities.remove(i);
 			}
 		}
-		System.gc();
+	}
+	
+	public void delete(int entityIndex){
+		entities.get(entityIndex).getGeometry().deleteBuffers();
+		entities.get(entityIndex).setGeometry(null);
+		entities.remove(entityIndex);
 	}
 	
 	public void setPostProcessingUniform(String name, Object value) {

@@ -51,10 +51,8 @@ public class Geometry {
 		textures = new ArrayList<Texture>();
 		
 		index = 0;
-		
 		this.size = 0;
 		indexSize = 0;
-		
 	}
 	
 	//will increase the buffer capacity with 50% when needed.
